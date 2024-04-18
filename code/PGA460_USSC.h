@@ -11,7 +11,7 @@
 #include <wiringPiSPI.h>
 #define UART_PORT  "/dev/ttyACM2" // Replace with correct path
 //#define SERIAL_PORT  "/dev/ttyUSB0"  // Replace with correct path
-
+// TODO Port Interface
 class pga460
 {
 public:
