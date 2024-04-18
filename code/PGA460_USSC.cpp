@@ -80,7 +80,7 @@ int serial_fd;
 
 	
 // Serial read timeout in milliseconds
-	#define MAX_MILLIS_TO_WAIT 250
+	#define MAX_MILLIS_TO_WAIT 350//250
 
 //Energia to Arduino mapping
 	uint8_t  RED_LED = 31;
@@ -728,6 +728,7 @@ void pga460::initBoostXLPGA460(uint8_t mode, uint32_t baud, uint8_t uartAddrUpda
 					else 
 					{
     					// Handle error opening serial port
+						std::cout << "ERROR OPENING SERIAL"<< std::endl;
 					}
 
 				}
@@ -1099,10 +1100,6 @@ void pga460::initTVG(uint8_t  agr, uint8_t  tvg)
 				// Handle error opening serial port
 			}
 		}
-		// if (comm == 3) // SPI mode
-		// {
-		// 	// spiTransfer(buf14, sizeof(buf14));
-		// }
 	}
 	else if(comm == 6)
 	{
@@ -1262,10 +1259,14 @@ bool pga460::pullUltrasonicMeasResult(bool busDemo)
 		uint8_t  buf5[3] = {syncByte , UMR, calcChecksum(UMR)};
 		if (comm == 0 || comm == 2) // UART or OWU mode
 		{
+				for (int i = 1; i < sizeof(buf5); ++i) 
+				{
+					serialPutchar(serial_fd, buf8[i]);
+				}
 
-			serialPutchar(serial_fd, buf5[0]); // Transmit first byte
-            serialPutchar(serial_fd, buf5[1]); // Transmit second byte
-            serialPutchar(serial_fd, buf5[2]); // Transmit third byte
+			//serialPutchar(serial_fd, buf5[0]); // Transmit first byte
+            //serialPutchar(serial_fd, buf5[1]); // Transmit second byte
+            //serialPutchar(serial_fd, buf5[2]); // Transmit third byte
 
 			// Serial1.write(buf5, sizeof(buf5)); //serial transmit master data to read ultrasonic measurement results
 		}
