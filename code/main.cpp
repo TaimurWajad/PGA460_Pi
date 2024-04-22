@@ -236,7 +236,7 @@ void loop() {                 // put your main code here, to run repeatedly
           else if (distance == 0 && commMode!=1)                         // turn off all LEDs if no object detected
           {
               //ussc.toggleLEDs(LOW,LOW,LOW);
-              std::cout << "Error reading measurement results..."); //Serial.println(distance);
+              std::cout << "Error reading measurement results..." << std::endl;
           }
           else //(distance > 11.2 && distance < minDistLim)         // turn off all LEDs if no object detected or below minimum distance limit
           {
