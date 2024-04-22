@@ -1790,19 +1790,6 @@ if (bytesRead == -1) {
 		}
 		return bulkString;	
 	}
-	else if (comm == 1) // TCI
-	{		
-		tciIndexRW(12, false); //only run when first calling this function to read out the entire EDD to the receive buffer
-		delay (500); // wait until EDD read out is completed with margin
-		delay(10);
-		for(int n=1; n<129; n++)
-		{			
-		   //bulkString = bulkString + "," + bufRecv[n];
-		   bulkString = bulkString + "," + std::to_string(bufRecv[n]);
-		   
-		}
-		return bulkString;	
-	}
 	else
 	{
 		//do nothing

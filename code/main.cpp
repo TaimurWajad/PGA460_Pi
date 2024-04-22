@@ -46,7 +46,7 @@
   uint8_t edd = 1;                 // echo data dump of preset 1, 2, or neither
   uint8_t burn = 1;                // trigger EE_CNTRL to burn and program user EEPROM memory
   uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
-  uint8_t numOfObj = 1;            // number of object to detect set to 1-8
+  uint8_t numOfObj = 4;            // number of object to detect set to 1-8
   uint8_t uartAddrUpdate = 0;      // PGA460 UART address to interface to; default is 0, possible address 0-7
   bool objectDetected = false;  // object detected flag to break burst+listen cycle when true
   bool demoMode = false;        // only true when running UART/OWU multi device demo mode
@@ -177,9 +177,7 @@ void serialEvent() {
 void loop() {                 // put your main code here, to run repeatedly
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       objectDetected = false;                       // Initialize object detected flag to false
-      std::cout << "TEST0" << std::endl;
       ussc.ultrasonicCmd(0,numOfObj);               // run preset 1 (short distance) burst+listen for 1 object
-      std::cout << "TEST1" << std::endl;
       ussc.pullUltrasonicMeasResult(demoMode);      // Pull Ultrasonic Measurement Result
       std::cout << "TEST2" << std::endl;
       for (uint8_t i=0; i<numOfObj; i++)
@@ -261,7 +259,7 @@ void loop() {                 // put your main code here, to run repeatedly
       //digitalWrite(11, !digitalRead(11));   //toggle green LED after each sequence
       //digitalWrite(12, !digitalRead(12));     //toggle red LED after each sequence
 
-      //serialEvent();
+      serialEvent();
 }
 
 int main(){
