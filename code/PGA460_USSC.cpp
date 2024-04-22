@@ -1267,7 +1267,7 @@ bool pga460::pullUltrasonicMeasResult(bool busDemo)
 			// Serial1.write(buf5, sizeof(buf5)); //serial transmit master data to read ultrasonic measurement results
 		}
 
-#if 1		
+#if 0		
 		if (comm == 0 || comm == 2) // UART or OWU mode
 		{
 			starttime = millis();
@@ -1350,19 +1350,14 @@ if (comm == 0 || comm == 2) // UART or OWU mode
             ssize_t bytesRead = read(serial_fd, &ultraMeasResult[n], 1);
             if (bytesRead == -1)
             {
-                // Handle read error
+                std::cout << "ERROR - " << std::endl;
+            }
+			else
+			{
+                ultraMeasResult[n + 1] = ultraMeasResult[n + owuShift]; // element 0 skipped due to no diagnostic field returned
+				std::cout << ultraMeasResult[n + 1] << std::endl; 
             }
             delay(1);
-        }
-
-        if (comm == 2) // OWU mode only
-        {
-            // rearrange array for OWU UMR results
-            for (int n = 0; n < (2 + (numObj * 4)); n++)
-            {
-                ultraMeasResult[n + 1] = ultraMeasResult[n + owuShift]; // element 0 skipped due to no diagnostic field returned
-				std::cout << ultraMeasResult[n + 1] << std::endl;
-            }
         }
     }
 }
