@@ -1223,11 +1223,6 @@ void pga460::ultrasonicCmd(uint8_t  cmd, uint8_t  numObjUpdate)
 			}
 		}
 	}
-	else if (comm == 1) // TCI mode
-	{
-		tciCommand(cmd); // send preset 1 or 2 burst-and-listen or listen-only command
-		pga460::tciRecord(numObj); // log up to eight TCI object toggles
-	}	
 	else
 	{
 		//do nothing
@@ -1250,16 +1245,12 @@ void pga460::ultrasonicCmd(uint8_t  cmd, uint8_t  numObjUpdate)
  *-------------------------------------------------------------------*/
 bool pga460::pullUltrasonicMeasResult(bool busDemo)
 {
+	char buffer_test[(2+(numObj*4))];
 	if (comm != 1) // USART or OWU mode
 	{
 		pga460SerialFlush();
 		
 		memset(ultraMeasResult, 0, sizeof(ultraMeasResult));
-		
-		if (comm == 2)
-		{
-		   owuShift = 2; // OWU receive buffer offset to ignore transmitted data
-		}
 		
 		uint8_t  buf5[3] = {syncByte , UMR, calcChecksum(UMR)};
 		if (comm == 0 || comm == 2) // UART or OWU mode
@@ -1276,7 +1267,7 @@ bool pga460::pullUltrasonicMeasResult(bool busDemo)
 			// Serial1.write(buf5, sizeof(buf5)); //serial transmit master data to read ultrasonic measurement results
 		}
 
-#if 0		
+#if 1		
 		if (comm == 0 || comm == 2) // UART or OWU mode
 		{
 			starttime = millis();
@@ -1296,14 +1287,30 @@ bool pga460::pullUltrasonicMeasResult(bool busDemo)
 			}
 			else
 			{
-
+#if 0
 				for(int n=0; n<((2+(numObj*4))+owuShift); n++)
 				{			
 				   ultraMeasResult[n] = serialGetchar(serial_fd);
 				   delay(1);		   
 				}
+#else
+			// Read data from the serial port
+			ssize_t bytesRead = read(serial_fd, buffer_test, sizeof(buffer_test));
 
-				if (comm == 2) // OWU mode only
+			// Check if data was successfully read
+			if (bytesRead < 0) {
+    			std::cout << "ERRORRRR" <<std::endl;
+			} else {
+    			// Copy the received data to the ultraMeasResult array
+    			for (int n = 0; n < bytesRead; ++n) 
+				{
+        			ultraMeasResult[n] = buffer[n];
+					std::cout << ultraMeasResult[n] <<std::endl;
+    			}
+			}
+
+#endif
+				if (1) // OWU mode only
 				{
 					//rearrange array for OWU UMR results
 					for(int n=0; n<(2+(numObj*4)); n++)
