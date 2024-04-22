@@ -1626,19 +1626,6 @@ void pga460::runEchoDataDump(uint8_t  preset)
             }
 		}		
 	}
-	else if (comm == 1) // TCI mode
-	{
-		EE_CNTRL = 0x80; 		// enable echo data dump 
-		tciIndexRW(11, true); 	// write to index 11
-		
-		delay(10);
-		tciCommand(preset); 	// run burst+listen command
-		delay(100);				// delay for maximum record time length with margin
-		
-		EE_CNTRL = 0x00; 		// disable echo data dump
-		tciIndexRW(11, true); 	// write to index 11		
-		delay(10);			
-	}
 	else
 	{
 		//do nothing
@@ -1780,11 +1767,6 @@ if (bytesRead == -1) {
 } else {
     // Print the number of bytes read
     std::cout << "Bytes read: " << bytesRead << std::endl;
-    
-    // Process the received data
-    for (int i = 0; i < bytesRead; ++i) {
-        std::cout << "Received character: " << eddBulk[i] << std::endl;
-    }
 }
 #endif
 		

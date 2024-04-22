@@ -44,7 +44,7 @@
   uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
   uint8_t runDiag = 1;             // run system diagnostics and temp/noise level before looping burst+listen command
   uint8_t edd = 1;                 // echo data dump of preset 1, 2, or neither
-  uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
+  uint8_t burn = 1;                // trigger EE_CNTRL to burn and program user EEPROM memory
   uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
   uint8_t numOfObj = 1;            // number of object to detect set to 1-8
   uint8_t uartAddrUpdate = 0;      // PGA460 UART address to interface to; default is 0, possible address 0-7
