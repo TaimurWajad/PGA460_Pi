@@ -211,6 +211,7 @@ void loop() {                 // put your main code here, to run repeatedly
         for (uint8_t i=0; i<numOfObj; i++)
         {  
           distance = ussc.printUltrasonicMeasResult(0+(i*3));   // Print Ultrasonic Measurement Result i.e. Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude;
+          std::cout << "Dist: " << distance << std::endl;
           //width = ussc.printUltrasonicMeasResult(1+(i*3));    // only available for UART, OWU, and SPI
           //peak = ussc.printUltrasonicMeasResult(2+(i*3));     // only available for UART, OWU, and SPI
   

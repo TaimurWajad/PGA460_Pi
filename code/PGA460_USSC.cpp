@@ -1255,16 +1255,10 @@ bool pga460::pullUltrasonicMeasResult(bool busDemo)
 		uint8_t  buf5[3] = {syncByte , UMR, calcChecksum(UMR)};
 		if (comm == 0 || comm == 2) // UART or OWU mode
 		{
-				//for (int i = 1; i < sizeof(buf5); ++i) 
-				//{
-				//	serialPutchar(serial_fd, buf5[i]);
-				//}
-
+			//serial transmit master data to read ultrasonic measurement results
 			serialPutchar(serial_fd, buf5[0]); // Transmit first byte
             serialPutchar(serial_fd, buf5[1]); // Transmit second byte
-            serialPutchar(serial_fd, buf5[2]); // Transmit third byte
-
-			// Serial1.write(buf5, sizeof(buf5)); //serial transmit master data to read ultrasonic measurement results
+            serialPutchar(serial_fd, buf5[2]); // Transmit third byte 
 		}
 
 #if 0		
@@ -1354,8 +1348,7 @@ if (comm == 0 || comm == 2) // UART or OWU mode
             }
 			else
 			{
-                ultraMeasResult[n + 1] = ultraMeasResult[n + owuShift]; // element 0 skipped due to no diagnostic field returned
-				std::cout << ultraMeasResult[n + 1] << std::endl; 
+
             }
             delay(1);
         }
@@ -1419,6 +1412,7 @@ double pga460::printUltrasonicMeasResultExt(uint8_t  umr, int speedSound)
 		{
 			objDist = (ultraMeasResult[1]<<8) + ultraMeasResult[2];
 			objReturn = (objDist/2*0.000001*speedSound) - digitalDelay;
+			std::cout << "OBJ: " << objReturn << std::endl;
 			break;
 		}
 		case 1: //Obj1 Width (us)
@@ -1866,7 +1860,6 @@ double pga460::runDiagnostics(uint8_t  run, uint8_t  diag)
 					for (int n = 0; n < (4 + owuShift - owuShiftSysDiag); n++)
 					{
 						diagMeasResult[n] = serialGetchar(serial_fd);
-						std::cout << "Testtt: "<< std::endl; std::cout << buf8[3] << std::endl;
 					}
 				}
 
