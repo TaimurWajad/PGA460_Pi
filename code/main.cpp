@@ -248,10 +248,10 @@ void loop() {                 // put your main code here, to run repeatedly
       }
     
     // -+-+-+-+-+-+-+-+-+-+-  STATUS   -+-+-+-+-+-+-+-+-+-+- //
-      digitalWrite(11, !digitalRead(11));   //toggle green LED after each sequence
-      digitalWrite(12, !digitalRead(12));     //toggle red LED after each sequence
+      //digitalWrite(11, !digitalRead(11));   //toggle green LED after each sequence
+      //digitalWrite(12, !digitalRead(12));     //toggle red LED after each sequence
 
-      serialEvent();
+      //serialEvent();
 }
 
 int main(){
