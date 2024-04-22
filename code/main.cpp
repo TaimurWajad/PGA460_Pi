@@ -179,16 +179,13 @@ void loop() {                 // put your main code here, to run repeatedly
       objectDetected = false;                       // Initialize object detected flag to false
       ussc.ultrasonicCmd(0,numOfObj);               // run preset 1 (short distance) burst+listen for 1 object
       ussc.pullUltrasonicMeasResult(demoMode);      // Pull Ultrasonic Measurement Result
-      std::cout << "TEST2" << std::endl;
       for (uint8_t i=0; i<numOfObj; i++)
-      {  
-        std::cout << "TEST3" << std::endl;    
+      {     
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
           distance = ussc.printUltrasonicMeasResult(0+(i*3));      
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
           //peak = ussc.printUltrasonicMeasResult(2+(i*3));   // only available for UART, OWU, and SPI
-          std::cout << distance << std::endl;
-          std::cout << "TEST4" << std::endl;
+          //std::cout << distance << std::endl;
   
         delay(commandDelay);
     
@@ -201,8 +198,6 @@ void loop() {                 // put your main code here, to run repeatedly
             objectDetected = true;
         }
       }
-      std::cout << "TEST5" << std::endl;
-    
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 2 (LONG RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       if(objectDetected == false || alwaysLong == true)                       // If no preset 1 (short distance) measurement result, switch to Preset 2 B+L command
       {   
@@ -240,13 +235,11 @@ void loop() {                 // put your main code here, to run repeatedly
           }    
           else if (distance == 0 && commMode!=1)                         // turn off all LEDs if no object detected
           {
-              ussc.toggleLEDs(LOW,LOW,LOW);
-              //std::cout << "Error reading measurement results..."); //Serial.println(distance);
-              std::cout << "TEST6" << std::endl;
+              //ussc.toggleLEDs(LOW,LOW,LOW);
+              std::cout << "Error reading measurement results..."); //Serial.println(distance);
           }
           else //(distance > 11.2 && distance < minDistLim)         // turn off all LEDs if no object detected or below minimum distance limit
           {
-            std::cout << "TEST7" << std::endl;
               if (i == numOfObj-1 && objectDetected == false)
               {
                 ussc.toggleLEDs(LOW,LOW,LOW);            
