@@ -1709,11 +1709,29 @@ std::string pga460::pullEchoDataDumpBulk()
         }
 		uint8_t eddBulk[130];
 		std::cout << "TEST1" << std::endl;
+#if 0
         for (int i = 0; i < 130; ++i) {
             eddBulk[i] = serialGetchar(serial_fd);
 			std::cout << i << std::endl;
         }
+#else
+// Read characters from the serial port using read function
+ssize_t bytesRead = read(serial_fd, eddBulk, 130);
 
+// Check if read was successful
+if (bytesRead == -1) {
+    // Handle error
+    std::cerr << "Error reading from serial port" << std::endl;
+} else {
+    // Print the number of bytes read
+    std::cout << "Bytes read: " << bytesRead << std::endl;
+    
+    // Process the received data
+    for (int i = 0; i < bytesRead; ++i) {
+        std::cout << "Received character: " << eddBulk[i] << std::endl;
+    }
+}
+#endif
 		
 		if(1)//(eddBulk[0] != 0) // if diagnostic field is non-zero
 		{						
