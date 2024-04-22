@@ -34,6 +34,8 @@
 */
 
 #include "PGA460_USSC.h"
+#include <unistd.h>
+
 int serial_fd;
 #define EnUART		//enables UART communication at TXD and RXD
 #define EnOWU		//enables OWU communication at IO
