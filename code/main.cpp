@@ -189,6 +189,7 @@ void loop() {                 // put your main code here, to run repeatedly
           distance = ussc.printUltrasonicMeasResult(0+(i*3));      
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
           //peak = ussc.printUltrasonicMeasResult(2+(i*3));   // only available for UART, OWU, and SPI
+          std::cout << distance << std::endl;
           std::cout << "TEST4" << std::endl;
   
         delay(commandDelay);
@@ -202,6 +203,7 @@ void loop() {                 // put your main code here, to run repeatedly
             objectDetected = true;
         }
       }
+      std::cout << "TEST5" << std::endl;
     
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 2 (LONG RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       if(objectDetected == false || alwaysLong == true)                       // If no preset 1 (short distance) measurement result, switch to Preset 2 B+L command
