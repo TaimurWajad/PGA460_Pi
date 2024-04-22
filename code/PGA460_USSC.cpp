@@ -35,6 +35,9 @@
 
 #include "PGA460_USSC.h"
 #include <unistd.h>
+#include <sys/time.h>
+
+#define MAX_MILLIS_TO_WAIT 250 // 0.25 seconds
 
 int serial_fd;
 #define EnUART		//enables UART communication at TXD and RXD
@@ -1273,7 +1276,7 @@ bool pga460::pullUltrasonicMeasResult(bool busDemo)
 			// Serial1.write(buf5, sizeof(buf5)); //serial transmit master data to read ultrasonic measurement results
 		}
 
-		
+#if 0		
 		if (comm == 0 || comm == 2) // UART or OWU mode
 		{
 			starttime = millis();
@@ -1293,6 +1296,7 @@ bool pga460::pullUltrasonicMeasResult(bool busDemo)
 			}
 			else
 			{
+
 				for(int n=0; n<((2+(numObj*4))+owuShift); n++)
 				{			
 				   ultraMeasResult[n] = serialGetchar(serial_fd);
@@ -1309,6 +1313,55 @@ bool pga460::pullUltrasonicMeasResult(bool busDemo)
 				}				
 			}
 		}
+#else
+
+// Assuming serial_fd is the file descriptor for the serial port
+if (comm == 0 || comm == 2) // UART or OWU mode
+{
+    struct timeval startTime;
+    gettimeofday(&startTime, NULL);
+
+    while ((serialDataAvail(serial_fd) < (5 + owuShift)) &&
+           ((millis() - startTime.tv_sec * 1000 + startTime.tv_usec / 1000) < MAX_MILLIS_TO_WAIT))
+    {
+        // wait in this loop until we either get +5 bytes of data, or 0.25 seconds have gone by
+    }
+
+    if (serialDataAvail(serial_fd) < (5 + owuShift))
+    {
+        if (busDemo == false)
+        {
+            // the data didn't come in - handle the problem here
+            std::cout << "ERROR - Did not receive measurement results!" << std::endl;
+        }
+        return false;
+    }
+    else
+    {
+        for (int n = 0; n < (2 + (numObj * 4)) + owuShift; n++)
+        {
+            ssize_t bytesRead = read(serial_fd, &ultraMeasResult[n], 1);
+            if (bytesRead == -1)
+            {
+                // Handle read error
+            }
+            delay(1);
+        }
+
+        if (comm == 2) // OWU mode only
+        {
+            // rearrange array for OWU UMR results
+            for (int n = 0; n < (2 + (numObj * 4)); n++)
+            {
+                ultraMeasResult[n + 1] = ultraMeasResult[n + owuShift]; // element 0 skipped due to no diagnostic field returned
+            }
+        }
+    }
+}
+
+
+
+#endif
 	}
 	else
 	{
