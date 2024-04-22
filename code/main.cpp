@@ -225,6 +225,7 @@ void loop() {                 // put your main code here, to run repeatedly
               //Serial.print("P2 Obj"); Serial.print(i+1); Serial.print(" Width (us): "); Serial.println(width);
               //Serial.print("P2 Obj"); `i+1); Serial.print(" Amplitude (dec): "); Serial.println(peak);
               objectDetected = true;
+              
           } 
           else if (distance < 3 && distance >= 1)      // turn on DS1_LED and F_DIAG_LED if object is within 3m
           {
@@ -242,9 +243,11 @@ void loop() {                 // put your main code here, to run repeatedly
           {
               ussc.toggleLEDs(LOW,LOW,LOW);
               //std::cout << "Error reading measurement results..."); //Serial.println(distance);
+              std::cout << "TEST6" << std::endl;
           }
           else //(distance > 11.2 && distance < minDistLim)         // turn off all LEDs if no object detected or below minimum distance limit
           {
+            std::cout << "TEST7" << std::endl;
               if (i == numOfObj-1 && objectDetected == false)
               {
                 ussc.toggleLEDs(LOW,LOW,LOW);            
