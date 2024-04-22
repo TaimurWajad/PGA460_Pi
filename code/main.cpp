@@ -53,7 +53,7 @@
   bool alwaysLong = false;      // always run preset 2, regardless of preset 1 result (hard-coded only)
   double minDistLim = 0.1;      // minimum distance as limited by ringing decay of single transducer and threshold masking
   uint16_t commandDelay = 0;    // Delay between each P1 and Preset 2 command
-  uint32_t baudRate = 9600;     // UART baud rate: 9600, 19200, 38400, 57600, 74800, 115200 
+  //uint32_t baudRate = 115200;     // UART baud rate: 9600, 19200, 38400, 57600, 74800, 115200 
 
 //PUSH BUTTON used for standAlone mode
   const int buttonPin = 10;  // the number of the pushbutton pin

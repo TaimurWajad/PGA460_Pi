@@ -205,7 +205,7 @@ int serial_fd;
 	uint8_t  echoDataDump[130+3]; 		// data uint8_t  array for cmd7 and index12 return
 	uint8_t  tempOrNoise = 0; 			// data uint8_t  to determine if temp or noise measurement is to be performed
 	uint8_t  comm = 0; 					// indicates UART (0), TCI (1), OWU (2) communication mode	
-	unsigned long starttime; 		// used for function time out
+	unsigned long starttime; 			// used for function time out
 	uint8_t  bulkThr[34+3];				// data uint8_t  array for bulk threhsold commands
 	//UART & OWU exclusive variables
 		uint8_t  syncByte  = 0x55; 		// data uint8_t  for Sync field set UART baud rate of PGA460
@@ -216,11 +216,11 @@ int serial_fd;
 		//OWU exclusive variables
 			signed int owuShift = 0;	// accoutns for OWU receiver buffer offset for capturing master transmitted data - always 0 for standard two-wire UART
 	//TCI exclusive variables
-		uint8_t  bufRecv[128]; 				// TCI receive data buffer for all commands	
+		uint8_t  bufRecv[128]; 			// TCI receive data buffer for all commands	
 		unsigned long tciToggle;		// used to log TCI burst+listen time of object
 		unsigned int objTime[8];		// array to capture up to eight object TCI burst+listen toggles
 	//SPI exclusive variables
-		uint8_t  misoBuf[131]; 				// SPI MISO receive data buffer for all commands	
+		uint8_t  misoBuf[131]; 			// SPI MISO receive data buffer for all commands	
 #pragma endregion globals
 
 /*------------------------------------------------- PGA460 Top Level -----
@@ -258,7 +258,7 @@ pga460::pga460(){}
  *-------------------------------------------------------------------*/
 void pga460::initBoostXLPGA460(uint8_t mode, uint32_t baud, uint8_t uartAddrUpdate) 
 {
-    serial_fd = serialOpen(UART_PORT, 9600);
+    serial_fd = serialOpen(UART_PORT, baud);
 	// Check for errors in opening the serial port
 	if (serial_fd < 0) 
 	{
@@ -349,7 +349,7 @@ void pga460::initBoostXLPGA460(uint8_t mode, uint32_t baud, uint8_t uartAddrUpda
             digitalWrite(COM_SEL, LOW);
 #endif
             serialOpen(UART_PORT, baud); // ToDO: Check this, Initialize COM UART serial channel
-            serialOpen(UART_PORT, baud); // ToDO: Check this, Initialize PGA460 UART serial channel
+            //serialOpen(UART_PORT, baud); // ToDO: Check this, Initialize PGA460 UART serial channel
             // Set timeout for serial communication
             // serialGetcharTimeout(250);
             break;
@@ -717,7 +717,7 @@ void pga460::initBoostXLPGA460(uint8_t mode, uint32_t baud, uint8_t uartAddrUpda
 //					serialPuts(SERIAL_PORT, buf12); // Write data to serial port
 //					serialClose(SERIAL_PORT); // Close serial port
 //					int serial_fd2 = serialOpen(SERIAL_PORT, 9600); // Open serial port
-					int serial_fd2 = serialOpen(UART_PORT, 9600); // Open serial port
+					int serial_fd2 = serialOpen(UART_PORT, baudRate); // Open serial port
 					if (serial_fd2 != -1) 
 					{
     					//serialPuts(serial_fd2, buf12); // Write data to serial port
@@ -948,7 +948,7 @@ void pga460::initThresholds(uint8_t  thr)
                               calcChecksum(THRBW)};							  
 		if (comm == 0 || comm == 2) // UART or OWU mode
 		{
-			int UARTPort = serialOpen(UART_PORT, 9600); // Use the appropriate serial port and baud rate
+			int UARTPort = serialOpen(UART_PORT, baudRate); // Use the appropriate serial port and baud rate
 			if (UARTPort != -1) 
 			{
 				serialPuts(UARTPort, reinterpret_cast<char*>(buf16));
@@ -1027,7 +1027,7 @@ void pga460::initTVG(uint8_t  agr, uint8_t  tvg)
 		uint8_t  buf10[5] = {syncByte , SRW, regAddr, regData, calcChecksum(SRW)};
 		if (comm == 0 || comm == 2) // UART or OWU mode
 		{
-			int UARTPort = serialOpen(UART_PORT, 9600); // Use the appropriate serial port and baud rate
+			int UARTPort = serialOpen(UART_PORT, baudRate); // Use the appropriate serial port and baud rate
 			if (UARTPort != -1) {
 				serialPuts(UARTPort, reinterpret_cast<char*>(buf10));
 				serialClose(UARTPort);
@@ -1092,7 +1092,7 @@ void pga460::initTVG(uint8_t  agr, uint8_t  tvg)
 		
 		if (comm == 0 || comm == 2) // UART or OWU mode
 		{
-			int UARTPort = serialOpen(UART_PORT, 9600); // Use the appropriate serial port and baud rate
+			int UARTPort = serialOpen(UART_PORT, baudRate); // Use the appropriate serial port and baud rate
 			if (UARTPort != -1) {
 				serialPuts(UARTPort, reinterpret_cast<char*>(buf14));
 				serialClose(UARTPort);
@@ -1208,7 +1208,7 @@ void pga460::ultrasonicCmd(uint8_t  cmd, uint8_t  numObjUpdate)
 	{
 		if (comm == 0 || comm == 2) // UART or OWU mode
 		{
-			int serialPort = serialOpen(UART_PORT, 9600); // Use the appropriate serial port and baud rate
+			int serialPort = serialOpen(UART_PORT, baudRate); // Use the appropriate serial port and baud rate
 			if (serialPort != -1) {
 				serialPuts(serialPort, reinterpret_cast<char*>(bufCmd)); // Send data
 				serialClose(serialPort); // Close serial port
@@ -1259,14 +1259,14 @@ bool pga460::pullUltrasonicMeasResult(bool busDemo)
 		uint8_t  buf5[3] = {syncByte , UMR, calcChecksum(UMR)};
 		if (comm == 0 || comm == 2) // UART or OWU mode
 		{
-				for (int i = 1; i < sizeof(buf5); ++i) 
-				{
-					serialPutchar(serial_fd, buf8[i]);
-				}
+				//for (int i = 1; i < sizeof(buf5); ++i) 
+				//{
+				//	serialPutchar(serial_fd, buf5[i]);
+				//}
 
-			//serialPutchar(serial_fd, buf5[0]); // Transmit first byte
-            //serialPutchar(serial_fd, buf5[1]); // Transmit second byte
-            //serialPutchar(serial_fd, buf5[2]); // Transmit third byte
+			serialPutchar(serial_fd, buf5[0]); // Transmit first byte
+            serialPutchar(serial_fd, buf5[1]); // Transmit second byte
+            serialPutchar(serial_fd, buf5[2]); // Transmit third byte
 
 			// Serial1.write(buf5, sizeof(buf5)); //serial transmit master data to read ultrasonic measurement results
 		}
@@ -1710,13 +1710,16 @@ std::string pga460::pullEchoDataDumpBulk()
 		uint8_t eddBulk[130];
         for (int i = 0; i < 130; ++i) {
             eddBulk[i] = serialGetchar(serial_fd);
+			
         }
 
 		
 		if(eddBulk[0] != 0) // if diagnostic field is non-zero
-		{			
+		{	
+			std::cout << "TEST123" << std::endl;		
 			for(int n=1+owuShift; n<(129+owuShift); n++)
-			{			
+			{	
+				std::cout << n << std::endl;		
 			   //bulkString = bulkString + "," + eddBulk[n];
 			   bulkString = bulkString + "," + std::to_string(eddBulk[n]);
 	   
