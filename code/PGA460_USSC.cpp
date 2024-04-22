@@ -1763,7 +1763,6 @@ std::string pga460::pullEchoDataDumpBulk()
             serialPutchar(serial_fd, buf7[i]);
         }
 		uint8_t eddBulk[130];
-		std::cout << "TEST1" << std::endl;
 #if 0
         for (int i = 0; i < 130; ++i) {
             eddBulk[i] = serialGetchar(serial_fd);
@@ -1788,11 +1787,10 @@ if (bytesRead == -1) {
 }
 #endif
 		
-		if(1)//(eddBulk[0] != 0) // if diagnostic field is non-zero
+		if(eddBulk[0] != 0) // if diagnostic field is non-zero
 		{						
 			for(int n=1+owuShift; n<(129+owuShift); n++)
-			{	
-				std::cout << n << std::endl;		
+			{			
 			   bulkString = bulkString + "," + std::to_string(eddBulk[n]);
 	   
 			}
