@@ -717,7 +717,7 @@ void pga460::initBoostXLPGA460(uint8_t mode, uint32_t baud, uint8_t uartAddrUpda
 //					serialPuts(SERIAL_PORT, buf12); // Write data to serial port
 //					serialClose(SERIAL_PORT); // Close serial port
 //					int serial_fd2 = serialOpen(SERIAL_PORT, 9600); // Open serial port
-					int serial_fd2 = serialOpen(UART_PORT, baudRate); // Open serial port
+					int serial_fd2 = serialOpen(UART_PORT, 115200); // Open serial port
 					if (serial_fd2 != -1) 
 					{
     					//serialPuts(serial_fd2, buf12); // Write data to serial port
@@ -948,7 +948,7 @@ void pga460::initThresholds(uint8_t  thr)
                               calcChecksum(THRBW)};							  
 		if (comm == 0 || comm == 2) // UART or OWU mode
 		{
-			int UARTPort = serialOpen(UART_PORT, baudRate); // Use the appropriate serial port and baud rate
+			int UARTPort = serialOpen(UART_PORT, 115200); // Use the appropriate serial port and baud rate
 			if (UARTPort != -1) 
 			{
 				serialPuts(UARTPort, reinterpret_cast<char*>(buf16));
@@ -1027,7 +1027,7 @@ void pga460::initTVG(uint8_t  agr, uint8_t  tvg)
 		uint8_t  buf10[5] = {syncByte , SRW, regAddr, regData, calcChecksum(SRW)};
 		if (comm == 0 || comm == 2) // UART or OWU mode
 		{
-			int UARTPort = serialOpen(UART_PORT, baudRate); // Use the appropriate serial port and baud rate
+			int UARTPort = serialOpen(UART_PORT, 115200); // Use the appropriate serial port and baud rate
 			if (UARTPort != -1) {
 				serialPuts(UARTPort, reinterpret_cast<char*>(buf10));
 				serialClose(UARTPort);
@@ -1092,7 +1092,7 @@ void pga460::initTVG(uint8_t  agr, uint8_t  tvg)
 		
 		if (comm == 0 || comm == 2) // UART or OWU mode
 		{
-			int UARTPort = serialOpen(UART_PORT, baudRate); // Use the appropriate serial port and baud rate
+			int UARTPort = serialOpen(UART_PORT, 115200); // Use the appropriate serial port and baud rate
 			if (UARTPort != -1) {
 				serialPuts(UARTPort, reinterpret_cast<char*>(buf14));
 				serialClose(UARTPort);
@@ -1208,7 +1208,7 @@ void pga460::ultrasonicCmd(uint8_t  cmd, uint8_t  numObjUpdate)
 	{
 		if (comm == 0 || comm == 2) // UART or OWU mode
 		{
-			int serialPort = serialOpen(UART_PORT, baudRate); // Use the appropriate serial port and baud rate
+			int serialPort = serialOpen(UART_PORT, 115200); // Use the appropriate serial port and baud rate
 			if (serialPort != -1) {
 				serialPuts(serialPort, reinterpret_cast<char*>(bufCmd)); // Send data
 				serialClose(serialPort); // Close serial port

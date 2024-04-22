@@ -10,8 +10,7 @@
 #include <wiringSerial.h>
 #include <wiringPiSPI.h>
 #define UART_PORT  "/dev/ttyACM2" // Replace with correct path
-//#define SERIAL_PORT  "/dev/ttyUSB0"  // Replace with correct path
-uint32_t baudRate = 115200;     // UART baud rate: 9600, 19200, 38400, 57600, 74800, 115200 
+//#define SERIAL_PORT  "/dev/ttyUSB0"  // Replace with correct path 
 // TODO Port Interface
 class pga460
 {
