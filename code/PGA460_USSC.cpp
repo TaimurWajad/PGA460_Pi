@@ -37,7 +37,7 @@
 #include <unistd.h>
 #include <sys/time.h>
 
-#define MAX_MILLIS_TO_WAIT 250 // 0.25 seconds
+#define MAX_MILLIS_TO_WAIT2 250 // 0.25 seconds
 
 int serial_fd;
 #define EnUART		//enables UART communication at TXD and RXD
@@ -1322,7 +1322,7 @@ if (comm == 0 || comm == 2) // UART or OWU mode
     gettimeofday(&startTime, NULL);
 
     while ((serialDataAvail(serial_fd) < (5 + owuShift)) &&
-           ((millis() - startTime.tv_sec * 1000 + startTime.tv_usec / 1000) < MAX_MILLIS_TO_WAIT))
+           ((millis() - startTime.tv_sec * 1000 + startTime.tv_usec / 1000) < MAX_MILLIS_TO_WAIT2))
     {
         // wait in this loop until we either get +5 bytes of data, or 0.25 seconds have gone by
     }
