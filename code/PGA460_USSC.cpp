@@ -1358,11 +1358,7 @@ if (comm == 0 || comm == 2) // UART or OWU mode
         }
     }
 }
-
-
-
 #endif
-	}
 	else
 	{
 		//do nothing
