@@ -1354,11 +1354,16 @@ if (comm == 0 || comm == 2) // UART or OWU mode
             for (int n = 0; n < (2 + (numObj * 4)); n++)
             {
                 ultraMeasResult[n + 1] = ultraMeasResult[n + owuShift]; // element 0 skipped due to no diagnostic field returned
+				std::cout << ultraMeasResult[n + 1] << std::endl;
             }
         }
     }
 }
+
+
+
 #endif
+	}
 	else
 	{
 		//do nothing
