@@ -1710,12 +1710,13 @@ std::string pga460::pullEchoDataDumpBulk()
 		uint8_t eddBulk[130];
         for (int i = 0; i < 130; ++i) {
             eddBulk[i] = serialGetchar(serial_fd);
-			
+			std::cout << eddBulk[i] << std::endl;
         }
 
 		
 		if(eddBulk[0] != 0) // if diagnostic field is non-zero
 		{	
+
 			std::cout << "TEST123" << std::endl;		
 			for(int n=1+owuShift; n<(129+owuShift); n++)
 			{	
@@ -2024,10 +2025,6 @@ bool pga460::burnEEPROM()
                 serialPutchar(serial_fd, buf10[i]);
             }
 		}
-		// if (comm == 3) // SPI mode
-		// {
-		// 	spiTransfer(buf10, sizeof(buf10));
-		// }
 		delay(1000);
 		
 		
