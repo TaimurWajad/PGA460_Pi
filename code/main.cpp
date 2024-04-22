@@ -177,14 +177,19 @@ void serialEvent() {
 void loop() {                 // put your main code here, to run repeatedly
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       objectDetected = false;                       // Initialize object detected flag to false
+      std::cout << "TEST0" << std::endl;
       ussc.ultrasonicCmd(0,numOfObj);               // run preset 1 (short distance) burst+listen for 1 object
+      std::cout << "TEST1" << std::endl;
       ussc.pullUltrasonicMeasResult(demoMode);      // Pull Ultrasonic Measurement Result
+      std::cout << "TEST2" << std::endl;
       for (uint8_t i=0; i<numOfObj; i++)
-      {      
+      {  
+        std::cout << "TEST3" << std::endl;    
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
           distance = ussc.printUltrasonicMeasResult(0+(i*3));      
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
           //peak = ussc.printUltrasonicMeasResult(2+(i*3));   // only available for UART, OWU, and SPI
+          std::cout << "TEST4" << std::endl;
   
         delay(commandDelay);
     
