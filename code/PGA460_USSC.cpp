@@ -1411,7 +1411,6 @@ double pga460::printUltrasonicMeasResultExt(uint8_t  umr, int speedSound)
 		{
 			objDist = (ultraMeasResult[1]<<8) + ultraMeasResult[2];
 			objReturn = (objDist/2*0.000001*speedSound) - digitalDelay;
-			std::cout << "OBJ: " << objReturn << std::endl;
 			break;
 		}
 		case 1: //Obj1 Width (us)
