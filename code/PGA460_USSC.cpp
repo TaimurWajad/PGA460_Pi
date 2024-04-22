@@ -1392,7 +1392,6 @@ double pga460::printUltrasonicMeasResult(uint8_t  umr)
 	int speedSound = 343; // speed of sound in air at room temperature
 	pga460::printUltrasonicMeasResultExt(umr, speedSound);
 
-	return 0.0; // or return some appropriate value
 }
 uint8_t  pga460::printUltrasonicMeasResultRaw(uint8_t  umr)
 {
