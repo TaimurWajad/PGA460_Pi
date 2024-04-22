@@ -1304,7 +1304,7 @@ bool pga460::pullUltrasonicMeasResult(bool busDemo)
     			// Copy the received data to the ultraMeasResult array
     			for (int n = 0; n < bytesRead; ++n) 
 				{
-        			ultraMeasResult[n] = buffer[n];
+        			ultraMeasResult[n] = buffer_test[n];
 					std::cout << ultraMeasResult[n] <<std::endl;
     			}
 			}
