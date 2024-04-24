@@ -186,9 +186,6 @@ void loop() {                 // put your main code here, to run repeatedly
           distance = ussc.printUltrasonicMeasResult(0+(i*3));      
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
           //peak = ussc.printUltrasonicMeasResult(2+(i*3));   // only available for UART, OWU, and SPI
-          raw = ussc.printUltrasonicMeasResultRaw(0+(i*3));
-          std::cout << "Raw"<< std::endl;
-          std::cout << raw << std::endl;
   
         delay(commandDelay);
     
@@ -199,10 +196,11 @@ void loop() {                 // put your main code here, to run repeatedly
             //Serial.print("P1 Obj"); Serial.print(i+1); Serial.print(" Width (us): "); Serial.println(width);
             //Serial.print("P1 Obj"); Serial.print(i+1); Serial.print(" Amplitude (dec): "); Serial.println(peak);
             objectDetected = true;
+            std::cout << "Obj Here Det"<< std::endl; 
         }
       }
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 2 (LONG RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
-      if(objectDetected == false || alwaysLong == true)                       // If no preset 1 (short distance) measurement result, switch to Preset 2 B+L command
+      if(1)//(objectDetected == false || alwaysLong == true)                       // If no preset 1 (short distance) measurement result, switch to Preset 2 B+L command
       {   
         ussc.ultrasonicCmd(1,numOfObj);                // run preset 2 (long distance) burst+listen for 1 object
         ussc.pullUltrasonicMeasResult(demoMode);                // Get Ultrasonic Measurement Result
