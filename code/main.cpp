@@ -185,7 +185,8 @@ void loop() {                 // put your main code here, to run repeatedly
           distance = ussc.printUltrasonicMeasResult(0+(i*3));      
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
           //peak = ussc.printUltrasonicMeasResult(2+(i*3));   // only available for UART, OWU, and SPI
-          //std::cout << distance << std::endl;
+          std::cout << distance << std::endl;
+          std::cout << ussc.printUltrasonicMeasResultRaw(0+(i*3)) << std::endl;
   
         delay(commandDelay);
     
