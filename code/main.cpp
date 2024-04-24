@@ -61,6 +61,7 @@
 
 // Result variables
   double distance = 0;          // one-way object distance in meters
+  double raw = 0;
   double width = 0;             // object width in microseconds
   double peak = 0;              // object peak in 8-bit
   double diagnostics = 0;       // diagnostic selector
@@ -185,8 +186,9 @@ void loop() {                 // put your main code here, to run repeatedly
           distance = ussc.printUltrasonicMeasResult(0+(i*3));      
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
           //peak = ussc.printUltrasonicMeasResult(2+(i*3));   // only available for UART, OWU, and SPI
-          std::cout << distance << std::endl;
-          std::cout << ussc.printUltrasonicMeasResultRaw(0+(i*3)) << std::endl;
+          raw = ussc.printUltrasonicMeasResultRaw(0+(i*3));
+          std::cout << "Raw"<< std::endl;
+          std::cout << raw << std::endl;
   
         delay(commandDelay);
     
