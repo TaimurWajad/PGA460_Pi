@@ -200,7 +200,7 @@ void loop() {                 // put your main code here, to run repeatedly
         }
       }
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 2 (LONG RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
-      if(1)//(objectDetected == false || alwaysLong == true)                       // If no preset 1 (short distance) measurement result, switch to Preset 2 B+L command
+      if(objectDetected == false || alwaysLong == true)                       // If no preset 1 (short distance) measurement result, switch to Preset 2 B+L command
       {   
         ussc.ultrasonicCmd(1,numOfObj);                // run preset 2 (long distance) burst+listen for 1 object
         ussc.pullUltrasonicMeasResult(demoMode);                // Get Ultrasonic Measurement Result
@@ -254,7 +254,7 @@ void loop() {                 // put your main code here, to run repeatedly
       //digitalWrite(11, !digitalRead(11));   //toggle green LED after each sequence
       //digitalWrite(12, !digitalRead(12));     //toggle red LED after each sequence
 
-      //serialEvent();
+      serialEvent();
 }
 
 int main(){
