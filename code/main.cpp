@@ -46,7 +46,7 @@
   uint8_t edd = 1;                 // echo data dump of preset 1, 2, or neither
   uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
   uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
-  uint8_t numOfObj = 2;            // number of object to detect set to 1-8
+  uint8_t numOfObj = 1;            // number of object to detect set to 1-8
   uint8_t uartAddrUpdate = 0;      // PGA460 UART address to interface to; default is 0, possible address 0-7
   bool objectDetected = false;  // object detected flag to break burst+listen cycle when true
   bool demoMode = false;        // only true when running UART/OWU multi device demo mode
@@ -54,6 +54,8 @@
   double minDistLim = 0.1;      // minimum distance as limited by ringing decay of single transducer and threshold masking
   uint16_t commandDelay = 0;    // Delay between each P1 and Preset 2 command
   uint32_t baudRate = 115200;     // UART baud rate: 9600, 19200, 38400, 57600, 74800, 115200 
+
+  int pin = 15;  // GPIO15 (BCM)
 
 //PUSH BUTTON used for standAlone mode
   const int buttonPin = 10;  // the number of the pushbutton pin
@@ -73,6 +75,9 @@
   pga460 ussc;
 
   void initPGA460() {
+    // Set the pin to input mode with a pull-up resistor
+    pinMode(pin, INPUT);
+    pullUpDnControl(pin, PUD_UP);
 
 /*------------------------------------------------- userInput & standAlone mode initialization -----
   Configure the EVM in the following order:
@@ -251,8 +256,6 @@ void loop() {                 // put your main code here, to run repeatedly
       }
     
     // -+-+-+-+-+-+-+-+-+-+-  STATUS   -+-+-+-+-+-+-+-+-+-+- //
-      //digitalWrite(11, !digitalRead(11));   //toggle green LED after each sequence
-      //digitalWrite(12, !digitalRead(12));     //toggle red LED after each sequence
 
       serialEvent();
 }
