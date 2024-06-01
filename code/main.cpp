@@ -42,7 +42,7 @@
   uint8_t xdcr = 1;                // set PGA460 to recommended settings for 0=Murata MA58MF14-7N, 1=Murata MA40H1S-R
   uint8_t agrTVG = 2;              // set TVG's analog front end gain range to 0=32-64dB, 1=46-78dB, 2=52-84dB, or 3=58-90dB
   uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
-  uint8_t runDiag = 1;             // run system diagnostics and temp/noise level before looping burst+listen command
+  uint8_t runDiag = 0;             // run system diagnostics and temp/noise level before looping burst+listen command
   uint8_t edd = 1;                 // echo data dump of preset 1, 2, or neither
   uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
   uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
@@ -56,6 +56,8 @@
   uint32_t baudRate = 115200;     // UART baud rate: 9600, 19200, 38400, 57600, 74800, 115200 
 
   int pin = 15;  // GPIO15 (BCM)
+  uint8_t UART_CMD0[4] = {0x00, 0x55, 0x01, 0x00};					// Command 0: To test UART
+  int serialPort;
 
 //PUSH BUTTON used for standAlone mode
   const int buttonPin = 10;  // the number of the pushbutton pin
@@ -181,6 +183,8 @@ void serialEvent() {
 
 
 void loop() {                 // put your main code here, to run repeatedly
+	
+#if 0
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       objectDetected = false;                       // Initialize object detected flag to false
       ussc.ultrasonicCmd(0,numOfObj);               // run preset 1 (short distance) burst+listen for 1 object
@@ -258,13 +262,62 @@ void loop() {                 // put your main code here, to run repeatedly
     // -+-+-+-+-+-+-+-+-+-+-  STATUS   -+-+-+-+-+-+-+-+-+-+- //
 
       serialEvent();
+#endif
+}
+
+void pga450_Init()
+{
+	serialPort = serialOpen(UART_PORT, 115200); // Use the appropriate serial port and baud rate
+	if (serialPort < 0) 
+	{
+		fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
+		// Handle the error
+	}
+	
+	
+	delay(100); // record time length maximum of 65ms, so add margin
+	pga460SerialFlush();
+	
+
+}
+
+void pga450_Test()
+{
+	uint8_t  buf8[4] = {0x00, 0x55, 0x01, 0x00};
+	
+	serialPutchar(serial_fd, syncByte); // Assuming serial_fd is the file descriptor for serial communication
+	for (int i = 1; i < sizeof(buf8); ++i) 
+	{
+		serialPutchar(serial_fd, buf8[i]);
+	}
+
+	uint32_t starttime = millis();
+	while ((serialDataAvail(serial_fd) < (4)) && ((millis() - starttime) < 1000))
+	{
+		// wait in this loop until we either get +4 bytes of data or 0.25 seconds have gone by
+	}
+
+	if (serialDataAvail(serial_fd) < (4))
+	{
+		// the data didn't come in - handle the problem here
+		fprintf(stderr, "ERROR - Did not receive system diagnostics!\n");
+	}
+	else
+	{
+		for (int n = 0; n < (4 + owuShift - owuShiftSysDiag); n++)
+		{
+			uint8_t diagMeasResult[n] = serialGetchar(serial_fd);
+			std::cout << "Comm"<< std::endl;  std::cout << diagMeasResult[n] << std::endl; 
+		}
+	}
+	
 }
 
 int main(){
     // Initialize WiringPi and GPIO
     wiringPiSetup();
     wiringPiSetupGpio();
-    initPGA460();
+    //initPGA460();
     while (true)
     {
         loop();
