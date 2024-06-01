@@ -325,7 +325,7 @@ void pga450_Test()
 	{
 		for (int n = 0; n < (4); n++)
 		{
-			uint8_t diagMeasResult[n] = serialGetchar(serial_fd);
+			uint8_t diagMeasResult[n] = serialGetchar(serialPort);
 			std::cout << "Comm"<< std::endl;  std::cout << diagMeasResult[n] << std::endl; 
 		}
 	}
@@ -337,9 +337,11 @@ int main(){
     wiringPiSetup();
     wiringPiSetupGpio();
     //initPGA460();
+	pga450_Init();
     while (true)
     {
-        loop();
+		pga450_Test();
+        //loop();
     }
 
     return 0;
