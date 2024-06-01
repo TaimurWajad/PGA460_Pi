@@ -285,26 +285,26 @@ void pga450_Test()
 {
 	uint8_t  buf8[4] = {0x00, 0x55, 0x01, 0x00};
 	
-	serialPutchar(serial_fd, syncByte); // Assuming serial_fd is the file descriptor for serial communication
-	for (int i = 1; i < sizeof(buf8); ++i) 
+
+	for (int i = 0; i < sizeof(buf8); ++i) 
 	{
-		serialPutchar(serial_fd, buf8[i]);
+		serialPutchar(serialPort, buf8[i]);
 	}
 
 	uint32_t starttime = millis();
-	while ((serialDataAvail(serial_fd) < (4)) && ((millis() - starttime) < 1000))
+	while ((serialDataAvail(serialPort) < (4)) && ((millis() - starttime) < 1000))
 	{
 		// wait in this loop until we either get +4 bytes of data or 0.25 seconds have gone by
 	}
 
-	if (serialDataAvail(serial_fd) < (4))
+	if (serialDataAvail(serialPort) < (4))
 	{
 		// the data didn't come in - handle the problem here
 		fprintf(stderr, "ERROR - Did not receive system diagnostics!\n");
 	}
 	else
 	{
-		for (int n = 0; n < (4 + owuShift - owuShiftSysDiag); n++)
+		for (int n = 0; n < (4); n++)
 		{
 			uint8_t diagMeasResult[n] = serialGetchar(serial_fd);
 			std::cout << "Comm"<< std::endl;  std::cout << diagMeasResult[n] << std::endl; 
