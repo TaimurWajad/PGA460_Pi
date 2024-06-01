@@ -85,7 +85,7 @@ int serial_fd;
 
 	
 // Serial read timeout in milliseconds
-	#define MAX_MILLIS_TO_WAIT 350//250
+	#define MAX_MILLIS_TO_WAIT 1000//350//250
 
 //Energia to Arduino mapping
 	uint8_t  RED_LED = 31;
