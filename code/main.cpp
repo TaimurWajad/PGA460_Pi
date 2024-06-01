@@ -72,6 +72,7 @@
   uint8_t echoDataDumpElement = 0; // echo data dump element 0 to 127
 //  String interruptString = "";  // a string to hold incoming data
   uint8_t stringComplete = false; // whether the string is complete
+  uint8_t  diagMeasResult2[5+3]; 		// data uint8_t  array for cmd8 and index1 return
 
 // PGA460_USSC library class
   pga460 ussc;
@@ -325,8 +326,8 @@ void pga450_Test()
 	{
 		for (int n = 0; n < (4); n++)
 		{
-			uint8_t diagMeasResult[n] = serialGetchar(serialPort);
-			std::cout << "Comm"<< std::endl;  std::cout << diagMeasResult[n] << std::endl; 
+			diagMeasResult2[n] = serialGetchar(serialPort);
+			std::cout << "Comm"<< std::endl;  std::cout << diagMeasResult2[n] << std::endl; 
 		}
 	}
 	
