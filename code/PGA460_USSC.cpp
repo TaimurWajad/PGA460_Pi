@@ -1832,7 +1832,8 @@ double pga460::runDiagnostics(uint8_t  run, uint8_t  diag)
 			delay(100); // record time length maximum of 65ms, so add margin
 			pga460SerialFlush();
 			
-			uint8_t  buf8[3] = {syncByte , SD, calcChecksum(SD)};
+			//uint8_t  buf8[3] = {syncByte , SD, calcChecksum(SD)};
+			uint8_t  buf8[4] = {0x00, 0x55, 0x01, 0x00};
 			
 			if (comm == 0 || comm == 2) // UART or OWU mode
 			{
