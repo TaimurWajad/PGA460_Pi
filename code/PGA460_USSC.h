@@ -9,7 +9,7 @@
 #include <wiringPi.h> ///home/twajad/PGA460_Pi4/wiringPi.h
 #include <wiringSerial.h>
 #include <wiringPiSPI.h>
-#define UART_PORT  "/dev/ttyACM0" // Replace with correct path
+#define UART_PORT  "/dev/ttyAMA0" // Replace with correct path
 //#define SERIAL_PORT  "/dev/ttyUSB0"  // Replace with correct path 
 // TODO Port Interface
 class pga460
