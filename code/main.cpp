@@ -276,7 +276,26 @@ void pga450_Init()
 	
 	
 	delay(100); // record time length maximum of 65ms, so add margin
-	pga460SerialFlush();
+	delay(10);
+	serialFlush(serialPort);
+	while((serialDataAvail(serialPort) > 0))// || (Serial1.read() < 0xFF)) 
+	{
+		char temp = serialGetchar(serialPort);
+		//Serial1.flush();
+	}
+	
+	//redundant clear
+	for (int i = 0; i < 10; i++)
+	{
+		while (serialDataAvail(serialPort) > 0)
+		{
+			char k = serialGetchar(serialPort);
+			delay(1);
+		}
+		delay(1);
+	}
+	
+	serialFlush(serialPort);
 	
 
 }
