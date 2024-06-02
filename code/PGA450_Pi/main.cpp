@@ -39,7 +39,7 @@ int main() {
 	wiringPiSetupPhys();  // Use the physical pin numbers on the P1 connector
 
     wiringPiSetupGpio();
-	pinMode(UART_RX_PIN, INPUT);
+	//pinMode(UART_RX_PIN, INPUT);
 	pullUpDnControl(UART_RX_PIN, PUD_UP);
 
     // Initialize WiringPi and UART
