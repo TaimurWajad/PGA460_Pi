@@ -13,6 +13,7 @@
 void sendBytes(int fd, unsigned char *data, int length) {
     for (int i = 0; i < length; i++) {
         serialPutchar(fd, data[i]);
+		printf("0x%02X ", data[i]);
     }
 }
 
@@ -30,7 +31,7 @@ int receiveBytes(int fd, unsigned char *buffer, int maxLength) {
 int main() {
     int fd;
     unsigned char txData[4] = {0x00, 0x55, 0x01, 0x00}; // Example data to send
-    unsigned char rxData[8];  // Buffer to store received data
+    unsigned char rxData[2];  // Buffer to store received data
     int receivedLength;
 	// Initialize WiringPi and GPIO
     wiringPiSetup();
@@ -63,7 +64,8 @@ int main() {
         // Print received data in hexadecimal format
         if (receivedLength > 0) {
             printf("Received data: ");
-            for (int i = 0; i < receivedLength; i++) {
+            for (int i = 0; i < receivedLength; i++) 
+			{
                 printf("0x%02X ", rxData[i]);
             }
             printf("\n");
