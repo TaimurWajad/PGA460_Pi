@@ -34,7 +34,10 @@ int main() {
     unsigned char rxData[2];  // Buffer to store received data
     int receivedLength;
 	// Initialize WiringPi and GPIO
-    wiringPiSetup();
+	//wiringPiSetup();  // Use WiringPi's own pin numbering
+	//wiringPiSetupGpio();  // Use BCM GPIO numbering
+	wiringPiSetupPhys();  // Use the physical pin numbers on the P1 connector
+
     wiringPiSetupGpio();
 	pinMode(UART_RX_PIN, INPUT);
 	pullUpDnControl(UART_RX_PIN, PUD_UP);
