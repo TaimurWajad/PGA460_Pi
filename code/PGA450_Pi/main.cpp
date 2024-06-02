@@ -7,7 +7,7 @@
 #include <string.h>  // Include this header for strerror
 
 #define UART_DEVICE "/dev/ttyAMA0"  // Default UART device on Raspberry Pi 4
-#define BAUD_RATE 9600              // Set baud rate to match PGA450
+#define BAUD_RATE 19200              // Set baud rate to match PGA450
 
 void sendBytes(int fd, unsigned char *data, int length) {
     for (int i = 0; i < length; i++) {
