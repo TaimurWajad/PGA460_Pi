@@ -53,7 +53,7 @@
   bool alwaysLong = false;      // always run preset 2, regardless of preset 1 result (hard-coded only)
   double minDistLim = 0.1;      // minimum distance as limited by ringing decay of single transducer and threshold masking
   uint16_t commandDelay = 0;    // Delay between each P1 and Preset 2 command
-  uint32_t baudRate = 115200;     // UART baud rate: 9600, 19200, 38400, 57600, 74800, 115200 
+  uint32_t baudRate = 9600;     // UART baud rate: 9600, 19200, 38400, 57600, 74800, 115200 
 
   int pin = 15;  // GPIO15 (BCM)
   uint8_t UART_CMD0[4] = {0x00, 0x55, 0x01, 0x00};					// Command 0: To test UART
@@ -267,7 +267,7 @@ void loop() {                 // put your main code here, to run repeatedly
 
 void pga450_Init()
 {
-	serialPort = serialOpen(UART_PORT, 115200); // Use the appropriate serial port and baud rate
+	serialPort = serialOpen(UART_PORT, BAUD_RATE); // Use the appropriate serial port and baud rate
 	if (serialPort < 0) 
 	{
 		fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
