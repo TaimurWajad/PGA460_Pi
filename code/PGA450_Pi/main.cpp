@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <string.h>  // Include this header for strerror
 
 #define UART_DEVICE "/dev/serial0"  // Default UART device on Raspberry Pi 4
 #define BAUD_RATE 9600              // Set baud rate to match PGA450
