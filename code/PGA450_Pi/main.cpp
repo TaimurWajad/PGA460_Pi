@@ -32,6 +32,9 @@ int main() {
     unsigned char txData[4] = {0x00, 0x55, 0x01, 0x00}; // Example data to send
     unsigned char rxData[8];  // Buffer to store received data
     int receivedLength;
+	// Initialize WiringPi and GPIO
+    wiringPiSetup();
+    wiringPiSetupGpio();
 	pinMode(UART_RX_PIN, INPUT);
 	pullUpDnControl(UART_RX_PIN, PUD_UP);
 
