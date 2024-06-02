@@ -185,7 +185,6 @@ void serialEvent() {
 
 void loop() {                 // put your main code here, to run repeatedly
 	
-#if 0
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       objectDetected = false;                       // Initialize object detected flag to false
       ussc.ultrasonicCmd(0,numOfObj);               // run preset 1 (short distance) burst+listen for 1 object
@@ -263,7 +262,7 @@ void loop() {                 // put your main code here, to run repeatedly
     // -+-+-+-+-+-+-+-+-+-+-  STATUS   -+-+-+-+-+-+-+-+-+-+- //
 
       serialEvent();
-#endif
+
 }
 
 void pga450_Init()
@@ -337,12 +336,12 @@ int main(){
     // Initialize WiringPi and GPIO
     wiringPiSetup();
     wiringPiSetupGpio();
-    //initPGA460();
-	pga450_Init();
+    initPGA460();
+	//pga450_Init();
     while (true)
     {
-		pga450_Test();
-        //loop();
+		//pga450_Test();
+        loop();
     }
 
     return 0;
