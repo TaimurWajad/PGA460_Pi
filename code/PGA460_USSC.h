@@ -12,7 +12,7 @@
 #define UART_PORT  "/dev/ttyAMA0" // Replace with correct path
 //#define SERIAL_PORT  "/dev/ttyUSB0"  // Replace with correct path 
 // TODO Port Interface
-#define BAUD_RATE 9600
+#define BAUD_RATE 19200
 class pga460
 {
 public:

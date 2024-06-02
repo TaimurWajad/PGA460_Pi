@@ -53,7 +53,7 @@
   bool alwaysLong = false;      // always run preset 2, regardless of preset 1 result (hard-coded only)
   double minDistLim = 0.1;      // minimum distance as limited by ringing decay of single transducer and threshold masking
   uint16_t commandDelay = 0;    // Delay between each P1 and Preset 2 command
-  uint32_t baudRate = 9600;     // UART baud rate: 9600, 19200, 38400, 57600, 74800, 115200 
+  uint32_t baudRate = 19200;     // UART baud rate: 9600, 19200, 38400, 57600, 74800, 115200 
 
   int pin = 15;  // GPIO15 (BCM)
   uint8_t UART_CMD0[4] = {0x00, 0x55, 0x01, 0x00};					// Command 0: To test UART
@@ -95,7 +95,7 @@
   if the input is 'x' (72d), then skip that configuration
 *-------------------------------------------------------------------*/
   // -+-+-+-+-+-+-+-+-+-+- 1 : interface setup   -+-+-+-+-+-+-+-+-+-+- //
-    ussc.initBoostXLPGA460(commMode, baudRate, uartAddrUpdate);
+    ussc.initBoostXLPGA460(commMode, BAUD_RATE, uartAddrUpdate);
 
   // -+-+-+-+-+-+-+-+-+-+- 2 : bulk threshold write   -+-+-+-+-+-+-+-+-+-+- //
     if (fixedThr != 72){ussc.initThresholds(fixedThr);} 
@@ -143,7 +143,7 @@
   delay response. Multiple bytes of data may be available.
 */
 void serialEvent() {
-    int fd = serialOpen(UART_PORT, baudRate); // Open serial port ("/dev/ttyS0" for primary UART on Raspberry Pi)
+    int fd = serialOpen(UART_PORT, BAUD_RATE); // Open serial port ("/dev/ttyS0" for primary UART on Raspberry Pi)
     if (fd < 0) {
         std::cerr << "Error opening serial port" << std::endl;
         return;
