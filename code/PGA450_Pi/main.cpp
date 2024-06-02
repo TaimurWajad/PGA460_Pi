@@ -8,7 +8,7 @@
 
 #define UART_DEVICE "/dev/ttyS0"  // Default UART device on Raspberry Pi 4
 #define BAUD_RATE 19200              // Set baud rate to match PGA450
-#define UART_RX_PIN 16              // GPIO15 corresponds to UART RX
+#define UART_RX_PIN 10              // GPIO15 corresponds to UART RX
 
 void sendBytes(int fd, unsigned char *data, int length) {
     for (int i = 0; i < length; i++) {
