@@ -31,12 +31,12 @@ int receiveBytes(int fd, unsigned char *buffer, int maxLength) {
 int main() {
     int fd;
     unsigned char txData[4] = {0x00, 0x55, 0x01, 0x00}; // Example data to send
-    unsigned char rxData[2];  // Buffer to store received data
+    unsigned char rxData[4];  // Buffer to store received data
     int receivedLength;
 	// Initialize WiringPi and GPIO
-	//wiringPiSetup();  // Use WiringPi's own pin numbering
+	wiringPiSetup();  // Use WiringPi's own pin numbering
 	//wiringPiSetupGpio();  // Use BCM GPIO numbering
-	wiringPiSetupPhys();  // Use the physical pin numbers on the P1 connector
+	//wiringPiSetupPhys();  // Use the physical pin numbers on the P1 connector
 
     wiringPiSetupGpio();
 	//pinMode(UART_RX_PIN, INPUT);
