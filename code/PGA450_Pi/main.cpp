@@ -30,7 +30,7 @@ int receiveBytes(int fd, unsigned char *buffer, int maxLength) {
 
 int main() {
     int fd;
-    unsigned char txData[4] = {0x00, 0x55, 0x21, 0x00}; // Example data to send
+    unsigned char txData[4] = {0x00, 0x55, 0x01, 0x00}; // Example data to send
     unsigned char rxData[2];  // Buffer to store received data
     int receivedLength;
 	// Initialize WiringPi and GPIO
