@@ -33,9 +33,10 @@ unsigned char buf25[35] =  {0x55, 0x19, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x84
 
 
 void sendBytes(int fd, unsigned char *data, int length) {
+	printf("Tx data: ");
     for (int i = 0; i < length; i++) {
         serialPutchar(fd, data[i]);
-		//printf("0x%02X ", data[i]);
+		printf("0x%02X ", data[i]);
     }
 }
 
@@ -151,7 +152,7 @@ int main() {
         // Print received data in hexadecimal format
         if (receivedLength > 0) 
 		{
-            printf("Received data: ");
+            printf("Rx data: ");
             for (int i = 0; i < receivedLength; i++) 
 			{
                 printf("0x%02X ", rxData[i]);
