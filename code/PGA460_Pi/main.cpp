@@ -148,7 +148,9 @@ int main() {
 
         // Receive data (up to 256 bytes in this example)
         receivedLength = receiveBytes(fd, rxData, sizeof(rxData));
-		printf("Rx Length: "); printf(receivedLength);printf(" : ");
+		printf("Rx Length: "); 
+		printf("0x%02X ", receivedLength);
+		printf(" : ");
 
         // Print received data in hexadecimal format
         if (receivedLength > 0) 
