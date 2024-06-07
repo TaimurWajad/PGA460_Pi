@@ -28,12 +28,13 @@ unsigned char buf19[4] = {0x55, 0x13, 0x01, 0xEB};
 //cmd 25 - broadcast bulk threshold write
 unsigned char buf25[35] =  {0x55, 0x19, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x84, 0x21, 0x08, 0x42, 0x10, 0x80, 0x80, 0x80, 0x80, 0x00, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x84, 0x21, 0x08, 0x42, 0x10, 0x80, 0x80, 0x80, 0x80, 0x00, 0x7C};
 
+unsigned char buf6[3] = {0x55, 0x06, 0xF9};
 
 void sendBytes(int fd, unsigned char *data, int length) {
 	printf("Tx data: ");
     for (int i = 0; i < length; i++) {
         serialPutchar(fd, data[i]);
-		printf("0x%02X ", data[i]);
+		//printf("0x%02X ", data[i]);
     }
 }
 
@@ -138,12 +139,12 @@ int main() {
         // Send 4 bytes
 		// broadcast p1 burst+listen (non-dependent on UART_ADDR)
 		
-		sendBytes(fd, buf_Test, 4);
+		sendBytes(fd, buf6, 3);
 
         // Wait for data to be available (this is an example, you might want to implement a better waiting mechanism)
-        usleep(100000);  // Wait for 100 milliseconds
+        //usleep(10000);  // Wait for 10 milliseconds
 		// read back ultrasonic meas results from UART_ADDR=0
-		sendBytes(fd, buf5, sizeof(buf5));
+		//sendBytes(fd, buf5, sizeof(buf5));
 
         // Receive data (up to 256 bytes in this example)
         receivedLength = receiveBytes(fd, rxData, sizeof(rxData));
@@ -179,58 +180,6 @@ int main() {
 
 
 
-
-/* ##############################################  */
-#if 0
-const int buttonPin = PUSH2;     // the number of the pushbutton pin
-const int ledPin = RED_LED;      // the number of the LED pin
-int buttonState = 0;         // variable for reading the pushbutton status
-
-void setup() { 
-
-  pinMode(ledPin, OUTPUT);
-  pinMode(buttonPin, INPUT_PULLUP);
-  delay(1000);
-  
-  // put your setup code here, to run once:
-  Serial1.begin(19200);  // initialize PGA460 UART serial channel
-  delay(1000);
-
-  //assume UART_ADDR=0
-  //bulk threshold write mid-code values to clear THR_CRC_ERR
-  Serial1.write(buf25, sizeof(buf25));
-  delay(100);
-
-  // [TODO] set p1 rec length to 4.096ms
-  
-  // set UART_ADDR=0's time decouple to 4.096ms
-  Serial1.write(buf10, sizeof(buf10));
-  delay(100);
-}
-
-void loop() {
-    // put your main code here, to run repeatedly: 
-  
-    // check if the pushbutton is pressed.
-    while (digitalRead(buttonPin) == HIGH){}
-    
-    // broadcast p1 burst+listen (non-dependent on UART_ADDR)
-    Serial1.write(buf17, sizeof(buf17));
-    
-    // delay by 100ms
-    delay(100);
-
-    //[TODO] print ultrasonic measurement results on terminal
-    // read back ultrasonic meas results from UART_ADDR=0
-    Serial1.write(buf5, sizeof(buf5));
-  
-    // toggle red LED
-    digitalWrite(ledPin, !(digitalRead(ledPin)));   // turn the LED on (HIGH is the voltage level)
-
-    // repeat loop every second
-    delay (1000);      
-}
-#endif
 /*------------------------------------------------- calcChecksum -----
  |  Function calcChecksum
  |
@@ -242,6 +191,7 @@ void loop() {
  |
  |  Returns: byte representation of calculated checksum value
  *-------------------------------------------------------------------*/
+#if 0
 unsigned char calcChecksum(unsigned char cmd)
 {
 	int checksumLoops = 0;
@@ -417,4 +367,4 @@ unsigned char calcChecksum(unsigned char cmd)
 	carry = (~carry & 0x00FF);
 	return carry;
 }
-
+#endif
