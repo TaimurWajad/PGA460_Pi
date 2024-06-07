@@ -31,10 +31,10 @@ unsigned char buf25[35] =  {0x55, 0x19, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x84
 unsigned char buf6[3] = {0x55, 0x06, 0xF9};
 
 void sendBytes(int fd, unsigned char *data, int length) {
-	//printf("Tx data: ");
+	printf("Tx data: ");
     for (int i = 0; i < length; i++) {
         serialPutchar(fd, data[i]);
-		//printf("0x%02X ", data[i]);
+		printf("0x%02X ", data[i]);
     }
 }
 
@@ -97,7 +97,7 @@ void SesnorMeasurement(int fd)
 int main() {
     int fd;
     unsigned char txData[4] = {0x00, 0x55, 0x01, 0x00}; // Example data to send
-    unsigned char rxData[12] = {0x00};  // Buffer to store received data
+    unsigned char rxData[8] = {0x00};  // Buffer to store received data
     unsigned char receivedLength;
 	// Initialize WiringPi and GPIO
 	wiringPiSetup();  // Use WiringPi's own pin numbering
@@ -139,12 +139,12 @@ int main() {
         // Send 4 bytes
 		// broadcast p1 burst+listen (non-dependent on UART_ADDR)
 		
-		//sendBytes(fd, buf6, 3);
+		sendBytes(fd, buf6, 3);
 
         // Wait for data to be available (this is an example, you might want to implement a better waiting mechanism)
         //usleep(10000);  // Wait for 10 milliseconds
 		// read back ultrasonic meas results from UART_ADDR=0
-		sendBytes(fd, buf5, sizeof(buf5));
+		//sendBytes(fd, buf5, sizeof(buf5));
 
         // Receive data (up to 256 bytes in this example)
         receivedLength = receiveBytes(fd, rxData, sizeof(rxData));
