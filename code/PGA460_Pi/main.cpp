@@ -6,7 +6,7 @@
 #include <errno.h>
 #include <string.h>  // Include this header for strerror
 
-#define UART_DEVICE "/dev/ttyACM0"  // Default UART device on Raspberry Pi 4
+#define UART_DEVICE "/dev/ttyACM1"  // Default UART device on Raspberry Pi 4
 #define BAUD_RATE 19200              // Set baud rate to match PGA450
 #define UART_RX_PIN 16//10              // GPIO15 corresponds to UART RX
 unsigned char RX_DATA[2] = {0};
@@ -97,7 +97,7 @@ void SesnorMeasurement(int fd)
 int main() {
     int fd;
     unsigned char txData[4] = {0x00, 0x55, 0x01, 0x00}; // Example data to send
-    unsigned char rxData[8];  // Buffer to store received data
+    unsigned char rxData[4];  // Buffer to store received data
     unsigned char receivedLength;
 	// Initialize WiringPi and GPIO
 	wiringPiSetup();  // Use WiringPi's own pin numbering
@@ -148,9 +148,6 @@ int main() {
 
         // Receive data (up to 256 bytes in this example)
         receivedLength = receiveBytes(fd, rxData, sizeof(rxData));
-		printf("Rx Length: "); 
-		printf("0x%02X ", receivedLength);
-		printf(" : ");
 
         // Print received data in hexadecimal format
         if (receivedLength > 0) 
