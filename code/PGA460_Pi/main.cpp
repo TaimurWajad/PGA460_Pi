@@ -48,7 +48,7 @@ int receiveBytes(int fd, unsigned char *buffer, int maxLength) {
 
     return received;
 }
-
+#if 0
 void SesnorMeasurement(int fd)
 {
 	int rx_length;
@@ -92,6 +92,7 @@ void SesnorMeasurement(int fd)
 	}
 
 }
+#endif
 
 int main() {
     int fd;
