@@ -9,6 +9,10 @@
 #define UART_DEVICE "/dev/ttyS0"  // Default UART device on Raspberry Pi 4
 #define BAUD_RATE 19200              // Set baud rate to match PGA450
 #define UART_RX_PIN 10              // GPIO15 corresponds to UART RX
+uint8_t UART_CMD1_S[5] = {0x00, 0x55, 0x11, 0x01, 0x00};			// Command 1: To initiate/triggere short burst (Uses Fixed Register settings stored in FIFO)
+uint8_t UART_CMD1_L[5] = {0x00, 0x55, 0x11, 0x02, 0x00};			// Command 1: To initiate/triggere long burst  (Uses Fixed Register settings stored in FIFO)
+uint8_t UART_CMD2[4] = {0x00, 0x55, 0x21, 0x00};					// Command 2: Used to read TOF (Once short/long burst is initiated, Cmd2 is used to read TOF)
+unsigned char RX_DATA[2] = {0};
 
 void sendBytes(int fd, unsigned char *data, int length) {
     for (int i = 0; i < length; i++) {
@@ -28,6 +32,50 @@ int receiveBytes(int fd, unsigned char *buffer, int maxLength) {
     return received;
 }
 
+void SesnorMeasurement(int fd)
+{
+	int rx_length;
+	sendBytes(fd, UART_CMD1_S, 5); 			// Short burst
+	usleep(1000);  							// Small delay to allow data to be received
+	sendBytes(fd, UART_CMD2, 4); 			// To read data
+	rx_length = receiveBytes(fd, RX_DATA, 2);		
+	if (rx_length > 0) 
+	{
+		printf("Received data Short: ");
+		for (int i = 0; i < rx_length; i++) 
+		{
+			printf("0x%02X ", RX_DATA[i]);
+		}
+		printf("\n");
+	} 
+	else 
+	{
+		printf("No data received\n");
+	}
+	
+	usleep(500); 
+
+	sendBytes(fd, UART_CMD1_L, 5); 			// Short burst
+	usleep(1000);  							// Small delay to allow data to be received
+	sendBytes(fd, UART_CMD2, 4); 			// To read data
+	rx_length = receiveBytes(fd, RX_DATA, 2);
+	
+	if (rx_length > 0) 
+	{
+		printf("Received data Long: ");
+		for (int i = 0; i < rx_length; i++) 
+		{
+			printf("0x%02X ", RX_DATA[i]);
+		}
+		printf("\n");
+	} 
+	else 
+	{
+		printf("No data received\n");
+	}
+
+}
+
 int main() {
     int fd;
     unsigned char txData[4] = {0x00, 0x55, 0x01, 0x00}; // Example data to send
@@ -43,18 +91,23 @@ int main() {
 	//pullUpDnControl(UART_RX_PIN, PUD_UP);
 
     // Initialize WiringPi and UART
-    if (wiringPiSetup() == -1) {
+    if (wiringPiSetup() == -1) 
+	{
         fprintf(stderr, "Failed to initialize WiringPi\n");
         return 1;
     }
 
-    if ((fd = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) {
+    if ((fd = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
+	{
         fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
         return 1;
     }
 
     // Endless loop to send and receive data
-    while (1) {
+    while (1) 
+	{
+		SesnorMeasurement(fd);
+#if 0
         // Send 4 bytes
         sendBytes(fd, txData, 4);
 
@@ -65,16 +118,20 @@ int main() {
         receivedLength = receiveBytes(fd, rxData, sizeof(rxData));
 
         // Print received data in hexadecimal format
-        if (receivedLength > 0) {
+        if (receivedLength > 0) 
+		{
             printf("Received data: ");
             for (int i = 0; i < receivedLength; i++) 
 			{
                 printf("0x%02X ", rxData[i]);
             }
             printf("\n");
-        } else {
+        } 
+		else 
+		{
             printf("No data received\n");
         }
+#endif
 
         // Sleep for a while before the next iteration
         usleep(1000000);  // Wait for 1 second before sending data again
@@ -85,3 +142,5 @@ int main() {
 
     return 0;
 }
+
+
