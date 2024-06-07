@@ -123,11 +123,11 @@ int main() {
 	
 	//
 	usleep(1000000);  // Wait for 1 second before sending data again
-	sendBytes(fd, buf25, 35);
+	//sendBytes(fd, buf25, 35);
 	usleep(1000);  // Wait for 100 msecond before sending data again
 	
 	// set UART_ADDR=0's time decouple to 4.096ms
-	sendBytes(fd, buf10, 5);
+	//sendBytes(fd, buf10, 5);
 	usleep(1000);  // Wait for 100 msecond before sending data again
 	delay(100);
 
