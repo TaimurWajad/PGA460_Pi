@@ -9,9 +9,6 @@
 #define UART_DEVICE "/dev/ttyACM0"  // Default UART device on Raspberry Pi 4
 #define BAUD_RATE 19200              // Set baud rate to match PGA450
 #define UART_RX_PIN 16//10              // GPIO15 corresponds to UART RX
-unsigned char UART_CMD1_S[5] = {0x00, 0x55, 0x11, 0x01, 0x00};			// Command 1: To initiate/triggere short burst (Uses Fixed Register settings stored in FIFO)
-unsigned char UART_CMD1_L[5] = {0x00, 0x55, 0x11, 0x02, 0x00};			// Command 1: To initiate/triggere long burst  (Uses Fixed Register settings stored in FIFO)
-unsigned char UART_CMD2[4] = {0x00, 0x55, 0x21, 0x00};					// Command 2: Used to read TOF (Once short/long burst is initiated, Cmd2 is used to read TOF)
 unsigned char RX_DATA[2] = {0};
 
 //note: bare bones raw UART demo used to send a burst/listen command to PGA460
@@ -131,6 +128,7 @@ int main() {
 	sendBytes(fd, buf10, 5);
 	usleep(1000);  // Wait for 100 msecond before sending data again
 	delay(100);
+	unsigned char buf_Test[4]  = {0x55, 0x11, 0x01, calcChecksum(0x11)};
 
     // Endless loop to send and receive data
     while (1) 
@@ -139,7 +137,8 @@ int main() {
 #if 1
         // Send 4 bytes
 		// broadcast p1 burst+listen (non-dependent on UART_ADDR)
-		sendBytes(fd, buf17, 4);
+		
+		sendBytes(fd, buf_Test, 4);
 
         // Wait for data to be available (this is an example, you might want to implement a better waiting mechanism)
         usleep(100000);  // Wait for 100 milliseconds
@@ -232,5 +231,190 @@ void loop() {
     delay (1000);      
 }
 #endif
+/*------------------------------------------------- calcChecksum -----
+ |  Function calcChecksum
+ |
+ |  Purpose:  Calculates the UART checksum value based on the selected command and the user EERPOM values associated with the command
+ |		This function is not applicable to TCI mode. 
+ |
+ |  Parameters:
+ |		cmd (IN) -- the UART command for which the checksum should be calculated for
+ |
+ |  Returns: byte representation of calculated checksum value
+ *-------------------------------------------------------------------*/
+unsigned char calcChecksum(unsigned char cmd)
+{
+	int checksumLoops = 0;
+	
+	cmd = cmd & 0x001F; // zero-mask command address of cmd to select correct switch-case statement
+	
+	switch(cmd)
+	{
+		case 0 : //P1BL
+		case 1 : //P2BL
+		case 2 : //P1LO
+		case 3 : //P2LO
+		case 17 : //BC_P1BL
+		case 18 : //BC_P2BL
+		case 19 : //BC_P1LO
+		case 20 : //BC_P2LO
+			ChecksumInput[0] = cmd;
+			ChecksumInput[1] = numObj;
+			checksumLoops = 2;
+		break;
+		case 4 : //TNLM
+		case 21 : //TNLM
+			ChecksumInput[0] = cmd;
+			ChecksumInput[1] = tempOrNoise;
+			checksumLoops = 2;
+		break;
+		case 5 : //UMR
+		case 6 : //TNLR
+		case 7 : //TEDD
+		case 8 : //SD
+		case 11 : //EEBR
+		case 13 : //TVGBR
+		case 15 : //THRBR
+			ChecksumInput[0] = cmd;
+			checksumLoops = 1;
+		break;
+		case 9 : //RR
+			ChecksumInput[0] = cmd;
+			ChecksumInput[1] = regAddr;
+			checksumLoops = 2;
+		break;
+		case 10 : //RW
+		case 22 : //BC_RW
+			ChecksumInput[0] = cmd;
+			ChecksumInput[1] = regAddr;
+			ChecksumInput[2] = regData;
+			checksumLoops = 3;
+		break;
+		case 14 : //TVGBW
+		case 24 : //BC_TVGBW
+			ChecksumInput[0] = cmd;
+			ChecksumInput[1] = TVGAIN0;
+			ChecksumInput[2] = TVGAIN1;
+			ChecksumInput[3] = TVGAIN2;
+			ChecksumInput[4] = TVGAIN3;
+			ChecksumInput[5] = TVGAIN4;
+			ChecksumInput[6] = TVGAIN5;
+			ChecksumInput[7] = TVGAIN6;
+			checksumLoops = 8;
+		break;
+		case 16 : //THRBW
+		case 25 : //BC_THRBW
+			ChecksumInput[0] = cmd;
+			ChecksumInput[1] = P1_THR_0;
+			ChecksumInput[2] = P1_THR_1;
+			ChecksumInput[3] = P1_THR_2;
+			ChecksumInput[4] = P1_THR_3;
+			ChecksumInput[5] = P1_THR_4;
+			ChecksumInput[6] = P1_THR_5;
+			ChecksumInput[7] = P1_THR_6;
+			ChecksumInput[8] = P1_THR_7;
+			ChecksumInput[9] = P1_THR_8;
+			ChecksumInput[10] = P1_THR_9;
+			ChecksumInput[11] = P1_THR_10;
+			ChecksumInput[12] = P1_THR_11;
+			ChecksumInput[13] = P1_THR_12;
+			ChecksumInput[14] = P1_THR_13;
+			ChecksumInput[15] = P1_THR_14;
+			ChecksumInput[16] = P1_THR_15;
+			ChecksumInput[17] = P2_THR_0;
+			ChecksumInput[18] = P2_THR_1;
+			ChecksumInput[19] = P2_THR_2;
+			ChecksumInput[20] = P2_THR_3;
+			ChecksumInput[21] = P2_THR_4;
+			ChecksumInput[22] = P2_THR_5;
+			ChecksumInput[23] = P2_THR_6;
+			ChecksumInput[24] = P2_THR_7;
+			ChecksumInput[25] = P2_THR_8;
+			ChecksumInput[26] = P2_THR_9;
+			ChecksumInput[27] = P2_THR_10;
+			ChecksumInput[28] = P2_THR_11;
+			ChecksumInput[29] = P2_THR_12;
+			ChecksumInput[30] = P2_THR_13;
+			ChecksumInput[31] = P2_THR_14;
+			ChecksumInput[32] = P2_THR_15;
+			checksumLoops = 33;
+		break;
+		case 12 : //EEBW
+		case 23 : //BC_EEBW
+			ChecksumInput[0] = cmd;
+			ChecksumInput[1] = USER_DATA1;
+			ChecksumInput[2] = USER_DATA2;
+			ChecksumInput[3] = USER_DATA3;
+			ChecksumInput[4] = USER_DATA4;
+			ChecksumInput[5] = USER_DATA5;
+			ChecksumInput[6] = USER_DATA6;
+			ChecksumInput[7] = USER_DATA7;
+			ChecksumInput[8] = USER_DATA8;
+			ChecksumInput[9] = USER_DATA9;
+			ChecksumInput[10] = USER_DATA10;
+			ChecksumInput[11] = USER_DATA11;
+			ChecksumInput[12] = USER_DATA12;
+			ChecksumInput[13] = USER_DATA13;
+			ChecksumInput[14] = USER_DATA14;
+			ChecksumInput[15] = USER_DATA15;
+			ChecksumInput[16] = USER_DATA16;
+			ChecksumInput[17] = USER_DATA17;
+			ChecksumInput[18] = USER_DATA18;
+			ChecksumInput[19] = USER_DATA19;
+			ChecksumInput[20] = USER_DATA20;
+			ChecksumInput[21] = TVGAIN0;
+			ChecksumInput[22] = TVGAIN1;
+			ChecksumInput[23] = TVGAIN2;
+			ChecksumInput[24] = TVGAIN3;
+			ChecksumInput[25] = TVGAIN4;
+			ChecksumInput[26] = TVGAIN5;
+			ChecksumInput[27] = TVGAIN6;
+			ChecksumInput[28] = INIT_GAIN;
+			ChecksumInput[29] = FREQUENCY;
+			ChecksumInput[30] = DEADTIME;
+			ChecksumInput[31] = PULSE_P1;
+			ChecksumInput[32] = PULSE_P2;
+			ChecksumInput[33] = CURR_LIM_P1;
+			ChecksumInput[34] = CURR_LIM_P2;
+			ChecksumInput[35] = REC_LENGTH;
+			ChecksumInput[36] = FREQ_DIAG;
+			ChecksumInput[37] = SAT_FDIAG_TH;
+			ChecksumInput[38] = FVOLT_DEC;
+			ChecksumInput[39] = DECPL_TEMP;
+			ChecksumInput[40] = DSP_SCALE;
+			ChecksumInput[41] = TEMP_TRIM;
+			ChecksumInput[42] = P1_GAIN_CTRL;
+			ChecksumInput[43] = P2_GAIN_CTRL;
+			checksumLoops = 44;
+		break;
+		default: break;
+	}
 
+	if (ChecksumInput[0]<17) //only re-append command address for non-broadcast commands.
+	{
+		ChecksumInput[0] = ChecksumInput[0] + (uartAddr << 5);
+	}
+	
+	uint16_t carry = 0;
+
+	for (int i = 0; i < checksumLoops; i++)
+	{
+		if ((ChecksumInput[i] + carry) < carry)
+		{
+			carry = carry + ChecksumInput[i] + 1;
+		}
+		else
+		{
+			carry = carry + ChecksumInput[i];
+		}
+
+		if (carry > 0xFF)
+		{
+		  carry = carry - 255;
+		}
+	}
+	
+	carry = (~carry & 0x00FF);
+	return carry;
+}
 
