@@ -21,7 +21,7 @@ unsigned char buf0[4] = {0x55, 0x00, 0x01, 0xFE};
 //cmd 1 - p2 burst listen
 unsigned char buf1[4] = {0x55, 0x01, 0x01, 0xFD};
 //cmd 5 - ultrasonic measurement (assume UART_ADDR=0)
-unsigned char buf5[3] = {0x00, 0x05, 0xFA};//{0x55, 0x05, 0xFA};
+unsigned char buf5[3] = {0x00, 0x00, 0x00};//{0x55, 0x05, 0xFA};
 //cmd 10 - register write decple to time of 4.096ms
 unsigned char buf10[5] = {0x55, 0x0A, 0x26, 0x00, 0xCF};
 //cmd 17 - broadcast p1 burst listen
@@ -98,7 +98,7 @@ void SesnorMeasurement(int fd)
 int main() {
     int fd;
     unsigned char txData[4] = {0x00, 0x55, 0x01, 0x00}; // Example data to send
-    unsigned char rxData[4];  // Buffer to store received data
+    unsigned char rxData[8];  // Buffer to store received data
     int receivedLength;
 	// Initialize WiringPi and GPIO
 	wiringPiSetup();  // Use WiringPi's own pin numbering
@@ -148,6 +148,7 @@ int main() {
 
         // Receive data (up to 256 bytes in this example)
         receivedLength = receiveBytes(fd, rxData, sizeof(rxData));
+		printf("Rx Length: "); printf(receivedLength);printf(" : ");
 
         // Print received data in hexadecimal format
         if (receivedLength > 0) 
