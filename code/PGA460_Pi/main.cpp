@@ -130,7 +130,6 @@ int main() {
 	sendBytes(fd, buf10, 5);
 	usleep(1000);  // Wait for 100 msecond before sending data again
 	delay(100);
-	unsigned char buf_Test[4]  = {0x55, 0x11, 0x01, calcChecksum(0x11)};
 
     // Endless loop to send and receive data
     while (1) 
