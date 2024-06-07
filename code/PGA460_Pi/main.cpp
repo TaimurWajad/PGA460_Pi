@@ -8,7 +8,7 @@
 
 #define UART_DEVICE "/dev/ttyACM0"  // Default UART device on Raspberry Pi 4
 #define BAUD_RATE 19200              // Set baud rate to match PGA450
-#define UART_RX_PIN 10              // GPIO15 corresponds to UART RX
+#define UART_RX_PIN 15              // GPIO15 corresponds to UART RX
 unsigned char RX_DATA[2] = {0};
 
 //note: bare bones raw UART demo used to send a burst/listen command to PGA460
