@@ -139,7 +139,7 @@ int main() {
         // Send 4 bytes
 		// broadcast p1 burst+listen (non-dependent on UART_ADDR)
 		
-		sendBytes(fd, buf6, 3);
+		//sendBytes(fd, buf6, 3);
 
         // Wait for data to be available (this is an example, you might want to implement a better waiting mechanism)
         //usleep(10000);  // Wait for 10 milliseconds
