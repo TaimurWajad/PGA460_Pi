@@ -8,7 +8,7 @@
 
 #define UART_DEVICE "/dev/ttyS0"  // Default UART device on Raspberry Pi 4
 #define BAUD_RATE 19200              // Set baud rate to match PGA450
-#define UART_RX_PIN 10              // GPIO15 corresponds to UART RX
+#define UART_RX_PIN 16//10              // GPIO15 corresponds to UART RX
 unsigned char UART_CMD1_S[5] = {0x00, 0x55, 0x11, 0x01, 0x00};			// Command 1: To initiate/triggere short burst (Uses Fixed Register settings stored in FIFO)
 unsigned char UART_CMD1_L[5] = {0x00, 0x55, 0x11, 0x02, 0x00};			// Command 1: To initiate/triggere long burst  (Uses Fixed Register settings stored in FIFO)
 unsigned char UART_CMD2[4] = {0x00, 0x55, 0x21, 0x00};					// Command 2: Used to read TOF (Once short/long burst is initiated, Cmd2 is used to read TOF)
@@ -35,7 +35,7 @@ unsigned char buf25[35] =  {0x55, 0x19, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x84
 void sendBytes(int fd, unsigned char *data, int length) {
     for (int i = 0; i < length; i++) {
         serialPutchar(fd, data[i]);
-		printf("0x%02X ", data[i]);
+		//printf("0x%02X ", data[i]);
     }
 }
 
@@ -106,7 +106,7 @@ int main() {
 
     wiringPiSetupGpio();
 	//pinMode(UART_RX_PIN, INPUT);
-	//pullUpDnControl(UART_RX_PIN, PUD_UP);
+	pullUpDnControl(UART_RX_PIN, PUD_UP);
 
     // Initialize WiringPi and UART
     if (wiringPiSetup() == -1) 
