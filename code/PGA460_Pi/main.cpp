@@ -6,7 +6,7 @@
 #include <errno.h>
 #include <string.h>  // Include this header for strerror
 
-#define UART_DEVICE "/dev/ttyS0"  // Default UART device on Raspberry Pi 4
+#define UART_DEVICE "/dev/ttyACM0"  // Default UART device on Raspberry Pi 4
 #define BAUD_RATE 19200              // Set baud rate to match PGA450
 #define UART_RX_PIN 16//10              // GPIO15 corresponds to UART RX
 unsigned char UART_CMD1_S[5] = {0x00, 0x55, 0x11, 0x01, 0x00};			// Command 1: To initiate/triggere short burst (Uses Fixed Register settings stored in FIFO)
