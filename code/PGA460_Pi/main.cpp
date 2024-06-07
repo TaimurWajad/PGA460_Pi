@@ -6,9 +6,9 @@
 #include <errno.h>
 #include <string.h>  // Include this header for strerror
 
-#define UART_DEVICE "/dev/ttyACM1"  // Default UART device on Raspberry Pi 4
+#define UART_DEVICE "/dev/ttyACM0"  // Default UART device on Raspberry Pi 4
 #define BAUD_RATE 19200              // Set baud rate to match PGA450
-#define UART_RX_PIN 16//10              // GPIO15 corresponds to UART RX
+#define UART_RX_PIN 10              // GPIO15 corresponds to UART RX
 unsigned char RX_DATA[2] = {0};
 
 //note: bare bones raw UART demo used to send a burst/listen command to PGA460
@@ -31,7 +31,7 @@ unsigned char buf25[35] =  {0x55, 0x19, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x84
 unsigned char buf6[3] = {0x55, 0x06, 0xF9};
 
 void sendBytes(int fd, unsigned char *data, int length) {
-	printf("Tx data: ");
+	//printf("Tx data: ");
     for (int i = 0; i < length; i++) {
         serialPutchar(fd, data[i]);
 		//printf("0x%02X ", data[i]);
