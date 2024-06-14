@@ -18,7 +18,7 @@ unsigned char buf0[4] = {0x55, 0x00, 0x01, 0xFE};
 //cmd 1 - p2 burst listen
 unsigned char buf1[4] = {0x55, 0x01, 0x01, 0xFD};
 //cmd 5 - ultrasonic measurement (assume UART_ADDR=0)
-unsigned char buf5[3] = {0x00, 0x00, 0x00};//{0x55, 0x05, 0xFA};
+unsigned char buf5[3] = {0x55, 0x05, 0xFA};
 //cmd 10 - register write decple to time of 4.096ms
 unsigned char buf10[5] = {0x55, 0x0A, 0x26, 0x00, 0xCF};
 //cmd 17 - broadcast p1 burst listen
