@@ -97,7 +97,7 @@ void SesnorMeasurement(int fd)
 int main() {
     int fd;
     unsigned char txData[4] = {0x00, 0x55, 0x01, 0x00}; // Example data to send
-    unsigned char rxData[8] = {0x00};  // Buffer to store received data
+    unsigned char rxData[4] = {0x00};  // Buffer to store received data
     unsigned char receivedLength;
 	// Initialize WiringPi and GPIO
 	wiringPiSetup();  // Use WiringPi's own pin numbering
@@ -139,6 +139,8 @@ int main() {
         // Send 4 bytes
 		// broadcast p1 burst+listen (non-dependent on UART_ADDR)
 		
+		sendBytes(fd, buf1, 4);
+		usleep(10000);  // Wait for 10 milliseconds
 		sendBytes(fd, buf6, 3);
 
         // Wait for data to be available (this is an example, you might want to implement a better waiting mechanism)
