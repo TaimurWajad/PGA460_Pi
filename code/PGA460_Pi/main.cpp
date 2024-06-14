@@ -6,7 +6,7 @@
 #include <errno.h>
 #include <string.h>  // Include this header for strerror
 
-#define UART_DEVICE "/dev/ttyACM0"  // Default UART device on Raspberry Pi 4
+#define UART_DEVICE "/dev/ttyS0"  // Default UART device on Raspberry Pi 4
 #define BAUD_RATE 19200              // Set baud rate to match PGA450
 #define UART_RX_PIN 15              // GPIO15 corresponds to UART RX
 unsigned char RX_DATA[2] = {0};
