@@ -933,7 +933,7 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 		if (run == 1) // issue  P1 burst+listen, and run system diagnostics command to get latest results
 		{
 			// run burst+listen command at least once for proper diagnostic analysis
-			ultrasonicCmd(0, 1);	// always run preset 1 (short distance) burst+listen for 1 object for system diagnostic
+			ultrasonicCmd(0, 1, serial_port);	// always run preset 1 (short distance) burst+listen for 1 object for system diagnostic
 			
 			
 			usleep(1000);  // Wait for 100 msecond before sending data again, :: delay(100); // record time length maximum of 65ms, so add margin

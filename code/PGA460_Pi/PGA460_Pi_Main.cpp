@@ -184,7 +184,8 @@ void main()
     
         if (distance > minDistLim && distance < 11.2)  // turn on DS1_LED if object is above minDistLim
         {
-            printf("P1 Obj"); printf(i+1); printf(" Distance (m): "); printf(distance);printf("\n");
+            printf("P1 Obj %d Distance (m): %.2f\n", i + 1, distance);
+
             //Serial.print("P1 Obj"); Serial.print(i+1); Serial.print(" Width (us): "); Serial.println(width);
             //Serial.print("P1 Obj"); Serial.print(i+1); Serial.print(" Amplitude (dec): "); Serial.println(peak);
             objectDetected = true;
@@ -238,5 +239,7 @@ void main()
           }
         }  
       }
+	  
+	  return 0; // Indicate that the program ended successfully
 }
 
