@@ -166,7 +166,7 @@ void initPGA460()
 |
 *-------------------------------------------------------------------*/
 
-void main() 
+int main() 
 {                 // put your main code here, to run repeatedly
 	
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
