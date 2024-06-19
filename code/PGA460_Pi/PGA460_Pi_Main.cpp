@@ -6,7 +6,7 @@
 #include <errno.h>
 #include <string.h>  					 // Include this header for strerror
 
-#include <PGA460.h>
+#include "PGA460.h"
 
 uint8_t commMode = 0;            // Communication mode: 0=UART, 1=TCI, 2=OneWireUART
 uint8_t fixedThr = 1;            // set P1 and P2 thresholds to 0=%25, 1=50%, or 2=75% of max; initial minDistLim (i.e. 20cm) ignored

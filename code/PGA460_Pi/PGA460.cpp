@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>  // Include this header for strerror
+#include "PGA460.h"
 
 
 
