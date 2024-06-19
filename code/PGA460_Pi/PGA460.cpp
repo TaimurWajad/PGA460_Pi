@@ -144,7 +144,6 @@
 	
 void initVariables() 
 {
-	numOfObj = 4u;
 }
 			
 void sendBytes(int fd, unsigned char *data, int length) 

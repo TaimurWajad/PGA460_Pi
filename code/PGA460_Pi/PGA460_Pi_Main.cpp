@@ -18,6 +18,8 @@ uint8_t runDiag = 0;             // run system diagnostics and temp/noise level 
 uint8_t edd = 0;                 // echo data dump of preset 1, 2, or neither TODO: Import this Fn.
 uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
+uint8_t numOfObj = 4;            // number of object to detect set to 1-8
+
 
 uint8_t uartAddrUpdate = 0;      // PGA460 UART address to interface to; default is 0, possible address 0-7
 bool objectDetected = false;  		 // object detected flag to break burst+listen cycle when true
@@ -177,7 +179,8 @@ void Cyclic_Task()
       ultrasonicCmd(0, numOfObj, Serial_Port);               // run preset 1 (short distance) burst+listen for 1 object
       pullUltrasonicMeasResult(demoMode, Serial_Port);      // Pull Ultrasonic Measurement Result
       for (uint8_t i=0; i<numOfObj; i++)
-      {      
+      { 
+		  printf("numObj: %.2f\n", i);
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
           distance = printUltrasonicMeasResult(0+(i*3));      
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
