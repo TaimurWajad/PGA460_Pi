@@ -166,10 +166,9 @@ void initPGA460()
 |
 *-------------------------------------------------------------------*/
 
-int main() 
+void Cyclic_Task() 
 {                 // put your main code here, to run repeatedly
 	
-	initPGA460();
 	
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       objectDetected = false;                       // Initialize object detected flag to false
@@ -241,10 +240,23 @@ int main()
           }
         }  
       }
-	  
-	  // Close the serial port
-	  serialClose(Serial_Port);
-
-	  return 0;
 }
+
+int main()
+{
+	initPGA460();
+	
+	while(1)
+	{         
+		Cyclic_Task();
+	}
+		
+	
+	// Close the serial port
+	serialClose(Serial_Port);
+
+	return 0;
+	
+}
+
 
