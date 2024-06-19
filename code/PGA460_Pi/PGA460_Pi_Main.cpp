@@ -18,7 +18,7 @@ uint8_t runDiag = 0;             // run system diagnostics and temp/noise level 
 uint8_t edd = 0;                 // echo data dump of preset 1, 2, or neither TODO: Import this Fn.
 uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
-uint8_t numOfObj = 1;            // number of object to detect set to 1-8
+uint8_t numOfObj = 4;            // number of object to detect set to 1-8
 uint8_t uartAddrUpdate = 0;      // PGA460 UART address to interface to; default is 0, possible address 0-7
 bool objectDetected = false;  		 // object detected flag to break burst+listen cycle when true
 bool demoMode = false;        		 // only true when running UART/OWU multi device demo mode
@@ -249,6 +249,7 @@ int main()
 	while(1)
 	{         
 		Cyclic_Task();
+		usleep(250000); // Sleep for 250,000 microseconds (250 milliseconds)
 	}
 		
 	
