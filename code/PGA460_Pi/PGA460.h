@@ -24,6 +24,7 @@ uint8_t printUltrasonicMeasResultRaw(uint8_t umr);
 double printUltrasonicMeasResultExt(uint8_t umr, int speedSound);
 bool receiveBytesFromSerial(int serial_port, unsigned char* buffer, int numBytesToReceive);
 uint8_t calcChecksum(uint8_t cmd);
+void pga460SerialFlush(int serial_port);
 
 
 #endif

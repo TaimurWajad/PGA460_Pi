@@ -107,13 +107,13 @@ void initPGA460()
     if (runDiag == 1)
     {      
       diagnostics = runDiagnostics(1,0, Serial_Port);       // run and capture system diagnostics, and print freq diag result
-      printf("System Diagnostics - Frequency (kHz): "); printf(diagnostics);
+      printf("System Diagnostics - Frequency (kHz): %f\n", diagnostics);
       diagnostics = runDiagnostics(0,1, Serial_Port);       // do not re-run system diagnostic, but print decay diag result
-      printf("System Diagnostics - Decay Period (us): "); printf(diagnostics);
+      printf("System Diagnostics - Decay Period (us): %f\n", diagnostics);
       diagnostics = runDiagnostics(0,2, Serial_Port);       // do not re-run system diagnostic, but print temperature measurement
-      printf("System Diagnostics - Die Temperature (C): "); printf(diagnostics);
+      printf("System Diagnostics - Die Temperature (C): %f\n", diagnostics);
       diagnostics = runDiagnostics(0,3, Serial_Port);       // do not re-run system diagnostic, but print noise level measurement
-      printf("System Diagnostics - Noise Level: "); printf(diagnostics);
+	  printf("System Diagnostics - Noise Level: %f\n", diagnostics);
     }
   // -+-+-+-+-+-+-+-+-+-+- 6 : burn EEPROM   -+-+-+-+-+-+-+-+-+-+- //
     if(burn == 1)

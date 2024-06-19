@@ -1133,13 +1133,13 @@ bool burnEEPROM(int serial_port)
 		{
 			for(int n=0; n<3; n++)
 			{
-			   if(n==1-owuShift)
+			   if(n==1)
 			   {
-					burnStat = Serial1.read(); // store EE_CNTRL data
+					//burnStat = Serial1.read(); // store EE_CNTRL data // TODO:
 			   }
 			   else
 			   {
-				   temp = Serial1.read();
+				   //temp = Serial1.read();
 			   }
 			}
 		}
@@ -1265,7 +1265,7 @@ uint8_t pullUltrasonicMeasResult(bool busDemo, int serial_port)
 		
 	uint8_t buf5[3] = {syncByte, UMR, calcChecksum(UMR)};
 
-	sendBytes(serial_ip, buf5, sizeof(buf5)); //serial transmit master data to read ultrasonic measurement results
+	sendBytes(serial_port, buf5, sizeof(buf5)); //serial transmit master data to read ultrasonic measurement results
 	
 	receiveBytesFromSerial(serial_port, ultraMeasResult, (2+(numObj*4)));
 #if 0		
