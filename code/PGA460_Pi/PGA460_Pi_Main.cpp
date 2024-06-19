@@ -118,9 +118,11 @@ void initPGA460()
   // -+-+-+-+-+-+-+-+-+-+- 6 : burn EEPROM   -+-+-+-+-+-+-+-+-+-+- //
     if(burn == 1)
     {
-      //unsigned char burnStat = burnEEPROM(); // TODO
+#if 0
+      unsigned char burnStat = burnEEPROM(); // TODO
       if(burnStat == true){printf("EEPROM programmed successfully.");}
       else{printf("EEPROM program failed.");}
+#endif
     }
   // -+-+-+-+-+-+-+-+-+-+- 7 : capture echo data dump   -+-+-+-+-+-+-+-+-+-+- //
     if (edd != 0)                                   // run or skip echo data dump
@@ -204,19 +206,23 @@ void main()
     
           if (distance < 1 && distance > minDistLim)    // turn on DS1_LED and F_DIAG_LED if object is within 1m
           {
-              printf("P2 Obj"); printf(i+1); printf(" Distance (m): "); printf(distance);printf("\n");
+              //printf("P2 Obj"); printf(i+1); printf(" Distance (m): "); printf(distance);printf("\n");
+			  printf("P2 Obj %d Distance (m): %.2f\n", i + 1, distance);
+
               //Serial.print("P2 Obj"); Serial.print(i+1); Serial.print(" Width (us): "); Serial.println(width);
               //Serial.print("P2 Obj"); Serial.print(i+1); Serial.print(" Amplitude (dec): "); Serial.println(peak);
               objectDetected = true;
           } 
           else if (distance < 3 && distance >= 1)      // turn on DS1_LED and F_DIAG_LED if object is within 3m
           {
-              printf("P2 Obj"); printf(i+1); printf(" Distance (m): "); printf(distance);printf("\n");
+              //printf("P2 Obj"); printf(i+1); printf(" Distance (m): "); printf(distance);printf("\n");
+			  printf("P2 Obj %d Distance (m): %.2f\n", i + 1, distance);
               objectDetected = true;
           }    
           else if (distance >= 3 && distance < 11.2)     // turn on DS1_LED, F_DIAG_LED, and V_DIAG_LED if object is greater than 3m
           {
-              printf("P2 Obj"); printf(i+1); printf(" Distance (m): "); printf(distance);printf("\n");
+			  printf("P2 Obj %d Distance (m): %.2f\n", i + 1, distance);
+              //printf("P2 Obj"); printf(i+1); printf(" Distance (m): "); printf(distance);printf("\n");
               objectDetected = true;
           }    
           else if (distance == 0 && commMode!=1)                         // turn off all LEDs if no object detected
