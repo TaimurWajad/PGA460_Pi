@@ -175,7 +175,7 @@ bool receiveBytesFromSerial(int serial_port, unsigned char* buffer, int numBytes
     }
 
     // Check if all expected bytes were received
-    if (serialDataAvail(serial_port) < numBytesToReceive) 
+    if (serialDataAvail(serial_port)<0)//TODO; Check here(serialDataAvail(serial_port) < numBytesToReceive) 
 	{
         // Print an error message if data didn't come in within timeout
         printf("ERROR - Did not receive expected bytes from serial port!\n");
