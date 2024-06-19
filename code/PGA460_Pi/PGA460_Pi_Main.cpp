@@ -240,6 +240,9 @@ void main()
         }  
       }
 	  
-	  return 0; // Indicate that the program ended successfully
+	  // Close the serial port
+	  serialClose(Serial_Port);
+
+	  return 0;
 }
 
