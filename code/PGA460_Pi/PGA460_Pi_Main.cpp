@@ -180,7 +180,7 @@ void Cyclic_Task()
       pullUltrasonicMeasResult(demoMode, Serial_Port);      // Pull Ultrasonic Measurement Result
       for (uint8_t i=0; i<numOfObj; i++)
       { 
-		  printf("numObj: %.2f\n", i);
+		  printf("N_Obj: %d\n", i);
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
           distance = printUltrasonicMeasResult(0+(i*3));      
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
