@@ -138,7 +138,7 @@
 	uint8_t regAddr = 0x00; 		// data byte for Register Address
 	uint8_t regData = 0x00; 		// data byte for Register Data
 	uint8_t uartAddr = 0; 			// PGA460 UART device address (0-7). '0' is factory default address
-	uint8_t numObj = 1; 			// number of objects to detect
+	uint8_t numObj = 4; 			// number of objects to detect
 //OWU exclusive variables
 	signed int owuShift = 0;	// accoutns for OWU receiver buffer offset for capturing master transmitted data - always 0 for standard two-wire UART	
 	
