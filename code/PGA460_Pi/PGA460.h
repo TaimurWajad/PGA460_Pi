@@ -7,7 +7,7 @@
 #define BAUD_RATE 115200              	 // // UART baud rate: 9600, 19200, 38400, 57600, 74800, 115200 
 #define UART_RX_PIN 15              	 // GPIO15 corresponds to UART RX
 
-
+extern uint8_t numOfObj;            // number of object to detect set to 1-8
 
 void sendBytes(int fd, unsigned char *data, int length);
 int receiveBytes(int fd, unsigned char *buffer, int maxLength);
