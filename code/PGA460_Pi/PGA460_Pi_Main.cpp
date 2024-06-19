@@ -32,6 +32,7 @@ double distance = 0;          // one-way object distance in meters
 double width = 0;             // object width in microseconds
 double peak = 0;              // object peak in 8-bit
 double diagnostics = 0;       // diagnostic selector
+int Serial_Port;
 
   
   
@@ -59,7 +60,7 @@ double diagnostics = 0;       // diagnostic selector
 *-------------------------------------------------------------------*/
 void initPGA460() 
 {
-	int Serial_Port;
+	
 	// Initialize WiringPi and GPIO
 	wiringPiSetup();  // Use WiringPi's own pin numbering
 	//wiringPiSetupGpio();  // Use BCM GPIO numbering
@@ -73,13 +74,11 @@ void initPGA460()
     if (wiringPiSetup() == -1) 
 	{
         fprintf(stderr, "Failed to initialize WiringPi\n");
-        return 1;
     }
 
     if ((Serial_Port = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
 	{
         fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
-        return 1;
     }
 
 
@@ -99,27 +98,27 @@ void initPGA460()
     initBoostXLPGA460(commMode, BAUD_RATE, uartAddrUpdate); 
     
   // -+-+-+-+-+-+-+-+-+-+- 2 : bulk threshold write   -+-+-+-+-+-+-+-+-+-+- //
-    if (fixedThr != 72){initThresholds(fixedThr);} 
+    if (fixedThr != 72){initThresholds(fixedThr, Serial_Port);} 
   // -+-+-+-+-+-+-+-+-+-+- 3 : bulk user EEPROM write   -+-+-+-+-+-+-+-+-+-+- //
     if (xdcr != 72){defaultPGA460(xdcr);}
   // -+-+-+-+-+-+-+-+-+-+- 4 : bulk TVG write   -+-+-+-+-+-+-+-+-+-+- //
-    if (agrTVG != 72 && fixedTVG != 72){initTVG(agrTVG,fixedTVG);}
+    if (agrTVG != 72 && fixedTVG != 72){initTVG(agrTVG,fixedTVG, Serial_Port);}
   // -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
     if (runDiag == 1)
     {      
-      diagnostics = runDiagnostics(1,0);       // run and capture system diagnostics, and print freq diag result
+      diagnostics = runDiagnostics(1,0, Serial_Port);       // run and capture system diagnostics, and print freq diag result
       printf("System Diagnostics - Frequency (kHz): "); printf(diagnostics);
-      diagnostics = runDiagnostics(0,1);       // do not re-run system diagnostic, but print decay diag result
+      diagnostics = runDiagnostics(0,1, Serial_Port);       // do not re-run system diagnostic, but print decay diag result
       printf("System Diagnostics - Decay Period (us): "); printf(diagnostics);
-      diagnostics = runDiagnostics(0,2);       // do not re-run system diagnostic, but print temperature measurement
+      diagnostics = runDiagnostics(0,2, Serial_Port);       // do not re-run system diagnostic, but print temperature measurement
       printf("System Diagnostics - Die Temperature (C): "); printf(diagnostics);
-      diagnostics = runDiagnostics(0,3);       // do not re-run system diagnostic, but print noise level measurement
+      diagnostics = runDiagnostics(0,3, Serial_Port);       // do not re-run system diagnostic, but print noise level measurement
       printf("System Diagnostics - Noise Level: "); printf(diagnostics);
     }
   // -+-+-+-+-+-+-+-+-+-+- 6 : burn EEPROM   -+-+-+-+-+-+-+-+-+-+- //
     if(burn == 1)
     {
-      unsigned char burnStat = burnEEPROM();
+      //unsigned char burnStat = burnEEPROM(); // TODO
       if(burnStat == true){printf("EEPROM programmed successfully.");}
       else{printf("EEPROM program failed.");}
     }
@@ -170,8 +169,8 @@ void main()
 	
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       objectDetected = false;                       // Initialize object detected flag to false
-      ultrasonicCmd(0,numOfObj);               // run preset 1 (short distance) burst+listen for 1 object
-      pullUltrasonicMeasResult(demoMode);      // Pull Ultrasonic Measurement Result
+      ultrasonicCmd(0, numOfObj, Serial_Port);               // run preset 1 (short distance) burst+listen for 1 object
+      pullUltrasonicMeasResult(demoMode, Serial_Port);      // Pull Ultrasonic Measurement Result
       for (uint8_t i=0; i<numOfObj; i++)
       {      
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
@@ -193,8 +192,8 @@ void main()
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 2 (LONG RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       if(objectDetected == false || alwaysLong == true)                       // If no preset 1 (short distance) measurement result, switch to Preset 2 B+L command
       {   
-        ultrasonicCmd(1,numOfObj);                // run preset 2 (long distance) burst+listen for 1 object
-        pullUltrasonicMeasResult(demoMode);                // Get Ultrasonic Measurement Result
+        ultrasonicCmd(1, numOfObj, Serial_Port);                // run preset 2 (long distance) burst+listen for 1 object
+        pullUltrasonicMeasResult(demoMode, Serial_Port);                // Get Ultrasonic Measurement Result
         for (uint8_t i=0; i<numOfObj; i++)
         {  
           distance = printUltrasonicMeasResult(0+(i*3));   // Print Ultrasonic Measurement Result i.e. Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude;
