@@ -24,7 +24,7 @@ uint8_t numOfObj = 4;            // number of object to detect set to 1-8
 uint8_t uartAddrUpdate = 0;      // PGA460 UART address to interface to; default is 0, possible address 0-7
 bool objectDetected = false;  		 // object detected flag to break burst+listen cycle when true
 bool demoMode = false;        		 // only true when running UART/OWU multi device demo mode
-bool alwaysLong = false;      		 // always run preset 2, regardless of preset 1 result (hard-coded only)
+bool alwaysLong = true;      		 // always run preset 2, regardless of preset 1 result (hard-coded only)
 double minDistLim = 0.1;      		 // minimum distance as limited by ringing decay of single transducer and threshold masking
 uint16_t commandDelay = 0;    		 // Delay between each P1 and Preset 2 command
 
@@ -180,7 +180,6 @@ void Cyclic_Task()
       pullUltrasonicMeasResult(demoMode, Serial_Port);      // Pull Ultrasonic Measurement Result
       for (uint8_t i=0; i<numOfObj; i++)
       { 
-		  printf("N_Obj: %d\n", i);
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
           distance = printUltrasonicMeasResult(0+(i*3));      
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
