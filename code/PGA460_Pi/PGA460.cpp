@@ -144,11 +144,11 @@
 			
 void sendBytes(int fd, unsigned char *data, int length) 
 {
-	printf("Tx data: ");
+	//printf("Tx data: ");
 	for (int i = 0; i < length; i++) 
 	{
 		serialPutchar(fd, data[i]);
-		printf("0x%02X ", data[i]);
+		//printf("0x%02X ", data[i]);
 	}
 }
 int receiveBytes(int fd, unsigned char *buffer, int maxLength) 
