@@ -142,7 +142,7 @@
 //OWU exclusive variables
 	signed int owuShift = 0;	// accoutns for OWU receiver buffer offset for capturing master transmitted data - always 0 for standard two-wire UART	
 	
-void iniVariables() 
+void initVariables() 
 {
 	numOfObj = 4u;
 }

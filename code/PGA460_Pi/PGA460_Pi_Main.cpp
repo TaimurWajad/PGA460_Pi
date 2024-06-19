@@ -81,7 +81,7 @@ void initPGA460()
         fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
     }
 	
-	iniVariables();
+	initVariables();
 
 
 /*------------------------------------------------- userInput & standAlone mode initialization -----
