@@ -100,7 +100,7 @@ void initPGA460()
   // -+-+-+-+-+-+-+-+-+-+- 2 : bulk threshold write   -+-+-+-+-+-+-+-+-+-+- //
     if (fixedThr != 72){initThresholds(fixedThr, Serial_Port);} 
   // -+-+-+-+-+-+-+-+-+-+- 3 : bulk user EEPROM write   -+-+-+-+-+-+-+-+-+-+- //
-    if (xdcr != 72){defaultPGA460(xdcr);}
+    if (xdcr != 72){defaultPGA460(xdcr, Serial_Port);}
   // -+-+-+-+-+-+-+-+-+-+- 4 : bulk TVG write   -+-+-+-+-+-+-+-+-+-+- //
     if (agrTVG != 72 && fixedTVG != 72){initTVG(agrTVG,fixedTVG, Serial_Port);}
   // -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
