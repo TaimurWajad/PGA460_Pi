@@ -187,7 +187,7 @@ void Cyclic_Task()
   
         usleep(commandDelay*10);  // Wait for 100 msecond before sending data again delay(commandDelay);
     
-        if (distance > minDistLim && distance < 11.2)  // turn on DS1_LED if object is above minDistLim
+        if (1)//(distance > minDistLim && distance < 11.2)  // turn on DS1_LED if object is above minDistLim
         {
             printf("P1 Obj %d Distance (m): %.2f\n", i + 1, distance);
 
