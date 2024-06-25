@@ -19,13 +19,16 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port);
 bool burnEEPROM(int serial_port);
 void ultrasonicCmd(uint8_t cmd, uint8_t numObjUpdate, int serial_port);
 uint8_t pullUltrasonicMeasResult(bool busDemo, int serial_port);
-double printUltrasonicMeasResult(uint8_t umr);
+void printUltrasonicMeasResult(uint8_t umr);
 uint8_t printUltrasonicMeasResultRaw(uint8_t umr);
 double printUltrasonicMeasResultExt(uint8_t umr, int speedSound);
 bool receiveBytesFromSerial(int serial_port, unsigned char* buffer, int numBytesToReceive);
 uint8_t calcChecksum(uint8_t cmd);
 void pga460SerialFlush(int serial_port);
 void initVariables();
+void runEchoDataDump(uint8_t preset, int serial_port);
+uint8_t pullEchoDataDump(uint8_t element, int serial_port);
+char* pullEchoDataDumpBulk(int serial_port);
 
 
 #endif

@@ -128,8 +128,7 @@ void initPGA460()
       if(burnStat == true){printf("EEPROM programmed successfully.");}
       else{printf("EEPROM program failed.");}
     }
-  // -+-+-+-+-+-+-+-+-+-+- 7 : capture echo data dump   -+-+-+-+-+-+-+-+-+-+- //
-#if 0	
+  // -+-+-+-+-+-+-+-+-+-+- 7 : capture echo data dump   -+-+-+-+-+-+-+-+-+-+- //	
     if (edd != 0)                                   // run or skip echo data dump
     {
       printf("Retrieving echo data dump profile. Wait...");
@@ -137,7 +136,7 @@ void initPGA460()
       printf(pullEchoDataDumpBulk());
       printf("");
     }
-#endif
+
   // -+-+-+-+-+-+-+-+-+-+-  others   -+-+-+-+-+-+-+-+-+-+- //
   commandDelay = 100 * cdMultiplier;                   // command cycle delay result in ms
   if (numOfObj == 0 || numOfObj >8) { numOfObj = 1; } // sets number of objects to detect to 1 if invalid input                      

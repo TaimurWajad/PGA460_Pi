@@ -1184,11 +1184,8 @@ void ultrasonicCmd(uint8_t cmd, uint8_t numObjUpdate, int serial_port)
 		default: return;	
 	}		
 	
-
-	if (comm == 0 || comm == 2) // UART or OWU mode
-	{
-		sendBytes(serial_port, bufCmd, sizeof(bufCmd)); // serial transmit master data to initiate burst and/or listen command
-	}
+	sendBytes(serial_port, bufCmd, sizeof(bufCmd)); // serial transmit master data to initiate burst and/or listen command
+	
 	
 	usleep(70000);  // Wait for 10 milliseconds :: delay(70); // maximum record length is 65ms, so delay with margin
 	return;
@@ -1242,7 +1239,7 @@ uint8_t pullUltrasonicMeasResult(bool busDemo, int serial_port)
  |
  |  Returns:  double representation of distance (m), width (us), or amplitude (8-bit)
  *-------------------------------------------------------------------*/
-double printUltrasonicMeasResult(uint8_t umr)
+void printUltrasonicMeasResult(uint8_t umr)
 {
 	int speedSound = 343; // speed of sound in air at room temperature
 	printUltrasonicMeasResultExt(umr, speedSound);
@@ -1620,3 +1617,178 @@ uint8_t calcChecksum(uint8_t cmd)
 	carry = (~carry & 0x00FF);
 	return carry;
 }
+
+/*------------------------------------------------- runEchoDataDump -----
+ |  Function runEchoDataDump
+ |
+ |  Purpose:  Runs a preset 1 or 2 burst and or listen command to capture 128 bytes of echo data dump.
+ |		Toggle echo data dump enable bit to enable/disable echo data dump mode.
+ |
+ |  Parameters:
+ |		preset (IN) -- determines which preset command is run:
+ |			• 0 = Preset 1 Burst + Listen command
+ |			• 1 = Preset 2 Burst + Listen command
+ |			• 2 = Preset 1 Listen Only command
+ |			• 3 = Preset 2 Listen Only command
+ |			• 17 = Preset 1 Burst + Listen broadcast command
+ |			• 18 = Preset 2 Burst + Listen broadcast command
+ |			• 19 = Preset 1 Listen Only broadcast command
+ |			• 20 = Preset 2 Listen Only broadcast command
+ |
+ |  Returns:  none
+ *-------------------------------------------------------------------*/
+void runEchoDataDump(uint8_t preset, int serial_port)
+{
+	// enable Echo Data Dump bit
+	regAddr = 0x40;
+	regData = 0x80;
+	uint8_t writeType = SRW; // default to single address register write (cmd10)
+	if(preset>16) // update to broadcast register write if broadcast TOF preset command given
+	{
+		writeType = BC_RW; // cmd22
+	}
+	
+	uint8_t buf10[5] = {syncByte, writeType, regAddr, regData, calcChecksum(writeType)};
+	pga460SerialFlush();
+	
+	sendBytes(serial_port, buf10, sizeof(buf10));
+	usleep(10000);
+	// run preset 1 or 2 burst and or listen command
+	ultrasonicCmd(preset, 1, serial_port);	
+
+	// disbale Echo Data Dump bit
+	regData = 0x00;
+	buf10[3] = regData;
+	buf10[4] = calcChecksum(writeType);
+	sendBytes(serial_port, buf10, sizeof(buf10));
+}
+
+/*------------------------------------------------- pullEchoDataDump -----
+ |  Function pullEchoDataDump
+ |
+ |  Purpose:  Read out 128 bytes of echo data dump (EDD) from latest burst and or listen command. 
+ |		For UART and OWU, readout individual echo data dump register values, instead in bulk.
+ |		For TCI, perform index 12 read of all echo data dump values in bulk.
+ |
+ |  Parameters:
+ |		element (IN) -- element from the 128 byte EDD memory
+ |
+ |  Returns:  byte representation of EDD element value
+ *-------------------------------------------------------------------*/
+uint8_t pullEchoDataDump(uint8_t element, int serial_port)
+{	
+	if (element == 0)
+	{
+		uint8_t temp = 0;
+		pga460SerialFlush();				
+		regAddr = 0x80; // start of EDD memory
+		uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)}; 
+		sendBytes(serial_port, buf9, sizeof(buf9)); // read first byte of EDD memory		
+		
+		for(int m=0; m<129; m++) // loop readout by iterating through EDD address range
+		{
+			buf9[2] = regAddr;
+			buf9[3] = calcChecksum(SRR);
+			sendBytes(serial_port, buf9, sizeof(buf9));
+			usleep(30000); //delay(30);	 
+			
+			for(int n=0; n<(128); n++)
+			{
+				if(n==1)
+				{
+					echoDataDump[m] = serialGetchar(serial_port);;						
+				}
+				else
+				{
+					temp = serialGetchar(serial_port);;
+				}
+			}
+			regAddr++;
+		}			
+	}
+	return echoDataDump[element];	
+}
+
+/*------------------------------------------------- pullEchoDataDumpBulk -----
+ |  Function pullEchoDataDumpBulk
+ |
+ |  Purpose:  Bulk read out 128 bytes of echo data dump (EDD) from latest burst and or listen command. 
+ |		For UART and OWU, readout bulk echo data dump register values.
+ |		For TCI, perform index 12 read of all echo data dump values in bulk.
+ |
+ |  Parameters:
+ |		none
+ |
+ |  Returns:  comma delimited string of all EDD values
+ *-------------------------------------------------------------------*/
+String pullEchoDataDumpBulk()
+{
+	String bulkString = "";
+	
+	uint8_t temp = 0;
+	pga460SerialFlush();	
+	
+	uint8_t buf7[3] = {syncByte, TEDD, calcChecksum(TEDD)}; 
+	Serial1.write(buf7, sizeof(buf7)); // respond bulk EDD command			
+	uint8_t eddBulk[130];
+	Serial1.readBytes((char *)eddBulk,130);
+	
+	if(eddBulk[0] != 0) // if diagnostic field is non-zero
+	{			
+		for(int n=1+owuShift; n<(129+owuShift); n++)
+		{			
+			bulkString = bulkString + "," + eddBulk[n];	   
+		}
+	}
+	else
+	{
+		// the data didn't come in - handle the problem here
+		Serial.print("ERROR - Did not receive echo data dump! ");	
+		for(int n=1+owuShift; n<(129+owuShift); n++)
+		{			
+			bulkString = bulkString + "," + eddBulk[n];		   
+		}		
+	}
+	return bulkString;
+}
+
+char* pullEchoDataDumpBulk(int serial_port) 
+{
+    static char bulkString[1024] = {0}; // Static to return the reference
+    uint8_t eddBulk[130] = {0};
+
+    pga460SerialFlush(serial_port);
+
+    uint8_t buf7[3] = {syncByte, TEDD, calcChecksum(TEDD)};
+    serialPuts(serial_port, (char *)buf7); // Send bulk EDD command
+    
+    // Read 130 bytes from the serial port
+    for (int i = 0; i < 130; i++) 
+	{
+        eddBulk[i] = serialGetchar(serial_port);
+    }
+
+    if (eddBulk[0] != 0) 
+	{            
+        for (int n = 1; n < (129); n++) 
+		{
+            char buffer[10];
+            snprintf(buffer, sizeof(buffer), ",%d", eddBulk[n]);
+            strncat(bulkString, buffer, 1024 - strlen(bulkString) - 1);       
+        }
+    } 
+	else 
+	{
+        // Handle the error
+        fprintf(stderr, "ERROR - Did not receive echo data dump!\n");
+        for (int n = 1 + owuShift; n < (129 + owuShift); n++) 
+		{
+            char buffer[10];
+            snprintf(buffer, sizeof(buffer), ",%d", eddBulk[n]);
+            strncat(bulkString, buffer, BUFFER_SIZE - strlen(bulkString) - 1);         
+        }        
+    }
+
+    return bulkString;
+}
+
