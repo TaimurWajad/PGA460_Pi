@@ -19,7 +19,7 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port);
 bool burnEEPROM(int serial_port);
 void ultrasonicCmd(uint8_t cmd, uint8_t numObjUpdate, int serial_port);
 uint8_t pullUltrasonicMeasResult(bool busDemo, int serial_port);
-void printUltrasonicMeasResult(uint8_t umr);
+double printUltrasonicMeasResult(uint8_t umr);
 uint8_t printUltrasonicMeasResultRaw(uint8_t umr);
 double printUltrasonicMeasResultExt(uint8_t umr, int speedSound);
 bool receiveBytesFromSerial(int serial_port, unsigned char* buffer, int numBytesToReceive);

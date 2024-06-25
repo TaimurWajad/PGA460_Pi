@@ -1239,7 +1239,7 @@ uint8_t pullUltrasonicMeasResult(bool busDemo, int serial_port)
  |
  |  Returns:  double representation of distance (m), width (us), or amplitude (8-bit)
  *-------------------------------------------------------------------*/
-void printUltrasonicMeasResult(uint8_t umr)
+double printUltrasonicMeasResult(uint8_t umr)
 {
 	int speedSound = 343; // speed of sound in air at room temperature
 	printUltrasonicMeasResultExt(umr, speedSound);
@@ -1649,7 +1649,7 @@ void runEchoDataDump(uint8_t preset, int serial_port)
 	}
 	
 	uint8_t buf10[5] = {syncByte, writeType, regAddr, regData, calcChecksum(writeType)};
-	pga460SerialFlush();
+	pga460SerialFlush(serial_port);
 	
 	sendBytes(serial_port, buf10, sizeof(buf10));
 	usleep(10000);
@@ -1680,7 +1680,7 @@ uint8_t pullEchoDataDump(uint8_t element, int serial_port)
 	if (element == 0)
 	{
 		uint8_t temp = 0;
-		pga460SerialFlush();				
+		pga460SerialFlush(serial_port);				
 		regAddr = 0x80; // start of EDD memory
 		uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)}; 
 		sendBytes(serial_port, buf9, sizeof(buf9)); // read first byte of EDD memory		
@@ -1721,36 +1721,6 @@ uint8_t pullEchoDataDump(uint8_t element, int serial_port)
  |
  |  Returns:  comma delimited string of all EDD values
  *-------------------------------------------------------------------*/
-String pullEchoDataDumpBulk()
-{
-	String bulkString = "";
-	
-	uint8_t temp = 0;
-	pga460SerialFlush();	
-	
-	uint8_t buf7[3] = {syncByte, TEDD, calcChecksum(TEDD)}; 
-	Serial1.write(buf7, sizeof(buf7)); // respond bulk EDD command			
-	uint8_t eddBulk[130];
-	Serial1.readBytes((char *)eddBulk,130);
-	
-	if(eddBulk[0] != 0) // if diagnostic field is non-zero
-	{			
-		for(int n=1+owuShift; n<(129+owuShift); n++)
-		{			
-			bulkString = bulkString + "," + eddBulk[n];	   
-		}
-	}
-	else
-	{
-		// the data didn't come in - handle the problem here
-		Serial.print("ERROR - Did not receive echo data dump! ");	
-		for(int n=1+owuShift; n<(129+owuShift); n++)
-		{			
-			bulkString = bulkString + "," + eddBulk[n];		   
-		}		
-	}
-	return bulkString;
-}
 
 char* pullEchoDataDumpBulk(int serial_port) 
 {
@@ -1785,7 +1755,7 @@ char* pullEchoDataDumpBulk(int serial_port)
 		{
             char buffer[10];
             snprintf(buffer, sizeof(buffer), ",%d", eddBulk[n]);
-            strncat(bulkString, buffer, BUFFER_SIZE - strlen(bulkString) - 1);         
+            strncat(bulkString, buffer, 1024 - strlen(bulkString) - 1);         
         }        
     }
 

@@ -132,8 +132,8 @@ void initPGA460()
     if (edd != 0)                                   // run or skip echo data dump
     {
       printf("Retrieving echo data dump profile. Wait...");
-      runEchoDataDump(edd-1);                  // run preset 1 or 2 burst and/or listen command
-      printf(pullEchoDataDumpBulk());
+      runEchoDataDump(edd-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
+      printf(pullEchoDataDumpBulk(Serial_Port));
       printf("");
     }
 
