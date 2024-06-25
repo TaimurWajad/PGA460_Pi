@@ -248,12 +248,11 @@ void Cyclic_Task()
 
 int main()
 {
-	//initPGA460();
+	initPGA460();
 	
 	while(1)
 	{         
-		//Cyclic_Task();
-		printf("Hello World");printf("\n");
+		Cyclic_Task();
 		usleep(250000); // Sleep for 250,000 microseconds (250 milliseconds)
 	}
 		
