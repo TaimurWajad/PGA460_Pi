@@ -16,7 +16,7 @@ uint8_t agrTVG = 2;              // set TVG's analog front end gain range to 0=3
 uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
 uint8_t runDiag = 1;             // run system diagnostics and temp/noise level before looping burst+listen command
 uint8_t edd = 0;                 // echo data dump of preset 1, 2, or neither TODO: Import this Fn.
-uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
+uint8_t burn = 1;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
 uint8_t numOfObj = 8;            // number of object to detect set to 1-8
 
@@ -129,6 +129,7 @@ void initPGA460()
       else{printf("EEPROM program failed.");}
     }
   // -+-+-+-+-+-+-+-+-+-+- 7 : capture echo data dump   -+-+-+-+-+-+-+-+-+-+- //
+#if 0	
     if (edd != 0)                                   // run or skip echo data dump
     {
       printf("Retrieving echo data dump profile. Wait...");
@@ -136,6 +137,7 @@ void initPGA460()
       printf(pullEchoDataDumpBulk());
       printf("");
     }
+#endif
   // -+-+-+-+-+-+-+-+-+-+-  others   -+-+-+-+-+-+-+-+-+-+- //
   commandDelay = 100 * cdMultiplier;                   // command cycle delay result in ms
   if (numOfObj == 0 || numOfObj >8) { numOfObj = 1; } // sets number of objects to detect to 1 if invalid input                      
