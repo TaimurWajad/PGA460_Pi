@@ -245,25 +245,6 @@ void Cyclic_Task()
       }
 }
 
-int main()
-{
-	initPGA460();
-	
-	while(1)
-	{         
-		Cyclic_Task();
-		//usleep(250000); // Sleep for 250 milliseconds)
-		serialEvent(Serial_Port);
-	}
-		
-	
-	// Close the serial port
-	serialClose(Serial_Port);
-
-	return 0;
-	
-}
-
 // Function to handle serial events
 // TODO: Check if this function is required!!! Call in loop
 void serialEvent(int serial_port) {
@@ -299,3 +280,24 @@ void serialEvent(int serial_port) {
         }
     }
 }
+
+int main()
+{
+	initPGA460();
+	
+	while(1)
+	{         
+		Cyclic_Task();
+		//usleep(250000); // Sleep for 250 milliseconds)
+		serialEvent(Serial_Port);
+	}
+		
+	
+	// Close the serial port
+	serialClose(Serial_Port);
+
+	return 0;
+	
+}
+
+
