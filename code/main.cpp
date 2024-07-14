@@ -16,7 +16,7 @@ uint8_t agrTVG = 2;              // set TVG's analog front end gain range to 0=3
 uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
 uint8_t runDiag = 1;             // run system diagnostics and temp/noise level before looping burst+listen command
 uint8_t edd = 1;                 // echo data dump of preset 1, 2, or neither TODO: Import this Fn.
-uint8_t burn = 1;                // trigger EE_CNTRL to burn and program user EEPROM memory
+uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
 uint8_t numOfObj = 1;            // number of object to detect set to 1-8
 
@@ -230,11 +230,11 @@ void Cyclic_Task()
               //printf("P2 Obj"); printf(i+1); printf(" Distance (m): "); printf(distance);printf("\n");
               objectDetected = true;
           }    
-          else if (distance == 0 && commMode!=1)                         // turn off all LEDs if no object detected
+          else if (distance == 0 && commMode!=1)                       
           {
               //Serial.print("Error reading measurement results..."); //Serial.println(distance);
           }
-          else //(distance > 11.2 && distance < minDistLim)         // turn off all LEDs if no object detected or below minimum distance limit
+          else //(distance > 11.2 && distance < minDistLim)         
           {
               if (i == numOfObj-1 && objectDetected == false)
               {         
@@ -290,9 +290,7 @@ int main()
 		Cyclic_Task();
 		//usleep(250000); // Sleep for 250 milliseconds)
 		serialEvent(Serial_Port);
-	}
-		
-	
+	}	
 	// Close the serial port
 	serialClose(Serial_Port);
 
