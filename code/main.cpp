@@ -289,7 +289,7 @@ int main()
 	{         
 		Cyclic_Task();
 		//usleep(250000); // Sleep for 250 milliseconds)
-		usleep(10000); // Sleep for 10 milliseconds)
+		usleep(100000); // Sleep for 100 milliseconds)
 		//serialEvent(Serial_Port);
 	}	
 	// Close the serial port
