@@ -10,7 +10,7 @@
 #include "PGA460.h"
 
 uint8_t commMode = 0;            // Communication mode: 0=UART, 1=TCI, 2=OneWireUART
-uint8_t fixedThr = 0;            // set P1 and P2 thresholds to 0=%25, 1=50%, or 2=75% of max; initial minDistLim (i.e. 20cm) ignored
+uint8_t fixedThr = 2;            // set P1 and P2 thresholds to 0=%25, 1=50%, or 2=75% of max; initial minDistLim (i.e. 20cm) ignored
 uint8_t xdcr = 1;                // set PGA460 to recommended settings for 0=Murata MA58MF14-7N, 1=Murata MA40H1S-R
 uint8_t agrTVG = 2;              // set TVG's analog front end gain range to 0=32-64dB, 1=46-78dB, 2=52-84dB, or 3=58-90dB
 uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
@@ -288,8 +288,8 @@ int main()
 	while(1)
 	{         
 		Cyclic_Task();
-		usleep(250000); // Sleep for 250 milliseconds)
-		//usleep(100000); // Sleep for 100 milliseconds)
+		//usleep(250000); // Sleep for 250 milliseconds)
+		usleep(100000); // Sleep for 100 milliseconds)
 		//serialEvent(Serial_Port);
 	}	
 	// Close the serial port
