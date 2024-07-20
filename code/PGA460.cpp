@@ -74,7 +74,7 @@ uint8_t TVGAIN6 = 0xFC;
 uint8_t INIT_GAIN = 0xC0;
 uint8_t FREQUENCY  = 0x8C;
 uint8_t DEADTIME = 0x00;
-uint8_t PULSE_P1 = 0x01;
+uint8_t PULSE_P1 = 0x08;//0x01;
 uint8_t PULSE_P2 = 0x12;
 uint8_t CURR_LIM_P1 = 0x47;
 uint8_t CURR_LIM_P2 = 0xFF;
@@ -283,9 +283,9 @@ void initBoostXLPGA460(uint8_t mode, uint32_t baud, uint8_t uartAddrUpdate)
  |		thr (IN) -- updates all threshold levels to a fixed level based on specific percentage of the maximum level. 
  |			All times are mid-code (1.4ms intervals).
  |			Modify existing case statements, or append additional case-statement for custom user threshold configurations.
- |			• 0 = 25% Levels 64 of 255
- |			• 1 = 50% Levels 128 of 255
- |			• 2 = 75% Levels 192 of 255
+ |			ï¿½ 0 = 25% Levels 64 of 255
+ |			ï¿½ 1 = 50% Levels 128 of 255
+ |			ï¿½ 2 = 75% Levels 192 of 255
  |
  |  Returns:  none
  *-------------------------------------------------------------------*/
@@ -462,8 +462,8 @@ void initThresholds(uint8_t thr, int serial_port)
  |  Parameters:
  |		xdcr (IN) -- updates user EEPROM based on predefined listing for a specific transducer.
  |			Modify existing case statements, or append additional case-statement for custom user EEPROM configurations.
- |			• 0 = Murata MA58MF14-7N
- |			• 1 = Murata MA40H1S-R
+ |			ï¿½ 0 = Murata MA58MF14-7N
+ |			ï¿½ 1 = Murata MA40H1S-R
  |
  |  Returns:  none
  *-------------------------------------------------------------------*/
@@ -797,16 +797,16 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
  |
  |  Parameters:
  |		agr (IN) -- updates the analog gain range for the TVG.
- |			• 0 = 32-64dB
- |			• 1 = 46-78dB
- |			• 2 = 52-84dB
- |			• 3 = 58-90dB
+ |			ï¿½ 0 = 32-64dB
+ |			ï¿½ 1 = 46-78dB
+ |			ï¿½ 2 = 52-84dB
+ |			ï¿½ 3 = 58-90dB
  |		tvg (IN) -- updates all TVG levels to a fixed level based on specific percentage of the maximum level. 
  |			All times are mid-code (2.4ms intervals).
  |			Modify existing case statements, or append additional case-statement for custom user TVG configurations
- |			• 0 = 25% Levels of range
- |			• 1 = 50% Levels of range
- |			• 2 = 75% Levels of range
+ |			ï¿½ 0 = 25% Levels of range
+ |			ï¿½ 1 = 50% Levels of range
+ |			ï¿½ 2 = 75% Levels of range
  |
  |  Returns:  none
  *-------------------------------------------------------------------*/
@@ -917,10 +917,10 @@ void initTVG(uint8_t agr, uint8_t tvg, int serial_port)
  |  Parameters:
  |		run (IN) -- issue a preset 1 burst-and-listen command
  |		diag (IN) -- diagnostic value to return:
- |			• 0 = frequency diagnostic (kHz)
- |			• 1 = decay period diagnostic (us)
- |			• 2 = die temperature (degC)
- |			• 3 = noise level (8bit)
+ |			ï¿½ 0 = frequency diagnostic (kHz)
+ |			ï¿½ 1 = decay period diagnostic (us)
+ |			ï¿½ 2 = die temperature (degC)
+ |			ï¿½ 3 = noise level (8bit)
  |
  |  Returns:  double representation of last captured diagnostic
  *-------------------------------------------------------------------*/
@@ -1109,14 +1109,14 @@ bool burnEEPROM(int serial_port)
  |
  |  Parameters:
  |		cmd (IN) -- determines which preset command is run
- |			• 0 = Preset 1 Burst + Listen command
- |			• 1 = Preset 2 Burst + Listen command
- |			• 2 = Preset 1 Listen Only command
- |			• 3 = Preset 2 Listen Only command
- |			• 17 = Preset 1 Burst + Listen broadcast command
- |			• 18 = Preset 2 Burst + Listen broadcast command
- |			• 19 = Preset 1 Listen Only broadcast command
- |			• 20 = Preset 2 Listen Only broadcast command
+ |			ï¿½ 0 = Preset 1 Burst + Listen command
+ |			ï¿½ 1 = Preset 2 Burst + Listen command
+ |			ï¿½ 2 = Preset 1 Listen Only command
+ |			ï¿½ 3 = Preset 2 Listen Only command
+ |			ï¿½ 17 = Preset 1 Burst + Listen broadcast command
+ |			ï¿½ 18 = Preset 2 Burst + Listen broadcast command
+ |			ï¿½ 19 = Preset 1 Listen Only broadcast command
+ |			ï¿½ 20 = Preset 2 Listen Only broadcast command
  |		numObjUpdate (IN) -- PGA460 can capture time-of-flight, width, and amplitude for 1 to 8 objects. 
  |			TCI is limited to time-of-flight measurement data only.
  |
