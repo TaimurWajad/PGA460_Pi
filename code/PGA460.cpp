@@ -511,7 +511,7 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
 				PULSE_P1 = 0x04;
 			}
 			PULSE_P2 = 0x10;
-			CURR_LIM_P1 = 0x55;
+			CURR_LIM_P1 = 0xD5;//0x55;//0xD5== Current Limit Disabled
 			CURR_LIM_P2 = 0x55;
 			REC_LENGTH = 0x19;
 			FREQ_DIAG = 0x33;
