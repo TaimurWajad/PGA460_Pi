@@ -72,7 +72,7 @@ uint8_t TVGAIN4 = 0x68;
 uint8_t TVGAIN5 = 0x36;
 uint8_t TVGAIN6 = 0xFC;
 uint8_t INIT_GAIN = 0xC0;
-uint8_t FREQUENCY  = 0xBE;//0x8C; BE==190
+uint8_t FREQUENCY  = 0x0A;//0x8C; BE==190
 uint8_t DEADTIME = 0x00;
 uint8_t PULSE_P1 = 0x1F;//0x01;
 uint8_t PULSE_P2 = 0x1F;//0x12;
