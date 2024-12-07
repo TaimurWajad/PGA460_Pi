@@ -85,7 +85,6 @@ void initPGA460()
 	//wiringPiSetupGpio();  // Use BCM GPIO numbering
 	//wiringPiSetupPhys();  // Use the physical pin numbers on the P1 connector
 
-    wiringPiSetupGpio();
 	//pinMode(UART_RX_PIN, INPUT);
 	pullUpDnControl(UART_RX_PIN, PUD_UP);
 
@@ -100,8 +99,8 @@ void initPGA460()
         fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
     }
 
-    // Disable power to ultrasonic sensors
-    digitalWrite(ULTRASONIC_PWR_EN, LOW);
+    // Enable power to ultrasonic sensors
+    digitalWrite(ULTRASONIC_PWR_EN, HIGH);
     SELECT_SENSOR_1();
 	
 	  initVariables();
@@ -277,7 +276,8 @@ int main()
 		usleep(250000); // Sleep for 250,000 microseconds (250 milliseconds)
 	}
 		
-	
+	// Disable power to ultrasonic sensors
+  digitalWrite(ULTRASONIC_PWR_EN, LOW);
 	// Close the serial port
 	serialClose(Serial_Port);
 
