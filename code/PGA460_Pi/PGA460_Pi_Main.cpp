@@ -79,6 +79,7 @@ int Serial_Port;
 *-------------------------------------------------------------------*/
 void initPGA460() 
 {
+  int i_test;
 	
 	// Initialize WiringPi and GPIO
 	wiringPiSetup();  // Use WiringPi's own pin numbering
@@ -105,7 +106,7 @@ void initPGA460()
 	
 	  initVariables();
 
-
+    printf("Test: %f\n", i_test++);
 /*------------------------------------------------- userInput & standAlone mode initialization -----
   Configure the EVM in the following order:
   1) Select PGA460 interface, device baud, and COM terminal baud up to 115.2k for targeted address.
@@ -120,7 +121,7 @@ void initPGA460()
 *-------------------------------------------------------------------*/
   // -+-+-+-+-+-+-+-+-+-+- 1 : interface setup   -+-+-+-+-+-+-+-+-+-+- //
     initBoostXLPGA460(commMode, BAUD_RATE, uartAddrUpdate); 
-    
+    printf("Test: %f\n", i_test++);
   // -+-+-+-+-+-+-+-+-+-+- 2 : bulk threshold write   -+-+-+-+-+-+-+-+-+-+- //
     if (fixedThr != 72){initThresholds(fixedThr, Serial_Port);} 
   // -+-+-+-+-+-+-+-+-+-+- 3 : bulk user EEPROM write   -+-+-+-+-+-+-+-+-+-+- //
@@ -128,6 +129,7 @@ void initPGA460()
   // -+-+-+-+-+-+-+-+-+-+- 4 : bulk TVG write   -+-+-+-+-+-+-+-+-+-+- //
     if (agrTVG != 72 && fixedTVG != 72){initTVG(agrTVG,fixedTVG, Serial_Port);}
   // -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
+  printf("Test: %f\n", i_test++);
     if (runDiag == 1)
     {      
       diagnostics = runDiagnostics(1,0, Serial_Port);       // run and capture system diagnostics, and print freq diag result
