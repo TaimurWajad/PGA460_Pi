@@ -29,7 +29,7 @@ uint8_t fixedThr = 1;            // set P1 and P2 thresholds to 0=%25, 1=50%, or
 uint8_t xdcr = 1;                // set PGA460 to recommended settings for 0=Murata MA58MF14-7N, 1=Murata MA40H1S-R
 uint8_t agrTVG = 2;              // set TVG's analog front end gain range to 0=32-64dB, 1=46-78dB, 2=52-84dB, or 3=58-90dB
 uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
-uint8_t runDiag = 1;             // run system diagnostics and temp/noise level before looping burst+listen command
+uint8_t runDiag = 0;             // run system diagnostics and temp/noise level before looping burst+listen command
 uint8_t edd = 0;                 // echo data dump of preset 1, 2, or neither TODO: Import this Fn.
 uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
@@ -106,7 +106,7 @@ void initPGA460()
 	
 	  initVariables();
 
-    printf("Test: %f\n", i_test++);
+    printf("Test: %d\n", i_test++);
 /*------------------------------------------------- userInput & standAlone mode initialization -----
   Configure the EVM in the following order:
   1) Select PGA460 interface, device baud, and COM terminal baud up to 115.2k for targeted address.
@@ -121,7 +121,7 @@ void initPGA460()
 *-------------------------------------------------------------------*/
   // -+-+-+-+-+-+-+-+-+-+- 1 : interface setup   -+-+-+-+-+-+-+-+-+-+- //
     initBoostXLPGA460(commMode, BAUD_RATE, uartAddrUpdate); 
-    printf("Test: %f\n", i_test++);
+    printf("Test: %d\n", i_test++);
   // -+-+-+-+-+-+-+-+-+-+- 2 : bulk threshold write   -+-+-+-+-+-+-+-+-+-+- //
     if (fixedThr != 72){initThresholds(fixedThr, Serial_Port);} 
   // -+-+-+-+-+-+-+-+-+-+- 3 : bulk user EEPROM write   -+-+-+-+-+-+-+-+-+-+- //
@@ -129,7 +129,7 @@ void initPGA460()
   // -+-+-+-+-+-+-+-+-+-+- 4 : bulk TVG write   -+-+-+-+-+-+-+-+-+-+- //
     if (agrTVG != 72 && fixedTVG != 72){initTVG(agrTVG,fixedTVG, Serial_Port);}
   // -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
-  printf("Test: %f\n", i_test++);
+  printf("Test: %d\n", i_test++);
     if (runDiag == 1)
     {      
       diagnostics = runDiagnostics(1,0, Serial_Port);       // run and capture system diagnostics, and print freq diag result
@@ -194,6 +194,8 @@ void initPGA460()
 
 void Cyclic_Task() 
 {                 // put your main code here, to run repeatedly
+  static int i_test;
+  printf("Test: %d\n", i_test++);
 	
 	
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
