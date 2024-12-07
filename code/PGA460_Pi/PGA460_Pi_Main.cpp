@@ -79,7 +79,7 @@ int Serial_Port;
 *-------------------------------------------------------------------*/
 void initPGA460() 
 {
-  int i_test;
+  int i_test=0;
 	
 	// Initialize WiringPi and GPIO
 	wiringPiSetup();  // Use WiringPi's own pin numbering
@@ -191,11 +191,11 @@ void initPGA460()
 |     of the data captured.
 |
 *-------------------------------------------------------------------*/
-
+ int i_test2 = 0;
 void Cyclic_Task() 
 {                 // put your main code here, to run repeatedly
-  static int i_test;
-  printf("Test: %d\n", i_test++);
+  
+  printf("Test: %d\n", i_test2++);
 	
 	
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
