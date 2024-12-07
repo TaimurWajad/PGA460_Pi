@@ -9,6 +9,21 @@
 
 #include "PGA460.h"
 
+// Pin definitions
+#define UART_SEL0 22
+#define UART_SEL1 17
+#define ULTRASONIC_PWR_EN 6
+
+#define SELECT_SENSOR_1() \
+    digitalWrite(UART_SEL1, LOW); \
+    digitalWrite(UART_SEL0, LOW)
+
+#define SELECT_SENSOR_2() \
+    digitalWrite(UART_SEL1, LOW); \
+    digitalWrite(UART_SEL0, HIGH)
+
+
+
 uint8_t commMode = 0;            // Communication mode: 0=UART, 1=TCI, 2=OneWireUART
 uint8_t fixedThr = 1;            // set P1 and P2 thresholds to 0=%25, 1=50%, or 2=75% of max; initial minDistLim (i.e. 20cm) ignored
 uint8_t xdcr = 1;                // set PGA460 to recommended settings for 0=Murata MA58MF14-7N, 1=Murata MA40H1S-R
@@ -35,6 +50,8 @@ double width = 0;             // object width in microseconds
 double peak = 0;              // object peak in 8-bit
 double diagnostics = 0;       // diagnostic selector
 int Serial_Port;
+
+
 
   
   
@@ -74,16 +91,20 @@ void initPGA460()
 
     // Initialize WiringPi and UART
     if (wiringPiSetup() == -1) 
-	{
+	  {
         fprintf(stderr, "Failed to initialize WiringPi\n");
     }
 
     if ((Serial_Port = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
-	{
+	  {
         fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
     }
+
+    // Disable power to ultrasonic sensors
+    digitalWrite(ULTRASONIC_PWR_EN, LOW);
+    SELECT_SENSOR_1();
 	
-	initVariables();
+	  initVariables();
 
 
 /*------------------------------------------------- userInput & standAlone mode initialization -----
