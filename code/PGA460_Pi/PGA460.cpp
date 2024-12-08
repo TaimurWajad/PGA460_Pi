@@ -949,24 +949,26 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 				sendBytes(serial_port, buf8, sizeof(buf8)); //serial transmit master data to read system diagnostic results
 				
 				receiveBytesFromSerial(serial_port, diagMeasResult, 4);
-#if 0				
+#if 1				
 				starttime = millis(); // 
-				while ( (Serial1.available()<(4)) && ((millis() - starttime) < MAX_MILLIS_TO_WAIT) )
-				{      
-					// wait in this loop until we either get +4 bytes of data or 0.25 seconds have gone by
-				}
-				if(Serial1.available() < (4+owuShift-owuShiftSysDiag))
+				size_t bytes_read = 0;
+
+				while ((bytes_read < 4 ) && ((millis() - starttime) < MAX_MILLIS_TO_WAIT)) 
 				{
-					// the data didn't come in - handle the problem here
-					printf("ERROR - Did not receive system diagnostics!");
-				}
-				else
+            		bytes_read += read(serial_port, diagMeasResult + bytes_read, 4 - bytes_read);
+        		}
+
+				if (bytes_read < 4 ) 
 				{
-					for(int n=0; n<(4+owuShift-owuShiftSysDiag); n++)
+            		printf("ERROR - Did not receive system diagnostics!\n");
+        		}
+				else 
+				{
+            		for (int n = 0; n < 4; n++) 
 					{
-					   diagMeasResult[n] = Serial1.read(); // 
-					}
-				}
+                		printf("Received byte[%d]: 0x%02X\n", n, diagMeasResult[n]);
+            		}
+        		}
 #endif
 			}
 		}
