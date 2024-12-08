@@ -1048,7 +1048,6 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 				}
 #endif
 			}
-			elementOffset = owuShift-owuShiftSysDiag; // OWU only
 		}
 			
 	}

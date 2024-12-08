@@ -100,6 +100,11 @@ void initPGA460()
         fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
     }
 
+    pinMode(ULTRASONIC_PWR_EN, OUTPUT);
+    pinMode(UART_SEL0, OUTPUT);
+    pinMode(UART_SEL1, OUTPUT);
+    usleep(100);
+
     // Enable power to ultrasonic sensors
     digitalWrite(ULTRASONIC_PWR_EN, HIGH);
     SELECT_SENSOR_1();
