@@ -952,11 +952,14 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 #if 1				
 				starttime = millis(); // 
 				size_t bytes_read = 0;
+				int i_test = 0;
+				printf("Test 2: %d\n", i_test++);
 
 				while ((bytes_read < 4 ) && ((millis() - starttime) < MAX_MILLIS_TO_WAIT)) 
 				{
             		bytes_read += read(serial_port, diagMeasResult + bytes_read, 4 - bytes_read);
         		}
+				printf("Test 2: %d\n", i_test++);
 
 				if (bytes_read < 4 ) 
 				{
@@ -964,6 +967,7 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
         		}
 				else 
 				{
+					printf("Test 2: %d\n", i_test++);
             		for (int n = 0; n < 4; n++) 
 					{
                 		printf("Received byte[%d]: 0x%02X\n", n, diagMeasResult[n]);
