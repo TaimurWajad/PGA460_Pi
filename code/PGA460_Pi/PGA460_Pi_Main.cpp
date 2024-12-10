@@ -12,7 +12,7 @@
 // Pin definitions
 #define UART_SEL0 22
 #define UART_SEL1 17
-#define ULTRASONIC_PWR_EN 6
+#define ULTRASONIC_PWR_EN 21
 
 #define SELECT_SENSOR_1() \
     digitalWrite(UART_SEL1, LOW); \
@@ -87,16 +87,16 @@ void initPGA460()
 	//wiringPiSetupPhys();  // Use the physical pin numbers on the P1 connector
 
 	//pinMode(UART_RX_PIN, INPUT);
-	pullUpDnControl(UART_RX_PIN, PUD_UP);
+	//pullUpDnControl(UART_RX_PIN, PUD_UP);
 
     // Initialize WiringPi and UART
-    if (wiringPiSetup() == -1) 
-	  {
+	if (wiringPiSetup() == -1) 
+	{
         fprintf(stderr, "Failed to initialize WiringPi\n");
     }
 
     if ((Serial_Port = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
-	  {
+	{
         fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
     }
 
