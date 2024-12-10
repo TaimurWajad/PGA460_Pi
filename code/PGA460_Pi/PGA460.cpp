@@ -949,6 +949,9 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 				sendBytes(serial_port, buf8, sizeof(buf8)); //serial transmit master data to read system diagnostic results
 				
 				receiveBytesFromSerial(serial_port, diagMeasResult, 4);
+				printf("%02X ", diagMeasResult[0]);  // Print each byte in hexadecimal
+				printf("%02X ", diagMeasResult[1]);  // Print each byte in hexadecimal
+				printf("%02X ", diagMeasResult[2]);  // Print each byte in hexadecimal
 #if 1				
 				starttime = millis(); // 
 				size_t bytes_read = 0;
@@ -1087,7 +1090,7 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 			break;
 		case 2: //convert to temperature in degC
 			{				
-				if(diagMeasResult[1+elementOffset] != 0)
+				if(tempNoiseMeasResult[1+elementOffset] != 0)
 				{
 					diagReturn = (tempNoiseMeasResult[1+elementOffset] - 64) / 1.5;
 				}
@@ -1099,7 +1102,7 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 			break;
 		case 3: //noise floor level
 			{				
-				if(diagMeasResult[1+elementOffset] != 0)
+				if(tempNoiseMeasResult[1+elementOffset] != 0)
 				{
 					diagReturn = tempNoiseMeasResult[2+elementOffset];
 				}
