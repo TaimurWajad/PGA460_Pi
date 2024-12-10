@@ -12,7 +12,7 @@
 // Pin definitions
 #define UART_SEL0 22
 #define UART_SEL1 17
-#define ULTRASONIC_PWR_EN 21
+#define ULTRASONIC_PWR_EN 6 	//Rev 1 and below is GPIO6, Rev 2 and up boards is GPIO21
 
 #define SELECT_SENSOR_1() \
     digitalWrite(UART_SEL1, LOW); \
