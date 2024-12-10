@@ -144,7 +144,7 @@
 	
 void initVariables() 
 {
-	for()
+
 }
 			
 void sendBytes(int fd, unsigned char *data, int length) 
