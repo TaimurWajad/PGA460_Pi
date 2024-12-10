@@ -1075,17 +1075,38 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 			break;
 		case 1: // convert to decay period time in us
 			{
-				diagReturn = diagMeasResult[2+elementOffset] * 16;
+				if((diagMeasResult[1+elementOffset] != 0)
+				{
+					diagReturn = diagMeasResult[2+elementOffset] * 16;
+				}
+				else
+				{
+					diagReturn = 0;
+				}			
 			}
 			break;
 		case 2: //convert to temperature in degC
-			{
-				diagReturn = (tempNoiseMeasResult[1+elementOffset] - 64) / 1.5;
+			{				
+				if((diagMeasResult[1+elementOffset] != 0)
+				{
+					diagReturn = (tempNoiseMeasResult[1+elementOffset] - 64) / 1.5;
+				}
+				else
+				{
+					diagReturn = 0;
+				}	
 			}
 			break;
 		case 3: //noise floor level
-			{
-				diagReturn = tempNoiseMeasResult[2+elementOffset];
+			{				
+				if((diagMeasResult[1+elementOffset] != 0)
+				{
+					diagReturn = tempNoiseMeasResult[2+elementOffset];
+				}
+				else
+				{
+					diagReturn = 0;
+				}
 			}
 			break;
 		default: break;
