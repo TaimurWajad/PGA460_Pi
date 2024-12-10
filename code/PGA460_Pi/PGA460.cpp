@@ -1062,7 +1062,7 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 	{
 		case 0: // convert to transducer frequency in kHz
 			{
-				if((diagMeasResult[1+elementOffset] != 0)
+				if(diagMeasResult[1+elementOffset] != 0)
 				{
 					diagReturn = (1 / (diagMeasResult[1+elementOffset] * 0.0000005)) / 1000;
 				}
@@ -1075,7 +1075,7 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 			break;
 		case 1: // convert to decay period time in us
 			{
-				if((diagMeasResult[1+elementOffset] != 0)
+				if(diagMeasResult[1+elementOffset] != 0)
 				{
 					diagReturn = diagMeasResult[2+elementOffset] * 16;
 				}
@@ -1087,7 +1087,7 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 			break;
 		case 2: //convert to temperature in degC
 			{				
-				if((diagMeasResult[1+elementOffset] != 0)
+				if(diagMeasResult[1+elementOffset] != 0)
 				{
 					diagReturn = (tempNoiseMeasResult[1+elementOffset] - 64) / 1.5;
 				}
@@ -1099,7 +1099,7 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 			break;
 		case 3: //noise floor level
 			{				
-				if((diagMeasResult[1+elementOffset] != 0)
+				if(diagMeasResult[1+elementOffset] != 0)
 				{
 					diagReturn = tempNoiseMeasResult[2+elementOffset];
 				}
