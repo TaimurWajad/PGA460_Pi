@@ -124,23 +124,22 @@
 
 // Miscellaneous variables; (+) indicates OWU transmitted byte offset
 	uint8_t checksum = 0x00; 			// UART checksum value	
-	uint8_t ChecksumInput[44]; 		// data byte array for checksum calculator
-	uint8_t ultraMeasResult[34+3]; 	// data byte array for cmd5 and tciB+L return
+	uint8_t ChecksumInput[44] = {0}; 		// data byte array for checksum calculator
+	uint8_t ultraMeasResult[34+3] = {0}; 	// data byte array for cmd5 and tciB+L return
 	uint8_t diagMeasResult[5+3] = {0}; 		// data byte array for cmd8 and index1 return
 	uint8_t tempNoiseMeasResult[4+3] = {0}; 	// data byte array for cmd6 and index0&1 return
-	uint8_t echoDataDump[130+3]; 		// data byte array for cmd7 and index12 return
+	uint8_t echoDataDump[130+3] = {0}; 		// data byte array for cmd7 and index12 return
 	uint8_t tempOrNoise = 0; 			// data byte to determine if temp or noise measurement is to be performed
 	uint8_t comm = 0; 					// indicates UART (0), TCI (1), OWU (2) communication mode	
 	unsigned long starttime; 		// used for function time out
-	uint8_t bulkThr[34+3];				// data byte array for bulk threhsold commands
+	uint8_t bulkThr[34+3] = {0};				// data byte array for bulk threhsold commands
 //UART & OWU exclusive variables
 	uint8_t syncByte = 0x55; 		// data byte for Sync field set UART baud rate of PGA460
 	uint8_t regAddr = 0x00; 		// data byte for Register Address
 	uint8_t regData = 0x00; 		// data byte for Register Data
 	uint8_t uartAddr = 0; 			// PGA460 UART device address (0-7). '0' is factory default address
 	uint8_t numObj = 1; 			// number of objects to detect
-//OWU exclusive variables
-	signed int owuShift = 0;	// accoutns for OWU receiver buffer offset for capturing master transmitted data - always 0 for standard two-wire UART	
+	
 	
 void initVariables() 
 {
@@ -1029,19 +1028,19 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 				receiveBytesFromSerial(serial_port, tempNoiseMeasResult, 4);
 #if 0
 				starttime = millis();
-				while ( (Serial1.available()<(4+owuShift-owuShiftSysDiag)) && ((millis() - starttime) < MAX_MILLIS_TO_WAIT) )
+				while ( (Serial1.available()<(4)) && ((millis() - starttime) < MAX_MILLIS_TO_WAIT) )
 				{      
 					// wait in this loop until we either get +4 bytes of data or 0.25 seconds have gone by
 				}
 				
-				if(Serial1.available() < (4+owuShift-owuShiftSysDiag))
+				if(Serial1.available() < (4))
 				{
 					// the data didn't come in - handle the problem here
 					Serial.println("ERROR - Did not receive temp/noise!");
 				}
 				else
 				{
-					for(int n=0; n<(4+owuShift-owuShiftSysDiag); n++)
+					for(int n=0; n<(4); n++)
 					{
 					   tempNoiseMeasResult[n] = Serial1.read();
 					}
@@ -1063,7 +1062,15 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 	{
 		case 0: // convert to transducer frequency in kHz
 			{
-				diagReturn = (1 / (diagMeasResult[1+elementOffset] * 0.0000005)) / 1000;
+				if((diagMeasResult[1+elementOffset] != 0)
+				{
+					diagReturn = (1 / (diagMeasResult[1+elementOffset] * 0.0000005)) / 1000;
+				}
+				else
+				{
+					diagReturn = 0;
+				}
+				
 			}
 			break;
 		case 1: // convert to decay period time in us
@@ -1280,12 +1287,12 @@ uint8_t pullUltrasonicMeasResult(bool busDemo, int serial_port)
 	receiveBytesFromSerial(serial_port, ultraMeasResult, (2+(numObj*4)));
 #if 0		
 	starttime = millis();
-	while ( (Serial1.available()<(5+owuShift)) && ((millis() - starttime) < MAX_MILLIS_TO_WAIT) )
+	while ( (Serial1.available()<(5)) && ((millis() - starttime) < MAX_MILLIS_TO_WAIT) )
 	{      
 		// wait in this loop until we either get +5 bytes of data, or 0.25 seconds have gone by
 	}
 			
-	if((Serial1.available() < (5+owuShift)))
+	if((Serial1.available() < (5)))
 	{
 		if (busDemo == false)
 		{
@@ -1296,7 +1303,7 @@ uint8_t pullUltrasonicMeasResult(bool busDemo, int serial_port)
 	}
 	else
 	{
-		for(int n=0; n<((2+(numObj*4))+owuShift); n++)
+		for(int n=0; n<((2+(numObj*4))); n++)
 		{			
 			ultraMeasResult[n] = Serial1.read();
 			delay(1);		   
