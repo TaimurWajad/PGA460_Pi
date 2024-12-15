@@ -1741,7 +1741,7 @@ uint8_t calcChecksum(uint8_t cmd)
 /*
 	This function is to perform UART loop-back test
 */
-
+#if 0
 void uartLoopBackTest(int serial_port) 
 {
     uint8_t data_to_write = 50;
@@ -1766,6 +1766,41 @@ void uartLoopBackTest(int serial_port)
     printf("\n");
     usleep(100000); // 100ms delay
 }
+#endif
+void uartLoopBackTest(int serial_port) 
+{
+    uint8_t data_to_write = 2;
+    uint8_t data_read;
+
+    // Flush UART buffers
+    tcflush(serial_port, TCIOFLUSH);
+
+    // Write a single byte to the UART
+    ssize_t bytes_written = write(serial_port, &data_to_write, 1);
+    if (bytes_written != 1) {
+        perror("Failed to write to UART");
+        return;
+    }
+
+    usleep(20000); // 20ms delay for data to loop back
+
+    printf("Write: %d\n", data_to_write);
+
+    // Read data from the UART
+    ssize_t bytes_read = read(serial_port, &data_read, 1);
+    if (bytes_read < 0) {
+        perror("Error reading from UART");
+        return;
+    } else if (bytes_read == 0) {
+        printf("No data available to read.\n");
+    } else {
+        printf("Read: %d\n", data_read);
+    }
+
+    printf("\n");
+    usleep(100000); // 100ms delay
+}
+
 
 
 
