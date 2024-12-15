@@ -29,7 +29,7 @@ uint8_t fixedThr = 1;            // set P1 and P2 thresholds to 0=%25, 1=50%, or
 uint8_t xdcr = 1;                // set PGA460 to recommended settings for 0=Murata MA58MF14-7N, 1=Murata MA40H1S-R
 uint8_t agrTVG = 2;              // set TVG's analog front end gain range to 0=32-64dB, 1=46-78dB, 2=52-84dB, or 3=58-90dB
 uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
-uint8_t runDiag = 0;             // run system diagnostics and temp/noise level before looping burst+listen command
+uint8_t runDiag = 1;             // run system diagnostics and temp/noise level before looping burst+listen command
 uint8_t edd = 0;                 // echo data dump of preset 1, 2, or neither TODO: Import this Fn.
 uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
@@ -279,11 +279,15 @@ void Cyclic_Task()
 
 int main()
 {
+	int i_test4 = 0;
 	initPGA460();
 	
 	while(1)
-	{         
-		Cyclic_Task();
+	{ 
+		 printf("Test 0: %d\n", i_test4++);
+		diagnostics = runDiagnostics(1,0, Serial_Port);       // run and capture system diagnostics, and print freq diag result
+		printf("System Diagnostics - Frequency (kHz): %f\n", diagnostics);
+		//Cyclic_Task();
 		//uartLoopBackTest(Serial_Port);
 		usleep(250000); // Sleep for 250,000 microseconds (250 milliseconds)
 	}
