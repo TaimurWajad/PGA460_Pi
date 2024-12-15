@@ -19,8 +19,8 @@
     digitalWrite(UART_SEL0, LOW)
 
 #define SELECT_SENSOR_2() \
-    digitalWrite(UART_SEL1, LOW); \
-    digitalWrite(UART_SEL0, HIGH)
+    digitalWrite(UART_SEL1, HIGH); \
+    digitalWrite(UART_SEL0, LOW)
 
 
 
@@ -29,7 +29,7 @@ uint8_t fixedThr = 1;            // set P1 and P2 thresholds to 0=%25, 1=50%, or
 uint8_t xdcr = 1;                // set PGA460 to recommended settings for 0=Murata MA58MF14-7N, 1=Murata MA40H1S-R
 uint8_t agrTVG = 2;              // set TVG's analog front end gain range to 0=32-64dB, 1=46-78dB, 2=52-84dB, or 3=58-90dB
 uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
-uint8_t runDiag = 1;             // run system diagnostics and temp/noise level before looping burst+listen command
+uint8_t runDiag = 0;             // run system diagnostics and temp/noise level before looping burst+listen command
 uint8_t edd = 0;                 // echo data dump of preset 1, 2, or neither TODO: Import this Fn.
 uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
@@ -107,7 +107,7 @@ void initPGA460()
 
     // Enable power to ultrasonic sensors
     digitalWrite(ULTRASONIC_PWR_EN, HIGH);
-    SELECT_SENSOR_2();
+    SELECT_SENSOR_1();
 	
 	  initVariables();
 
@@ -283,17 +283,49 @@ int main()
 	
 	while(1)
 	{         
-		Cyclic_Task();
+		//Cyclic_Task();
+		uartLoopBackTest();
 		usleep(250000); // Sleep for 250,000 microseconds (250 milliseconds)
 	}
 		
 	// Disable power to ultrasonic sensors
-  digitalWrite(ULTRASONIC_PWR_EN, LOW);
+	digitalWrite(ULTRASONIC_PWR_EN, LOW);
 	// Close the serial port
 	serialClose(Serial_Port);
 
 	return 0;
 	
+}
+
+/*
+	This function is to perform UART loop-back test
+*/
+
+uint8_t i = 49;
+
+void uartLoopBackTest(int serial_port) 
+{
+    uint8_t data_to_write = i++;
+    uint8_t data_read;
+
+    // Write a single byte to the UART
+    write(serial_port, &data_to_write, 1);
+    usleep(20000); // 20ms delay
+
+    printf("Write: %d\n", data_to_write);
+
+    // Read data from the UART if available
+    if (read(serial_port, &data_read, 1) > 0) 
+	{
+        printf("Read: %d\n", data_read);
+    } 
+	else 
+	{
+        printf("No data available to read.\n");
+    }
+
+    printf("\n");
+    usleep(100000); // 100ms delay
 }
 
 
