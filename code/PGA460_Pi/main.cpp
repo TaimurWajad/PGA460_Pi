@@ -7,7 +7,7 @@
 #include <string.h>  // Include this header for strerror
 
 #define UART_DEVICE "/dev/ttyAMA5"  // Default UART device on Raspberry Pi 4
-#define BAUD_RATE 115200              // Set baud rate to match PGA450
+#define BAUD_RATE 9600              // Set baud rate to match PGA450
 #define UART_RX_PIN 13              // GPIO15 corresponds to UART RX
 
 // Pin definitions
