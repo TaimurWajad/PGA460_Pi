@@ -284,7 +284,7 @@ int main()
 	while(1)
 	{         
 		//Cyclic_Task();
-		uartLoopBackTest();
+		uartLoopBackTest(Serial_Port);
 		usleep(250000); // Sleep for 250,000 microseconds (250 milliseconds)
 	}
 		
