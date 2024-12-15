@@ -1750,11 +1750,6 @@ void uartLoopBackTest(int serial_port)
 
     // Flush UART buffers
     tcflush(serial_port, TCIOFLUSH);
-	// Discard any leftover data in the buffer, TODO: Remove if dela
-    uint8_t temp;
-    while (read(serial_port, &temp, 1) > 0) {
-        // Flushing the input buffer
-    }
 
     // Write a single byte to the UART
     ssize_t bytes_written = write(serial_port, &data_to_write, 1);
