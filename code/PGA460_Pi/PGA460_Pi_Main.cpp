@@ -297,35 +297,6 @@ int main()
 	
 }
 
-/*
-	This function is to perform UART loop-back test
-*/
 
-uint8_t i = 49;
-
-void uartLoopBackTest(int serial_port) 
-{
-    uint8_t data_to_write = i++;
-    uint8_t data_read;
-
-    // Write a single byte to the UART
-    write(serial_port, &data_to_write, 1);
-    usleep(20000); // 20ms delay
-
-    printf("Write: %d\n", data_to_write);
-
-    // Read data from the UART if available
-    if (read(serial_port, &data_read, 1) > 0) 
-	{
-        printf("Read: %d\n", data_read);
-    } 
-	else 
-	{
-        printf("No data available to read.\n");
-    }
-
-    printf("\n");
-    usleep(100000); // 100ms delay
-}
 
 
