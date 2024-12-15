@@ -1748,31 +1748,6 @@ void uartLoopBackTest(int serial_port)
     uint8_t data_to_write = 50;
     uint8_t data_read;
 
-    // Write a single byte to the UART
-    write(serial_port, &data_to_write, 1);
-    usleep(20000); // 20ms delay
-
-    printf("Write: %d\n", data_to_write);
-
-    // Read data from the UART if available
-    if (read(serial_port, &data_read, 1) > 0) 
-	{
-        printf("Read: %d\n", data_read);
-    } 
-	else 
-	{
-        printf("No data available to read.\n");
-    }
-
-    printf("\n");
-    usleep(100000); // 100ms delay
-}
-#endif
-void uartLoopBackTest(int serial_port) 
-{
-    uint8_t data_to_write = 50;
-    uint8_t data_read;
-
     // Flush UART buffers
     tcflush(serial_port, TCIOFLUSH);
 
@@ -1784,6 +1759,49 @@ void uartLoopBackTest(int serial_port)
     }
 
     usleep(20000); // 20ms delay for data to loop back
+
+    printf("Write: %d\n", data_to_write);
+
+    // Read data from the UART
+    ssize_t bytes_read = read(serial_port, &data_read, 1);
+    if (bytes_read < 0) {
+        perror("Error reading from UART");
+        return;
+    } else if (bytes_read == 0) {
+        printf("No data available to read.\n");
+    } else {
+        printf("Read: %d\n", data_read);
+    }
+
+    printf("\n");
+    usleep(100000); // 100ms delay
+}
+#endif
+
+void uartLoopBackTest(int serial_port) 
+{
+    uint8_t data_to_write = 50;
+    uint8_t data_read;
+
+    // Flush UART buffers
+    if (tcflush(serial_port, TCIOFLUSH) != 0) {
+        perror("Failed to flush UART buffers");
+    }
+
+    // Discard any leftover data in the buffer
+    uint8_t temp;
+    while (read(serial_port, &temp, 1) > 0) {
+        // Flushing the input buffer
+    }
+
+    // Write a single byte to the UART
+    ssize_t bytes_written = write(serial_port, &data_to_write, 1);
+    if (bytes_written != 1) {
+        perror("Failed to write to UART");
+        return;
+    }
+
+    usleep(50000); // Delay for data to loop back
 
     printf("Write: %d\n", data_to_write);
 
