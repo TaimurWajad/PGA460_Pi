@@ -109,7 +109,7 @@ void initPGA460()
     digitalWrite(ULTRASONIC_PWR_EN, HIGH);
     SELECT_SENSOR_1();
 	
-	  initVariables();
+	initVariables();
 
     printf("Test: %d\n", ++i_test);
 /*------------------------------------------------- userInput & standAlone mode initialization -----
@@ -283,8 +283,8 @@ int main()
 	
 	while(1)
 	{         
-		//Cyclic_Task();
-		uartLoopBackTest(Serial_Port);
+		Cyclic_Task();
+		//uartLoopBackTest(Serial_Port);
 		usleep(250000); // Sleep for 250,000 microseconds (250 milliseconds)
 	}
 		
