@@ -1770,7 +1770,7 @@ void uartLoopBackTest(int serial_port)
 #endif
 void uartLoopBackTest(int serial_port) 
 {
-    uint8_t data_to_write = 2;
+    uint8_t data_to_write = 50;
     uint8_t data_read;
 
     // Flush UART buffers
