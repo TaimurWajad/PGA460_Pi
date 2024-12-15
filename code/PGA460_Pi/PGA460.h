@@ -26,6 +26,7 @@ bool receiveBytesFromSerial(int serial_port, unsigned char* buffer, int numBytes
 uint8_t calcChecksum(uint8_t cmd);
 void pga460SerialFlush(int serial_port);
 void initVariables();
+void uartLoopBackTest(int serial_port);
 
 
 #endif
