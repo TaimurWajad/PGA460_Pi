@@ -43,7 +43,7 @@ unsigned char buf19[4] = {0x55, 0x13, 0x01, 0xEB};
 //cmd 25 - broadcast bulk threshold write
 unsigned char buf25[35] =  {0x55, 0x19, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x84, 0x21, 0x08, 0x42, 0x10, 0x80, 0x80, 0x80, 0x80, 0x00, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x84, 0x21, 0x08, 0x42, 0x10, 0x80, 0x80, 0x80, 0x80, 0x00, 0x7C};
 
-unsigned char buf6[3] = {0x55, 0x06};//{0x55, 0x06, 0xF9};
+unsigned char buf6[3] = {0x55, 0x06, 0xF9};
 
 void sendBytes(int fd, unsigned char *data, int length) 
 {
@@ -120,19 +120,20 @@ int main() {
     while (1) 
 	{
 //		SesnorMeasurement(fd);
-#if 1
+
         // Send 4 bytes
 		// broadcast p1 burst+listen (non-dependent on UART_ADDR)
-		
+#if 0		
 		sendBytes(fd, buf17, sizeof(buf17));
 		usleep(10000);  // Wait for 10 milliseconds
-		//sendBytes(fd, buf6, 3);
+		
 
         // Wait for data to be available (this is an example, you might want to implement a better waiting mechanism)
         //usleep(10000);  // Wait for 10 milliseconds
 		// read back ultrasonic meas results from UART_ADDR=0
 		sendBytes(fd, buf5, sizeof(buf5));
-
+#endif
+		sendBytes(fd, buf6, sizeof(buf6));
         // Receive data (up to 256 bytes in this example)
         receivedLength = receiveBytes(fd, rxData, sizeof(rxData));
 
@@ -150,7 +151,7 @@ int main() {
 		{
             printf("No data received\n");
         }
-#endif
+
 
         // Sleep for a while before the next iteration
         usleep(1000000);  // Wait for 1 second before sending data again
