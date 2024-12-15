@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <string.h>  // Include this header for strerror
 #include <stdint.h>  // Include this header for uint8_t and uint32_t
+#include <termios.h>
 #include "PGA460.h"
 
 
