@@ -79,7 +79,7 @@ int main() {
 
     wiringPiSetupGpio();
 	//pinMode(UART_RX_PIN, INPUT);
-	pullUpDnControl(UART_RX_PIN, PUD_UP);
+	
 
     // Initialize WiringPi and UART
     if (wiringPiSetup() == -1) 
@@ -87,6 +87,7 @@ int main() {
         fprintf(stderr, "Failed to initialize WiringPi\n");
         return 1;
     }
+    pullUpDnControl(UART_RX_PIN, PUD_UP);
 
     pinMode(ULTRASONIC_PWR_EN, OUTPUT);
     pinMode(UART_SEL0, OUTPUT);
