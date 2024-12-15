@@ -6,9 +6,24 @@
 #include <errno.h>
 #include <string.h>  // Include this header for strerror
 
-#define UART_DEVICE "/dev/ttyS0"  // Default UART device on Raspberry Pi 4
-#define BAUD_RATE 115200              // Set baud rate to match PGA450
+#define UART_DEVICE "/dev/ttyAMA5"  // Default UART device on Raspberry Pi 4
+#define BAUD_RATE 9600              // Set baud rate to match PGA450
 #define UART_RX_PIN 15              // GPIO15 corresponds to UART RX
+
+// Pin definitions
+#define UART_SEL0 22
+#define UART_SEL1 17
+#define ULTRASONIC_PWR_EN 6 	//Rev 1 and below is GPIO6, Rev 2 and up boards is GPIO21
+
+#define SELECT_SENSOR_1() \
+    digitalWrite(UART_SEL1, LOW); \
+    digitalWrite(UART_SEL0, LOW)
+
+#define SELECT_SENSOR_2() \
+    digitalWrite(UART_SEL1, HIGH); \
+    digitalWrite(UART_SEL0, LOW)
+
+
 unsigned char RX_DATA[2] = {0};
 
 //note: bare bones raw UART demo used to send a burst/listen command to PGA460
@@ -73,11 +88,22 @@ int main() {
         return 1;
     }
 
+    pinMode(ULTRASONIC_PWR_EN, OUTPUT);
+    pinMode(UART_SEL0, OUTPUT);
+    pinMode(UART_SEL1, OUTPUT);
+    usleep(100);
+
+    // Enable power to ultrasonic sensors
+    digitalWrite(ULTRASONIC_PWR_EN, HIGH);
+    SELECT_SENSOR_1();
+
     if ((fd = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
 	{
         fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
         return 1;
     }
+
+
 	
 	//
 	usleep(1000000);  // Wait for 1 second before sending data again
@@ -129,6 +155,9 @@ int main() {
         usleep(1000000);  // Wait for 1 second before sending data again
     }
 
+    // Disable power to ultrasonic sensors
+	digitalWrite(ULTRASONIC_PWR_EN, LOW);
+
     // Close the UART connection (this part will never be reached in the endless loop)
     serialClose(fd);
 
@@ -140,7 +169,7 @@ int main() {
 
 
 
-
+#if 0
 
 int main() {
     int serial_port;
@@ -176,6 +205,7 @@ int main() {
 
     return 0;
 }
+#endif
 
 
 
