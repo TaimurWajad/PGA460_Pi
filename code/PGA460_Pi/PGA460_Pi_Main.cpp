@@ -106,7 +106,7 @@ void initPGA460()
     usleep(100);
 
     // Enable power to ultrasonic sensors
-    digitalWrite(ULTRASONIC_PWR_EN, HIGH);
+    digitalWrite(ULTRASONIC_PWR_EN, LOW);
     SELECT_SENSOR_1();
 	
 	  initVariables();
