@@ -33,7 +33,7 @@ uint8_t runDiag = 0;             // run system diagnostics and temp/noise level 
 uint8_t edd = 0;                 // echo data dump of preset 1, 2, or neither TODO: Import this Fn.
 uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
-uint8_t numOfObj = 8;            // number of object to detect set to 1-8
+uint8_t numOfObj = 1;            // number of object to detect set to 1-8
 
 
 uint8_t uartAddrUpdate = 0;      // PGA460 UART address to interface to; default is 0, possible address 0-7
@@ -81,33 +81,32 @@ void initPGA460()
 {
 	
 	// Initialize WiringPi and GPIO
-	wiringPiSetup();  // Use WiringPi's own pin numbering
-	wiringPiSetupGpio();  // Use BCM GPIO numbering
-	//wiringPiSetupPhys();  // Use the physical pin numbers on the P1 connector
-
-	//pinMode(UART_RX_PIN, INPUT);
-	
+	wiringPiSetup();  			// Use WiringPi's own pin numbering
+	wiringPiSetupGpio();  		// Use BCM GPIO numbering
+	//wiringPiSetupPhys();  	// Use the physical pin numbers on the P1 connector
 
     // Initialize WiringPi and UART
 	if (wiringPiSetup() == -1) 
 	{
         fprintf(stderr, "Failed to initialize WiringPi\n");
     }
+	
+	//pinMode(UART_RX_PIN, INPUT);
+	pullUpDnControl(UART_RX_PIN, PUD_UP);
+    pinMode(ULTRASONIC_PWR_EN, OUTPUT);
+    pinMode(UART_SEL0, OUTPUT);
+    pinMode(UART_SEL1, OUTPUT);
+    usleep(100);
+    
+    digitalWrite(ULTRASONIC_PWR_EN, HIGH);	// Enable power to ultrasonic sensors
+    SELECT_SENSOR_1();
 
     if ((Serial_Port = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
 	{
         fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
     }
 	
-    pinMode(ULTRASONIC_PWR_EN, OUTPUT);
-    pinMode(UART_SEL0, OUTPUT);
-    pinMode(UART_SEL1, OUTPUT);
-    usleep(100);
-
-	pullUpDnControl(UART_RX_PIN, PUD_UP);
-    // Enable power to ultrasonic sensors
-    digitalWrite(ULTRASONIC_PWR_EN, HIGH);
-    SELECT_SENSOR_1();
+	usleep(100000);  // Wait for 100 ms before sending data
 	
 	initVariables();
 

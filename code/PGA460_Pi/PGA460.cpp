@@ -928,7 +928,9 @@ void initTVG(uint8_t agr, uint8_t tvg, int serial_port)
 double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 {
 	double diagReturn = 0;
-	pga460SerialFlush(serial_port); // 
+	//pga460SerialFlush(serial_port); // 
+	// Flush UART buffers
+    tcflush(serial_port, TCIOFLUSH);
 	int elementOffset = 0;   //Only non-zero for OWU mode.
 	int owuShiftSysDiag = 0; // Only non-zero for OWU mode.
 	
@@ -942,7 +944,9 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 			
 			
 			usleep(1000);  // Wait for 100 msecond before sending data again, :: delay(100); // record time length maximum of 65ms, so add margin
-			pga460SerialFlush(serial_port);
+			//pga460SerialFlush(serial_port);
+			// Flush UART buffers
+			tcflush(serial_port, TCIOFLUSH);
 			
 			uint8_t buf8[3] = {syncByte, SD, calcChecksum(SD)};
 			if (comm == 0 || comm == 2) // UART or OWU mode
@@ -989,7 +993,9 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 			{
 				sendBytes(serial_port, buf4, sizeof(buf4)); //serial transmit master data to run temp measurement
 				usleep(100);  // Wait for 10 ms before sending data againdelay(10);
-				pga460SerialFlush(serial_port);
+				//pga460SerialFlush(serial_port);
+				// Flush UART buffers
+				tcflush(serial_port, TCIOFLUSH);
 				usleep(100); 
 			}
 			
@@ -1013,7 +1019,9 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 			}
 			
 			usleep(100);  // Wait for 10 ms delay(10);
-			pga460SerialFlush(serial_port);
+			//pga460SerialFlush(serial_port);
+			// Flush UART buffers
+			tcflush(serial_port, TCIOFLUSH);
 			usleep(100);  // Wait for 10 ms delay(10);
 			
 			uint8_t buf6[3] = {syncByte, TNLR, calcChecksum(TNLR)}; //serial transmit master data to read temperature and noise results
@@ -1163,7 +1171,9 @@ bool burnEEPROM(int serial_port)
 		
 		
 		// Read back EEPROM program status	
-		pga460SerialFlush(serial_port);
+		//pga460SerialFlush(serial_port);
+		// Flush UART buffers
+		tcflush(serial_port, TCIOFLUSH);
 		regAddr = 0x40; //EE_CNTRL
 		uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)};
 		if (comm == 0 || comm == 2) // UART or OWU mode
@@ -1272,17 +1282,11 @@ void ultrasonicCmd(uint8_t cmd, uint8_t numObjUpdate, int serial_port)
 			bufCmd[1] = BC_P2LO;
 			bufCmd[3] = calcChecksum(BC_P2LO);
 			break;
-		}		
-		
+		}				
 		default: return;	
 	}		
-	
+	sendBytes(serial_port, bufCmd, sizeof(bufCmd)); // serial transmit master data to initiate burst and/or listen command
 
-	if (comm == 0 || comm == 2) // UART or OWU mode
-	{
-		sendBytes(serial_port, bufCmd, sizeof(bufCmd)); // serial transmit master data to initiate burst and/or listen command
-	}
-	
 	usleep(70000);  // Wait for 10 milliseconds :: delay(70); // maximum record length is 65ms, so delay with margin
 	return;
 }
@@ -1301,9 +1305,10 @@ void ultrasonicCmd(uint8_t cmd, uint8_t numObjUpdate, int serial_port)
 uint8_t pullUltrasonicMeasResult(bool busDemo, int serial_port)
 {
 
-	pga460SerialFlush(serial_port);		
+	//pga460SerialFlush(serial_port);
+	// Flush UART buffers
+    tcflush(serial_port, TCIOFLUSH);
 	memset(ultraMeasResult, 0, sizeof(ultraMeasResult));
-
 		
 	uint8_t buf5[3] = {syncByte, UMR, calcChecksum(UMR)};
 
