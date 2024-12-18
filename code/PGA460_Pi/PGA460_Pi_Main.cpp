@@ -208,9 +208,7 @@ void Cyclic_Task()
       { 
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
 		  printf("Test 4: %d\n", Test4++);
-		  //tmp = printUltrasonicMeasResult(0+(i*3));
-		  
-          distance = tmp;
+		  tmp = printUltrasonicMeasResult(0+(i*3));
 
 		  printf("Test 4: %d\n", Test4++);
 		  
