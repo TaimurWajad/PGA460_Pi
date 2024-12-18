@@ -208,7 +208,8 @@ void Cyclic_Task()
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
 		  printf("Test 4: %d\n", Test4++);
 		  
-          //distance = printUltrasonicMeasResult(0+(i*3)); 
+          //distance = printUltrasonicMeasResult(0+(i*3));
+		  distance = Test4++;
 		  printf("Test 4: %d\n", Test4++);
 		  
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
@@ -225,7 +226,6 @@ void Cyclic_Task()
             objectDetected = true;
         }
       }
-	  objectDetected = true;
     
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 2 (LONG RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       if(objectDetected == false || alwaysLong == true)                       // If no preset 1 (short distance) measurement result, switch to Preset 2 B+L command
