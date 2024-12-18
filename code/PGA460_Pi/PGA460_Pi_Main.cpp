@@ -208,7 +208,7 @@ void Cyclic_Task()
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
 		  printf("Test 4: %d\n", Test4++);
 		  
-          distance = printUltrasonicMeasResult(0+(i*3)); 
+          //distance = printUltrasonicMeasResult(0+(i*3)); 
 		  printf("Test 4: %d\n", Test4++);
 		  
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
