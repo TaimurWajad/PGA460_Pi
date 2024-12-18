@@ -1309,7 +1309,7 @@ uint8_t pullUltrasonicMeasResult(bool busDemo, int serial_port)
 	//pga460SerialFlush(serial_port);
 	// Flush UART buffers
     tcflush(serial_port, TCIOFLUSH);
-	memset(ultraMeasResult, 0, sizeof(ultraMeasResult));
+	//memset(ultraMeasResult, 0, sizeof(ultraMeasResult));
 		
 	uint8_t buf5[3] = {syncByte, UMR, calcChecksum(UMR)};
 
