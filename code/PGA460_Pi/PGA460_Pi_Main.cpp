@@ -274,6 +274,7 @@ void Cyclic_Task()
 uint Test3 = 0;
 int main()
 {
+	printf("Test 3: %d\n", Test3++);
 	initPGA460();
 	printf("Test 3: %d\n", Test3++);
 	while(1)
