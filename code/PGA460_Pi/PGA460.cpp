@@ -1382,13 +1382,23 @@ double printUltrasonicMeasResultExt(uint8_t umr, int speedSound)
 	uint16_t objDist = 0;
 	uint16_t objWidth = 0;
 	uint16_t objAmp = 0;
+	int tmp_spd = 2*0.000001*speedSound;
 	
 	switch (umr)
 	{
 		case 0: //Obj1 Distance (m)
 		{
 			objDist = (ultraMeasResult[1]<<8) + ultraMeasResult[2];
-			objReturn = (objDist/2*0.000001*speedSound) - digitalDelay;
+			if(tmp_spd != 0)
+			{
+				objReturn = (objDist/tmp_spd) - digitalDelay;
+			}
+			else
+			{
+				printf("ERROR - Invalid object result!");printf("\n");
+				objReturn = 0xFFFF;
+			}
+			
 			break;
 		}
 		case 1: //Obj1 Width (us)
