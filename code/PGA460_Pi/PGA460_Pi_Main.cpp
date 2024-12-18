@@ -208,7 +208,7 @@ void Cyclic_Task()
       { 
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
 		  printf("Test 4: %d\n", Test4++);
-		  tmp = printUltrasonicMeasResult(0+(i*3));
+		  //tmp = printUltrasonicMeasResult(0+(i*3));
 		  
           distance = tmp;
 
@@ -221,7 +221,7 @@ void Cyclic_Task()
     
         if (1)//(distance > minDistLim && distance < 11.2)  // turn on DS1_LED if object is above minDistLim
         {
-            //printf("P1 Obj %d Distance (m): %.2f\n", i + 1, distance);
+            printf("P1 Obj %d Distance (m): %.2f\n", i + 1, distance);
 
             //Serial.print("P1 Obj"); Serial.print(i+1); Serial.print(" Width (us): "); Serial.println(width);
             //Serial.print("P1 Obj"); Serial.print(i+1); Serial.print(" Amplitude (dec): "); Serial.println(peak);

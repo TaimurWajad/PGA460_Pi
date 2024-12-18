@@ -1382,7 +1382,7 @@ double printUltrasonicMeasResultExt(uint8_t umr, int speedSound)
 	uint16_t objDist = 0;
 	uint16_t objWidth = 0;
 	uint16_t objAmp = 0;
-	int tmp_spd = 2*0.000001*speedSound;
+	double tmp_spd = 2*0.000001*speedSound;
 	
 	switch (umr)
 	{
