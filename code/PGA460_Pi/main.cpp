@@ -124,7 +124,7 @@ int main() {
 
         // Send 4 bytes
 		// broadcast p1 burst+listen (non-dependent on UART_ADDR)
-#if 1		
+#if 0		
 		sendBytes(fd, buf17, sizeof(buf17));
 		usleep(10000);  // Wait for 10 milliseconds
 		
@@ -134,7 +134,7 @@ int main() {
 		// read back ultrasonic meas results from UART_ADDR=0
 		sendBytes(fd, buf5, sizeof(buf5));
 #endif
-		//sendBytes(fd, buf6, sizeof(buf6));
+		sendBytes(fd, buf6, sizeof(buf6));
         // Receive data (up to 256 bytes in this example)
         receivedLength = receiveBytes(fd, rxData, sizeof(rxData));
 
