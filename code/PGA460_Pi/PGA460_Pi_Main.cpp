@@ -211,7 +211,7 @@ void Cyclic_Task()
   
         usleep(commandDelay*10);  // Wait for 100 msecond before sending data again delay(commandDelay);
     
-        if (1)//(distance > minDistLim && distance < 11.2)  // turn on DS1_LED if object is above minDistLim
+        if (distance > minDistLim && distance < 11.2)  // turn on DS1_LED if object is above minDistLim
         {
             printf("P1 Obj %d Distance (m): %.2f\n", i + 1, distance);
 
@@ -220,8 +220,6 @@ void Cyclic_Task()
             objectDetected = true;
         }
       }
-	  objectDetected = true;
-    
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 2 (LONG RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       if(objectDetected == false || alwaysLong == true)                       // If no preset 1 (short distance) measurement result, switch to Preset 2 B+L command
       {   
