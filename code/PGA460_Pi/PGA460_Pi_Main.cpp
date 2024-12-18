@@ -204,7 +204,7 @@ void Cyclic_Task()
       for (uint8_t i=0; i<numOfObj; i++)
       { 
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
-		  tmp = printUltrasonicMeasResult(0+(i*3));
+		  distance = printUltrasonicMeasResult(0+(i*3));
 
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
           //peak = ussc.printUltrasonicMeasResult(2+(i*3));   // only available for UART, OWU, and SPI
@@ -213,7 +213,7 @@ void Cyclic_Task()
     
         if (1)//(distance > minDistLim && distance < 11.2)  // turn on DS1_LED if object is above minDistLim
         {
-            //printf("P1 Obj %d Distance (m): %.2f\n", i + 1, tmp);
+            printf("P1 Obj %d Distance (m): %.2f\n", i + 1, distance);
 
             //Serial.print("P1 Obj"); Serial.print(i+1); Serial.print(" Width (us): "); Serial.println(width);
             //Serial.print("P1 Obj"); Serial.print(i+1); Serial.print(" Amplitude (dec): "); Serial.println(peak);
@@ -270,15 +270,12 @@ void Cyclic_Task()
         }  
       }
 }
-uint8_t Test3 = 0;
+
 int main()
 {
-	printf("Test 3: %d\n", Test3++);
 	initPGA460();
-	printf("Test 3: %d\n", Test3++);
 	while(1)
 	{ 
-		printf("Test 3: %d\n", Test3++);
 		Cyclic_Task();
 		//uartLoopBackTest(Serial_Port);
 		usleep(25000); // (25 milliseconds)
