@@ -221,13 +221,14 @@ void Cyclic_Task()
     
         if (1)//(distance > minDistLim && distance < 11.2)  // turn on DS1_LED if object is above minDistLim
         {
-            printf("P1 Obj %d Distance (m): %.2f\n", i + 1, distance);
+            //printf("P1 Obj %d Distance (m): %.2f\n", i + 1, distance);
 
             //Serial.print("P1 Obj"); Serial.print(i+1); Serial.print(" Width (us): "); Serial.println(width);
             //Serial.print("P1 Obj"); Serial.print(i+1); Serial.print(" Amplitude (dec): "); Serial.println(peak);
             objectDetected = true;
         }
       }
+	  objectDetected = true;
     
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 2 (LONG RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       if(objectDetected == false || alwaysLong == true)                       // If no preset 1 (short distance) measurement result, switch to Preset 2 B+L command
