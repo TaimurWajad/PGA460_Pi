@@ -132,7 +132,7 @@ int main() {
         // Wait for data to be available (this is an example, you might want to implement a better waiting mechanism)
         //usleep(10000);  // Wait for 10 milliseconds
 		// read back ultrasonic meas results from UART_ADDR=0
-		sendBytes(fd, buf5, sizeof(buf5));
+		sendBytes(fd, buf_t1, sizeof(buf_t1));
 #endif
 		//sendBytes(fd, buf6, sizeof(buf6));
         // Receive data (up to 256 bytes in this example)
