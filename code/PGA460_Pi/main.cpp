@@ -126,7 +126,7 @@ int main() {
 		// broadcast p1 burst+listen (non-dependent on UART_ADDR)
 #if 1		
 		sendBytes(fd, buf17, sizeof(buf17));
-		usleep(2000);  // Wait for 10 milliseconds
+		usleep(10000);  // Wait for 10 milliseconds
 		
 
         // Wait for data to be available (this is an example, you might want to implement a better waiting mechanism)
