@@ -192,7 +192,7 @@ bool receiveBytesFromSerial(int serial_port, unsigned char* buffer, int numBytes
         for (int n = 0; n < numBytesToReceive; n++) 
 		{
             buffer[n] = serialGetchar(serial_port);
-			printf("0x%02X ", buffer[i]);
+			printf("0x%02X ", buffer[n]);
         }
         return true; // Return true indicating success
     }
