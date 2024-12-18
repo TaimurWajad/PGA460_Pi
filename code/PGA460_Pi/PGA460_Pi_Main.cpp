@@ -196,21 +196,15 @@ void initPGA460()
 |     of the data captured.
 |
 *-------------------------------------------------------------------*/
- int i_test2 = 0;
 void Cyclic_Task() 
 {                 // put your main code here, to run repeatedly
-  
-  printf("Test 1: %d\n", i_test2++);
-	
-	
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       objectDetected = false;                       // Initialize object detected flag to false
       ultrasonicCmd(0, numOfObj, Serial_Port);  
-      printf("Test 1: %d\n", i_test2++);             // run preset 1 (short distance) burst+listen for 1 object
+      // run preset 1 (short distance) burst+listen for 1 object
       pullUltrasonicMeasResult(demoMode, Serial_Port);      // Pull Ultrasonic Measurement Result
       for (uint8_t i=0; i<numOfObj; i++)
       { 
-        printf("Test 1: %d\n", i_test2++);
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
           distance = printUltrasonicMeasResult(0+(i*3));      
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
@@ -279,15 +273,11 @@ void Cyclic_Task()
 
 int main()
 {
-	int i_test4 = 0;
 	initPGA460();
 	
 	while(1)
 	{ 
-		 printf("Test 0: %d\n", i_test4++);
-		diagnostics = runDiagnostics(1,0, Serial_Port);       // run and capture system diagnostics, and print freq diag result
-		printf("System Diagnostics - Frequency (kHz): %f\n", diagnostics);
-		//Cyclic_Task();
+		Cyclic_Task();
 		//uartLoopBackTest(Serial_Port);
 		usleep(250000); // Sleep for 250,000 microseconds (250 milliseconds)
 	}
