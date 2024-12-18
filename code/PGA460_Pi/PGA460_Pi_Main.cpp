@@ -271,7 +271,7 @@ void Cyclic_Task()
         }  
       }
 }
-uint Test3 = 0;
+uint8_t Test3 = 0;
 int main()
 {
 	printf("Test 3: %d\n", Test3++);
