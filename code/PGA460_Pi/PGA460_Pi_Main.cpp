@@ -193,21 +193,22 @@ void initPGA460()
 |     of the data captured.
 |
 *-------------------------------------------------------------------*/
+uint8_t Test4 = 0;
 void Cyclic_Task() 
 {                 // put your main code here, to run repeatedly
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       objectDetected = false;                       // Initialize object detected flag to false
       ultrasonicCmd(0, numOfObj, Serial_Port);
-	  printf("Test 3: %d\n", Test3++);
+	  printf("Test 4: %d\n", Test4++);
       // run preset 1 (short distance) burst+listen for 1 object
       pullUltrasonicMeasResult(demoMode, Serial_Port);      // Pull Ultrasonic Measurement Result
-	  printf("Test 3: %d\n", Test3++);
+	  printf("Test 4: %d\n", Test4++);
       for (uint8_t i=0; i<numOfObj; i++)
       { 
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
-		  printf("Test 3: %d\n", Test3++);
+		  printf("Test 4: %d\n", Test4++);
           distance = printUltrasonicMeasResult(0+(i*3)); 
-		  printf("Test 3: %d\n", Test3++);
+		  printf("Test 4: %d\n", Test4++);
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
           //peak = ussc.printUltrasonicMeasResult(2+(i*3));   // only available for UART, OWU, and SPI
   
