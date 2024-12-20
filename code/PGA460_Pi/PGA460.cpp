@@ -1172,7 +1172,7 @@ bool burnEEPROM(int serial_port)
 
 	usleep(100); //delay(10);
 	
-	receiveBytesFromSerial(serial_port, tmpRst, sizeof(tmpRst));
+	receiveBytesFromSerial(serial_port, tmpRst, 3);
 	
 	burnStat = tmpRst[1];
 
