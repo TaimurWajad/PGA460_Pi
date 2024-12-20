@@ -1138,66 +1138,56 @@ bool burnEEPROM(int serial_port)
 {
 	uint8_t burnStat = 0;
 	uint8_t temp = 0;
+	uint8_t tmpRst = {0};
 	bool burnSuccess = false;
 	
-	if (comm != 1 || comm != 3)
-	{	
-			
-		// Write "0xD" to EE_UNLCK to unlock EEPROM, and '0' to EEPRGM bit at EE_CNTRL register
-		regAddr = 0x40; //EE_CNTRL
-		regData = 0x68;
-		uint8_t buf10[5] = {syncByte, SRW, regAddr, regData, calcChecksum(SRW)};
-		if (comm == 0 || comm == 2) // UART or OWU mode
-		{
-			sendBytes(serial_port, buf10, sizeof(buf10));
-		}
-		
-		usleep(10);  // Wait for 100 msecond before sending data againdelay(1);
-		
-		// Write "0xD" to EE_UNLCK to unlock EEPROM, and '1' to EEPRGM bit at EE_CNTRL register
-		regAddr = 0x40; //EE_CNTRL
-		regData = 0x69;
-		buf10[2] = regAddr;
-		buf10[3] = regData;
-		buf10[4] = calcChecksum(SRW);
-		if (comm == 0 || comm == 2) // UART or OWU mode
-		{
-			sendBytes(serial_port, buf10, sizeof(buf10));
-		}
-		usleep(100000); //delay(1000);
-		
-		
-		// Read back EEPROM program status	
-		//pga460SerialFlush(serial_port);
-		// Flush UART buffers
-		tcflush(serial_port, TCIOFLUSH);
-		regAddr = 0x40; //EE_CNTRL
-		uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)};
-		if (comm == 0 || comm == 2) // UART or OWU mode
-		{
-			sendBytes(serial_port, buf9, sizeof(buf9));
-		}
-		usleep(100); //delay(10);
-		if (comm == 0 || comm == 2) // UART or OWU mode
-		{
-			for(int n=0; n<3; n++)
-			{
-			   if(n==1)
-			   {
-					//burnStat = Serial1.read(); // store EE_CNTRL data // TODO:
-			   }
-			   else
-			   {
-				   //temp = Serial1.read();
-			   }
-			}
-		}
-	}
-	else
-	{
-		//do nothing
-	}
+	// Write "0xD" to EE_UNLCK to unlock EEPROM, and '0' to EEPRGM bit at EE_CNTRL register
+	regAddr = 0x40; //EE_CNTRL
+	regData = 0x68;
+	uint8_t buf10[5] = {syncByte, SRW, regAddr, regData, calcChecksum(SRW)};
+
+	sendBytes(serial_port, buf10, sizeof(buf10));
 	
+	usleep(10);  // Wait for 100 msecond before sending data againdelay(1);
+	
+	// Write "0xD" to EE_UNLCK to unlock EEPROM, and '1' to EEPRGM bit at EE_CNTRL register
+	regAddr = 0x40; //EE_CNTRL
+	regData = 0x69;
+	buf10[2] = regAddr;
+	buf10[3] = regData;
+	buf10[4] = calcChecksum(SRW);
+	sendBytes(serial_port, buf10, sizeof(buf10));
+	
+	usleep(100000); //delay(1000);
+		
+	// Read back EEPROM program status	
+	//pga460SerialFlush(serial_port);
+	// Flush UART buffers
+	tcflush(serial_port, TCIOFLUSH);
+	regAddr = 0x40; //EE_CNTRL
+	uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)};
+
+	sendBytes(serial_port, buf9, sizeof(buf9));
+
+	usleep(100); //delay(10);
+	
+	receiveBytesFromSerial(serial_port, tmpRst, sizeof(tmpRst));
+	
+	burnStat = tmpRst[1];
+
+#if 0
+	for(int n=0; n<3; n++) 
+	{
+		if(n==1)
+		{
+			burnStat = Serial1.read(); // store EE_CNTRL data // TODO:
+		}
+		else
+		{
+			temp = Serial1.read();
+		}
+	}
+#endif	
 	if((burnStat & 0x04) == 0x04){burnSuccess = true;} // check if EE_PGRM_OK bit is '1'
 	
 	return burnSuccess;
