@@ -130,7 +130,7 @@
 	uint8_t diagMeasResult[5+3] = {0}; 		// data byte array for cmd8 and index1 return
 	uint8_t tempNoiseMeasResult[4+3] = {0}; 	// data byte array for cmd6 and index0&1 return
 	uint8_t echoDataDump[130+3] = {0}; 		// data byte array for cmd7 and index12 return
-	uint8_t tmpRst = {0};
+	uint8_t tmpRst[3] = {0};
 	uint8_t tempOrNoise = 0; 			// data byte to determine if temp or noise measurement is to be performed
 	uint8_t comm = 0; 					// indicates UART (0), TCI (1), OWU (2) communication mode	
 	unsigned long starttime; 		// used for function time out
