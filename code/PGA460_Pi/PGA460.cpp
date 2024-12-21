@@ -439,22 +439,15 @@ void initThresholds(uint8_t thr, int serial_port)
 		
 		default: break;
 	}
-				  
-	if ((comm == 0 || comm == 2 || comm==3) && (comm !=6)) 	// USART or OWU mode and not busDemo6
-	{
-		uint8_t buf16[35] = {syncByte, THRBW, P1_THR_0, P1_THR_1, P1_THR_2, P1_THR_3, P1_THR_4, P1_THR_5, P1_THR_6,
-			  P1_THR_7, P1_THR_8, P1_THR_9, P1_THR_10, P1_THR_11, P1_THR_12, P1_THR_13, P1_THR_14, P1_THR_15,
-			  P2_THR_0, P2_THR_1, P2_THR_2, P2_THR_3, P2_THR_4, P2_THR_5, P2_THR_6, 
-			  P2_THR_7, P2_THR_8, P2_THR_9, P2_THR_10, P2_THR_11, P2_THR_12, P2_THR_13, P2_THR_14, P2_THR_15,
-			  calcChecksum(THRBW)};
-		if (comm == 0 || comm == 2) // UART or OWU mode
-		{
-			sendBytes(serial_port, buf16, sizeof(buf16)); // serial transmit master data for bulk threhsold
-		}
-		
-	}
 	
-	delay(100);
+	uint8_t buf16[35] = {syncByte, THRBW, P1_THR_0, P1_THR_1, P1_THR_2, P1_THR_3, P1_THR_4, P1_THR_5, P1_THR_6,
+						 P1_THR_7, P1_THR_8, P1_THR_9, P1_THR_10, P1_THR_11, P1_THR_12, P1_THR_13, P1_THR_14, P1_THR_15,
+						 P2_THR_0, P2_THR_1, P2_THR_2, P2_THR_3, P2_THR_4, P2_THR_5, P2_THR_6, 
+						 P2_THR_7, P2_THR_8, P2_THR_9, P2_THR_10, P2_THR_11, P2_THR_12, P2_THR_13, P2_THR_14, P2_THR_15,
+						calcChecksum(THRBW)};
+
+	sendBytes(serial_port, buf16, sizeof(buf16)); // serial transmit master data for bulk threhsold	
+	usleep(100*1000); // 100 ms
 	return;
 }
 
@@ -758,7 +751,7 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
 				sendBytes(serial_port, buf12, sizeof(buf12)); // serial transmit master data for bulk EEPROM
 			}
 
-			usleep(500);  // Wait for 100 msecond before sending data again delay(50);
+			usleep(50000);  // Wait for 100 msecond before sending data again delay(50);
 			
 			// Update targeted UART_ADDR to address defined in EEPROM bulk switch-case
 			uint8_t uartAddrUpdate = (PULSE_P2 >> 5) & 0x07;
@@ -833,27 +826,13 @@ void initTVG(uint8_t agr, uint8_t tvg, int serial_port)
 			gain_range = 0xCF;
 			break;
 		default: break;
-	}	
-
-	if ((comm == 0 || comm == 2 || comm == 3) && (comm !=6)) 	// USART or OWU mode and not busDemo6
-	{
-		regAddr = 0x26;
-		regData = gain_range;	
-		uint8_t buf10[5] = {syncByte, SRW, regAddr, regData, calcChecksum(SRW)};
-		if (comm == 0 || comm == 2) // UART or OWU mode
-		{
-			sendBytes(serial_port, buf10, sizeof(buf10));
-		}
-	}
-	else if(comm == 6)
-	{
-		return;
-	}
-	else
-	{
-		//do nothing
 	}
 	
+	regAddr = 0x26;
+	regData = gain_range;	
+	uint8_t buf10[5] = {syncByte, SRW, regAddr, regData, calcChecksum(SRW)};
+	sendBytes(serial_port, buf10, sizeof(buf10));
+
 	//Set fixed AFE gain value
 	switch (tvg)
 	{
@@ -888,25 +867,10 @@ void initTVG(uint8_t agr, uint8_t tvg, int serial_port)
 		break;
 		
 		default: break;
-	}	
+	}
 	
-	if ((comm == 0 || comm == 2 || comm == 3) && (comm !=6)) 	// USART or OWU mode and not busDemo6
-	{
-		uint8_t buf14[10] = {syncByte, TVGBW, TVGAIN0, TVGAIN1, TVGAIN2, TVGAIN3, TVGAIN4, TVGAIN5, TVGAIN6, calcChecksum(TVGBW)};
-		
-		if (comm == 0 || comm == 2) // UART or OWU mode
-		{
-			sendBytes(serial_port, buf14, sizeof(buf14)); // serial transmit master data for bulk TVG
-		}
-	}
-	else if(comm == 6)
-	{
-		return;
-	}
-	else
-	{
-		//do nothing
-	}
+	uint8_t buf14[10] = {syncByte, TVGBW, TVGAIN0, TVGAIN1, TVGAIN2, TVGAIN3, TVGAIN4, TVGAIN5, TVGAIN6, calcChecksum(TVGBW)};
+	sendBytes(serial_port, buf14, sizeof(buf14)); // serial transmit master data for bulk TVG
 	
 	return;
 }

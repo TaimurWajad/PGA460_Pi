@@ -147,15 +147,15 @@ void initPGA460()
   // -+-+-+-+-+-+-+-+-+-+- 6 : burn EEPROM   -+-+-+-+-+-+-+-+-+-+- //
     if(burn == 1)
     {
-		printf("EEPROM Burn....");
+		printf("EEPROM Burn....\n");
       unsigned char burnStat = burnEEPROM(Serial_Port); // TODO
-      if(burnStat == true){printf("EEPROM programmed successfully.");}
-      else{printf("EEPROM program failed.");}
+      if(burnStat == true){printf("EEPROM programmed successfully.\n");}
+      else{printf("EEPROM program failed.\n");}
     }
   // -+-+-+-+-+-+-+-+-+-+- 7 : capture echo data dump   -+-+-+-+-+-+-+-+-+-+- //
     if (edd != 0)                                   // run or skip echo data dump
     {
-      printf("Retrieving echo data dump profile. Wait...");
+      printf("Retrieving echo data dump profile. Wait...\n");
       runEchoDataDump(edd-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
       std::string echoDataDump = pullEchoDataDumpBulk(Serial_Port);
 	  if (!echoDataDump.empty())
