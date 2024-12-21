@@ -144,7 +144,7 @@ int main() {
             printf("Rx data Sensor 1: ");
             for (int i = 0; i < receivedLength; i++) 
 			{
-                printf("0x%02X", rxData[i]);
+                printf("0x%02X ", rxData[i]);
             }
             printf("\n");
         } 
@@ -168,7 +168,7 @@ int main() {
             printf("Rx data Sensor 2: ");
             for (int i = 0; i < receivedLength; i++) 
 			{
-                printf("0x%02X", rxData[i]);
+                printf("0x%02X ", rxData[i]);
             }
             printf("\n");
         } 
@@ -178,7 +178,7 @@ int main() {
         }
 
         // Sleep for a while before the next iteration
-        usleep(100000);  // Wait for 100 msecond before sending data again
+        usleep(200000);  // Wait for 200 msecond before sending data again
     }
 
     // Disable power to ultrasonic sensors
