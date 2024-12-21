@@ -1158,7 +1158,7 @@ bool burnEEPROM(int serial_port)
 	
 	//Test
 	usleep(20000); //delay(10);
-	uint8_t buf29[5] = {syncByte, EEBR, regAddr, calcChecksum(EEBR)};
+	uint8_t buf29[4] = {syncByte, EEBR, regAddr, calcChecksum(EEBR)};
 	sendBytes(serial_port, buf29, sizeof(buf29));
 	usleep(20000); //delay(10);
 	
