@@ -1114,7 +1114,7 @@ bool burnEEPROM(int serial_port)
 
 	sendBytes(serial_port, buf10, sizeof(buf10));
 	
-	usleep(1000);  // Wait for 1 msecond before sending data again delay(1);
+	usleep(10000);  // Wait for 1 msecond before sending data again delay(1);
 	
 	// Write "0xD" to EE_UNLCK to unlock EEPROM, and '1' to EEPRGM bit at EE_CNTRL register
 	regAddr = 0x40; //EE_CNTRL
