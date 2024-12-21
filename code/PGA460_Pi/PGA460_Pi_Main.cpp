@@ -20,8 +20,8 @@
     digitalWrite(UART_SEL0, LOW)
 
 #define SELECT_SENSOR_2() \
-    digitalWrite(UART_SEL1, HIGH); \
-    digitalWrite(UART_SEL0, LOW)
+    digitalWrite(UART_SEL1, LOW); \
+    digitalWrite(UART_SEL0, HIGH)
 
 
 
@@ -100,7 +100,7 @@ void initPGA460()
     usleep(100);
     
     digitalWrite(ULTRASONIC_PWR_EN, HIGH);	// Enable power to ultrasonic sensors
-    SELECT_SENSOR_1();
+    SELECT_SENSOR_2();
 
     if ((Serial_Port = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
 	{
