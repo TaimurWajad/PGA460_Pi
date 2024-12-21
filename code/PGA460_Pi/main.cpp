@@ -117,7 +117,7 @@ int main() {
 	usleep(1000);  // Wait for 100 msecond before sending data again
 	delay(100);
 	
-	uint8_t Curr_Sensor = 0;
+	unsigned char Curr_Sensor = 0;
 
     // Endless loop to send and receive data
     while (1) 
