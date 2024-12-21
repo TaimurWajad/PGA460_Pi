@@ -16,7 +16,7 @@ void initThresholds(uint8_t thr, int serial_port);
 void defaultPGA460(uint8_t xdcr, int serial_port);
 void initTVG(uint8_t agr, uint8_t tvg, int serial_port);
 double runDiagnostics(uint8_t run, uint8_t diag, int serial_port);
-bool burnEEPROM();
+bool burnEEPROM(int serial_port);
 void ultrasonicCmd(uint8_t cmd, uint8_t numObjUpdate, int serial_port);
 uint8_t pullUltrasonicMeasResult(bool busDemo, int serial_port);
 double printUltrasonicMeasResult(uint8_t umr);
@@ -27,6 +27,8 @@ uint8_t calcChecksum(uint8_t cmd);
 void pga460SerialFlush(int serial_port);
 void initVariables();
 void uartLoopBackTest(int serial_port);
+uint8_t pullEchoDataDump(uint8_t element, int serial_port);
+void runEchoDataDump(uint8_t preset, int serial_port);
 
 
 #endif
