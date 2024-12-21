@@ -1140,7 +1140,7 @@ bool burnEEPROM(int serial_port)
 		printf("0x%02X ", buf9[i]);
 	}
 
-	usleep(10000); //delay(10);
+	usleep(20000); //delay(10);
 	
 	if (receiveBytesFromSerial(serial_port, tmpRst, 3)) 
     {
@@ -1156,21 +1156,28 @@ bool burnEEPROM(int serial_port)
         printf("Failed to read data\n");
     }
 	
+	//Test
+	usleep(20000); //delay(10);
+	sendBytes(serial_port, buf9, sizeof(buf9));
+	usleep(20000); //delay(10);
+	
+	if (receiveBytesFromSerial(serial_port, tmpRst, 3)) 
+    {
+        printf("EEPROM ReadBack Data Try 2:\n");
+        for (int i = 0; i < 3; i++) 
+        {
+            printf("0x%02X ", tmpRst[i]);
+        }
+        printf("\n");
+    } 
+    else 
+    {
+        printf("Failed to read data\n");
+    }
+	
+	
 	burnStat = tmpRst[1];
-
-#if 0
-	for(int n=0; n<3; n++) 
-	{
-		if(n==1)
-		{
-			burnStat = Serial1.read(); // store EE_CNTRL data // TODO:
-		}
-		else
-		{
-			temp = Serial1.read();
-		}
-	}
-#endif	
+	
 	if((burnStat & 0x04) == 0x04){burnSuccess = true;} // check if EE_PGRM_OK bit is '1'
 	
 	return burnSuccess;
