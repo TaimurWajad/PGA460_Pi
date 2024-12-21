@@ -276,7 +276,7 @@ int main()
 		Cyclic_Task();
 		usleep(2000);
 		printf("Sensor 2: \n");
-		SELECT_SENSOR_2;
+		SELECT_SENSOR_2();
 		Cyclic_Task();
 		usleep(25000); // (25 milliseconds)
 	}
