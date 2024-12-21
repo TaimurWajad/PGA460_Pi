@@ -97,7 +97,7 @@ int main() {
 
     // Enable power to ultrasonic sensors
     digitalWrite(ULTRASONIC_PWR_EN, HIGH);
-    SELECT_SENSOR_2();
+    SELECT_SENSOR_1();
 
     if ((fd = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
 	{
@@ -120,11 +120,8 @@ int main() {
     // Endless loop to send and receive data
     while (1) 
 	{
-//		SesnorMeasurement(fd);
 
-        // Send 4 bytes
-		// broadcast p1 burst+listen (non-dependent on UART_ADDR)
-#if 0		
+#if 1		
 		sendBytes(fd, buf17, sizeof(buf17));
 		usleep(10000);  // Wait for 10 milliseconds
 		
@@ -133,8 +130,10 @@ int main() {
         //usleep(10000);  // Wait for 10 milliseconds
 		// read back ultrasonic meas results from UART_ADDR=0
 		sendBytes(fd, buf5, sizeof(buf5));
+		
+		//sendBytes(fd, buf6, sizeof(buf6));
 #endif
-		sendBytes(fd, buf6, sizeof(buf6));
+		
         // Receive data (up to 256 bytes in this example)
         receivedLength = receiveBytes(fd, rxData, sizeof(rxData));
 
