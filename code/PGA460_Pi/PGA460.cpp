@@ -1140,7 +1140,7 @@ bool burnEEPROM(int serial_port)
 		printf("0x%02X ", buf9[i]);
 	}
 
-	usleep(20000); //delay(10);
+	usleep(1000); //delay(10);
 	
 	if (receiveBytesFromSerial(serial_port, tmpRst, 3)) 
     {
@@ -1157,7 +1157,7 @@ bool burnEEPROM(int serial_port)
     }
 	
 	//Test
-	usleep(20000); //delay(10);
+	usleep(100000); //delay(10);
 	uint8_t buf29[4] = {syncByte, EEBR, regAddr, calcChecksum(EEBR)};
 	sendBytes(serial_port, buf29, sizeof(buf29));
 	usleep(20000); //delay(10);
