@@ -97,7 +97,7 @@ int main() {
 
     // Enable power to ultrasonic sensors
     digitalWrite(ULTRASONIC_PWR_EN, HIGH);
-    SELECT_SENSOR_1();
+    
 
     if ((fd = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
 	{
@@ -116,14 +116,16 @@ int main() {
 	//sendBytes(fd, buf10, 5);
 	usleep(1000);  // Wait for 100 msecond before sending data again
 	delay(100);
+	
+	uint8_t Curr_Sensor = 0;
 
     // Endless loop to send and receive data
     while (1) 
 	{
-
-#if 1		
+		Curr_Sensor = 1;
+		SELECT_SENSOR_1();
 		sendBytes(fd, buf17, sizeof(buf17));
-		usleep(10000);  // Wait for 10 milliseconds
+		usleep(5000);  // Wait for 5 milliseconds
 		
 
         // Wait for data to be available (this is an example, you might want to implement a better waiting mechanism)
@@ -132,7 +134,6 @@ int main() {
 		sendBytes(fd, buf5, sizeof(buf5));
 		
 		//sendBytes(fd, buf6, sizeof(buf6));
-#endif
 		
         // Receive data (up to 256 bytes in this example)
         receivedLength = receiveBytes(fd, rxData, sizeof(rxData));
@@ -140,10 +141,34 @@ int main() {
         // Print received data in hexadecimal format
         if (receivedLength > 0) 
 		{
-            printf("Rx data: ");
+            printf("Rx data Sensor 1: ");
             for (int i = 0; i < receivedLength; i++) 
 			{
-                printf("0x%02X ", rxData[i]);
+                printf("0x%02X", rxData[i]);
+            }
+            printf("\n");
+        } 
+		else 
+		{
+            printf("No data received\n");
+        }
+		
+		Curr_Sensor = 2;
+		SELECT_SENSOR_2();
+		
+		sendBytes(fd, buf17, sizeof(buf17));
+		usleep(5000);  // Wait for 5 milliseconds
+
+		sendBytes(fd, buf5, sizeof(buf5));
+        receivedLength = receiveBytes(fd, rxData, sizeof(rxData));
+
+        // Print received data in hexadecimal format
+        if (receivedLength > 0) 
+		{
+            printf("Rx data Sensor 2: ");
+            for (int i = 0; i < receivedLength; i++) 
+			{
+                printf("0x%02X", rxData[i]);
             }
             printf("\n");
         } 
@@ -152,9 +177,8 @@ int main() {
             printf("No data received\n");
         }
 
-
         // Sleep for a while before the next iteration
-        usleep(1000000);  // Wait for 1 second before sending data again
+        usleep(100000);  // Wait for 100 msecond before sending data again
     }
 
     // Disable power to ultrasonic sensors
