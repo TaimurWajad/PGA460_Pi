@@ -193,7 +193,7 @@ bool receiveBytesFromSerial(int serial_port, unsigned char* buffer, int numBytes
         for (int n = 0; n < numBytesToReceive; n++) 
 		{
             buffer[n] = serialGetchar(serial_port);
-			printf("0x%02X ", buffer[n]);
+			//printf("0x%02X ", buffer[n]);
         }
         return true; // Return true indicating success
     }
@@ -1544,6 +1544,103 @@ double printUltrasonicMeasResultExt(uint8_t umr, int speedSound)
 	}	
 	return objReturn;
 }
+
+/*------------------------------------------------- runEchoDataDump -----
+ |  Function runEchoDataDump
+ |
+ |  Purpose:  Runs a preset 1 or 2 burst and or listen command to capture 128 bytes of echo data dump.
+ |		Toggle echo data dump enable bit to enable/disable echo data dump mode.
+ |
+ |  Parameters:
+ |		preset (IN) -- determines which preset command is run:
+ |			• 0 = Preset 1 Burst + Listen command
+ |			• 1 = Preset 2 Burst + Listen command
+ |			• 2 = Preset 1 Listen Only command
+ |			• 3 = Preset 2 Listen Only command
+ |			• 17 = Preset 1 Burst + Listen broadcast command
+ |			• 18 = Preset 2 Burst + Listen broadcast command
+ |			• 19 = Preset 1 Listen Only broadcast command
+ |			• 20 = Preset 2 Listen Only broadcast command
+ |
+ |  Returns:  none
+ *-------------------------------------------------------------------*/
+void runEchoDataDump(uint8_t preset, int serial_port)
+{
+	// enable Echo Data Dump bit
+	regAddr = 0x40;
+	regData = 0x80;
+	uint8_t writeType = SRW; // default to single address register write (cmd10)
+	if(preset>16) // update to broadcast register write if broadcast TOF preset command given
+	{
+		writeType = BC_RW; // cmd22
+	}
+	
+	uint8_t buf10[5] = {syncByte, writeType, regAddr, regData, calcChecksum(writeType)};
+
+	tcflush(serial_port, TCIOFLUSH);
+	sendBytes(serial_port, buf10, sizeof(buf10));
+	usleep(10000);
+	
+	
+	// run preset 1 or 2 burst and or listen command
+	ultrasonicCmd(preset, 1);	
+
+	// disbale Echo Data Dump bit
+	regData = 0x00;
+	buf10[3] = regData;
+	buf10[4] = calcChecksum(writeType);
+
+	sendBytes(serial_port, buf10, sizeof(buf10));
+	return;
+}
+
+/*------------------------------------------------- pullEchoDataDump -----
+ |  Function pullEchoDataDump
+ |
+ |  Purpose:  Read out 128 bytes of echo data dump (EDD) from latest burst and or listen command. 
+ |		For UART and OWU, readout individual echo data dump register values, instead in bulk.
+ |		For TCI, perform index 12 read of all echo data dump values in bulk.
+ |
+ |  Parameters:
+ |		element (IN) -- element from the 128 byte EDD memory
+ |
+ |  Returns:  byte representation of EDD element value
+ *-------------------------------------------------------------------*/
+uint8_t pullEchoDataDump(uint8_t element, int serial_port)
+{
+	if (element == 0)
+	{
+		uint8_t temp = 0;
+		tcflush(serial_port, TCIOFLUSH);			
+		
+		regAddr = 0x80; // start of EDD memory
+		uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)}; 
+		sendBytes(serial_port, buf9, sizeof(buf9)); // read first byte of EDD memory						
+		for(int m=0; m<129; m++) // loop readout by iterating through EDD address range
+		{
+			buf9[2] = regAddr;
+			buf9[3] = calcChecksum(SRR);
+			sendBytes(serial_port, buf9, sizeof(buf9));
+			//delay(30);
+			usleep(30000);
+			for (int n = 0; n < 128; n++)
+			{
+				if (n == 1)
+				{
+					echoDataDump[m] = serialGetchar(serial_port); // Store the second byte in echoDataDump[m]
+				}
+				else
+				{
+					temp = serialGetchar(serial_port); // Read and discard other bytes
+				}
+			}
+			regAddr++;
+		}			
+	}
+	return echoDataDump[element];
+}
+
+
 void pga460SerialFlush(int serial_port) 
 {
     // Initial delay
