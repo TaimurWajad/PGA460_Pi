@@ -1584,7 +1584,7 @@ void runEchoDataDump(uint8_t preset, int serial_port)
 	
 	
 	// run preset 1 or 2 burst and or listen command
-	ultrasonicCmd(preset, 1);	
+	ultrasonicCmd(preset, 1, serial_port);	
 
 	// disbale Echo Data Dump bit
 	regData = 0x00;
@@ -1703,7 +1703,7 @@ std::string pullEchoDataDumpBulk(int serial_port)
 	{			
 		for(int n=1; n<129; n++)
 		{			
-			echoDataDump += static_cast<char>(eddBulk[i]); // Append each byte as a character
+			echoDataDump += static_cast<char>(eddBulk[n]); // Append each byte as a character
 		}
 	}
 	else
@@ -1712,7 +1712,7 @@ std::string pullEchoDataDumpBulk(int serial_port)
 		printf("ERROR - Did not receive echo data dump! ");	
 		for(int n=1; n<129; n++)
 		{			
-			echoDataDump += static_cast<char>(eddBulk[i]); // Append each byte as a character		   
+			echoDataDump += static_cast<char>(eddBulk[n]); // Append each byte as a character		   
 		}		
 	}
 	return echoDataDump;	
