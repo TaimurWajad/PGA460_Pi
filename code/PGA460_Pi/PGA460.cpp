@@ -1661,9 +1661,9 @@ void pga460SerialFlush(int serial_port)
  |
  |  Returns:  comma delimited string of all EDD values
  *-------------------------------------------------------------------*/
-std::string pullEchoDataDumpBulk(int serial_port)
+bool pullEchoDataDumpBulk(int serial_port)
 {
-	std::string echoDataDump; // String to hold the result
+	bool echoDataDump = false; // String to hold the result
 	
 	uint8_t temp = 0;
 	tcflush(serial_port, TCIOFLUSH);			
@@ -1675,34 +1675,30 @@ std::string pullEchoDataDumpBulk(int serial_port)
 	// Read 130 bytes into eddBulk
     if (receiveBytesFromSerial(serial_port, eddBulk, 130)) 
     {
-        printf("Data read successfully:\n");
+        printf("Rxd Data:\n");
         for (int i = 0; i < 130; i++) 
         {
             printf("0x%02X ", eddBulk[i]);
         }
         printf("\n");
+		
     } 
     else 
     {
         printf("Failed to read data\n");
+		
     }
 	
 	
 	if(eddBulk[0] != 0) // if diagnostic field is non-zero
 	{			
-		for(int n=1; n<129; n++)
-		{			
-			echoDataDump += static_cast<char>(eddBulk[n]); // Append each byte as a character
-		}
+		echoDataDump = true;
 	}
 	else
 	{
+		echoDataDump = false;
 		// the data didn't come in - handle the problem here
-		printf("ERROR - Did not receive echo data dump! ");	
-		for(int n=1; n<129; n++)
-		{			
-			echoDataDump += static_cast<char>(eddBulk[n]); // Append each byte as a character		   
-		}		
+		printf("ERROR - Did not receive echo data dump! ");			
 	}
 	return echoDataDump;	
 }

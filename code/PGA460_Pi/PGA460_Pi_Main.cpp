@@ -157,15 +157,7 @@ void initPGA460()
     {
       printf("Retrieving echo data dump profile. Wait...\n");
       runEchoDataDump(edd-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
-      std::string echoDataDump = pullEchoDataDumpBulk(Serial_Port);
-	  if (!echoDataDump.empty())
-	  {
-		  std::cout << "Received Data: " << echoDataDump << std::endl;
-	  }
-	  else
-	  {
-		  std::cerr << "Failed to retrieve data" << std::endl;
-	  }
+      bool echoDataDump = pullEchoDataDumpBulk(Serial_Port);
     }
   // -+-+-+-+-+-+-+-+-+-+-  others   -+-+-+-+-+-+-+-+-+-+- //
   commandDelay = 100 * cdMultiplier;                   // command cycle delay result in ms
