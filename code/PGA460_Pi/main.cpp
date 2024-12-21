@@ -97,7 +97,7 @@ int main() {
 
     // Enable power to ultrasonic sensors
     digitalWrite(ULTRASONIC_PWR_EN, HIGH);
-    SELECT_SENSOR_2();
+    SELECT_SENSOR_1();
 
     if ((fd = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
 	{
