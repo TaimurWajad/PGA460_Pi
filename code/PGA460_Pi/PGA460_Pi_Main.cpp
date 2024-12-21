@@ -26,12 +26,12 @@
 
 
 uint8_t commMode = 0;            // Communication mode: 0=UART, 1=TCI, 2=OneWireUART
-uint8_t fixedThr = 1; //           // set P1 and P2 thresholds to 0=%25, 1=50%, or 2=75% of max; initial minDistLim (i.e. 20cm) ignored
-uint8_t xdcr = 1;    //1            // set PGA460 to recommended settings for 0=Murata MA58MF14-7N, 1=Murata MA40H1S-R
-uint8_t agrTVG = 2; //2              // set TVG's analog front end gain range to 0=32-64dB, 1=46-78dB, 2=52-84dB, or 3=58-90dB
+uint8_t fixedThr = 1;            // set P1 and P2 thresholds to 0=%25, 1=50%, or 2=75% of max; initial minDistLim (i.e. 20cm) ignored
+uint8_t xdcr = 1;                // set PGA460 to recommended settings for 0=Murata MA58MF14-7N, 1=Murata MA40H1S-R
+uint8_t agrTVG = 2;              // set TVG's analog front end gain range to 0=32-64dB, 1=46-78dB, 2=52-84dB, or 3=58-90dB
 uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
-uint8_t runDiag = 1;             // run system diagnostics and temp/noise level before looping burst+listen command
-uint8_t edd = 1;                 // echo data dump of preset 1, 2, or neither.
+uint8_t runDiag = 0;             // run system diagnostics and temp/noise level before looping burst+listen command
+uint8_t edd = 0;                 // echo data dump of preset 1, 2, or neither.
 uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
 uint8_t numOfObj = 4;            // number of object to detect set to 1-8
@@ -253,7 +253,7 @@ void Cyclic_Task()
           }    
           else if (distance == 0 && commMode!=1)                         // turn off all LEDs if no object detected
           {
-              //Serial.print("Error reading measurement results..."); //Serial.println(distance);
+              //Serial.print("Error reading measurement results..."); 
           }
           else //(distance > 11.2 && distance < minDistLim)         // turn off all LEDs if no object detected or below minimum distance limit
           {
@@ -270,9 +270,14 @@ int main()
 {
 	initPGA460();
 	while(1)
-	{ 
-		//Cyclic_Task();
-		//uartLoopBackTest(Serial_Port);
+	{
+		printf("Sensor 1: \n");
+		SELECT_SENSOR_1();
+		Cyclic_Task();
+		usleep(2000);
+		printf("Sensor 2: \n");
+		SELECT_SENSOR_2;
+		Cyclic_Task();
 		usleep(25000); // (25 milliseconds)
 	}
 		
