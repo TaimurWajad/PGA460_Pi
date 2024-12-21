@@ -1659,6 +1659,64 @@ void pga460SerialFlush(int serial_port)
     serialFlush(serial_port);
 }
 
+/*------------------------------------------------- pullEchoDataDumpBulk -----
+ |  Function pullEchoDataDumpBulk
+ |
+ |  Purpose:  Bulk read out 128 bytes of echo data dump (EDD) from latest burst and or listen command. 
+ |		For UART and OWU, readout bulk echo data dump register values.
+ |		For TCI, perform index 12 read of all echo data dump values in bulk.
+ |
+ |  Parameters:
+ |		none
+ |
+ |  Returns:  comma delimited string of all EDD values
+ *-------------------------------------------------------------------*/
+std::string pullEchoDataDumpBulk(int serial_port)
+{
+	std::string echoDataDump; // String to hold the result
+	
+	uint8_t temp = 0;
+	tcflush(serial_port, TCIOFLUSH);			
+		
+	uint8_t buf7[3] = {syncByte, TEDD, calcChecksum(TEDD)};  
+	sendBytes(serial_port, buf7, sizeof(buf7));	// respond bulk EDD command
+	uint8_t eddBulk[130];
+	
+	// Read 130 bytes into eddBulk
+    if (receiveBytesFromSerial(serial_port, eddBulk, 130)) 
+    {
+        printf("Data read successfully:\n");
+        for (int i = 0; i < 130; i++) 
+        {
+            printf("0x%02X ", eddBulk[i]);
+        }
+        printf("\n");
+    } 
+    else 
+    {
+        printf("Failed to read data\n");
+    }
+	
+	
+	if(eddBulk[0] != 0) // if diagnostic field is non-zero
+	{			
+		for(int n=1; n<129; n++)
+		{			
+			echoDataDump += static_cast<char>(eddBulk[i]); // Append each byte as a character
+		}
+	}
+	else
+	{
+		// the data didn't come in - handle the problem here
+		printf("ERROR - Did not receive echo data dump! ");	
+		for(int n=1; n<129; n++)
+		{			
+			echoDataDump += static_cast<char>(eddBulk[i]); // Append each byte as a character		   
+		}		
+	}
+	return echoDataDump;	
+}
+
 
 /*------------------------------------------------- calcChecksum -----
  |  Function calcChecksum

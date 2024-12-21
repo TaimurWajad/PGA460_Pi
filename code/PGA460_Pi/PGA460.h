@@ -29,6 +29,7 @@ void initVariables();
 void uartLoopBackTest(int serial_port);
 uint8_t pullEchoDataDump(uint8_t element, int serial_port);
 void runEchoDataDump(uint8_t preset, int serial_port);
+std::string pullEchoDataDumpBulk(int serial_port);
 
 
 #endif
