@@ -1150,7 +1150,7 @@ bool burnEEPROM(int serial_port)
 
 	sendBytes(serial_port, buf10, sizeof(buf10));
 	
-	usleep(10);  // Wait for 100 msecond before sending data againdelay(1);
+	usleep(100000);  // Wait for 100 msecond before sending data againdelay(1);
 	
 	// Write "0xD" to EE_UNLCK to unlock EEPROM, and '1' to EEPRGM bit at EE_CNTRL register
 	regAddr = 0x40; //EE_CNTRL
@@ -1171,9 +1171,21 @@ bool burnEEPROM(int serial_port)
 
 	sendBytes(serial_port, buf9, sizeof(buf9));
 
-	usleep(100); //delay(10);
+	usleep(10000); //delay(10);
 	
-	receiveBytesFromSerial(serial_port, tmpRst, 3);
+	if (receiveBytesFromSerial(serial_port, tmpRst, 3)) 
+    {
+        printf("EEPROM ReadBack Data:\n");
+        for (int i = 0; i < 3; i++) 
+        {
+            printf("0x%02X ", tmpRst[i]);
+        }
+        printf("\n");
+    } 
+    else 
+    {
+        printf("Failed to read data\n");
+    }
 	
 	burnStat = tmpRst[1];
 
