@@ -1,6 +1,7 @@
 #ifndef PGA460_H
 #define PGA460_H
 #include <stdint.h>  // Include this header for uint8_t and uint32_t
+#include <string>
 
 #define MAX_MILLIS_TO_WAIT 250 // Maximum time to wait in milliseconds
 #define UART_DEVICE "/dev/ttyAMA5"  		 // Default UART device on Raspberry Pi 4
