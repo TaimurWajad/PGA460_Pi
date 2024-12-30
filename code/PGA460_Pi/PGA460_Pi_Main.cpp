@@ -133,7 +133,7 @@ void initPGA460()
   // -+-+-+-+-+-+-+-+-+-+- 4 : bulk TVG write   -+-+-+-+-+-+-+-+-+-+- //
     if (agrTVG != 72 && fixedTVG != 72){initTVG(agrTVG,fixedTVG, Serial_Port);}
   // -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
-    if (runDiag == 1)
+    if (1)
     {      
       diagnostics = runDiagnostics(1,0, Serial_Port);       // run and capture system diagnostics, and print freq diag result
       printf("System Diagnostics - Frequency (kHz): %f\n", diagnostics);
