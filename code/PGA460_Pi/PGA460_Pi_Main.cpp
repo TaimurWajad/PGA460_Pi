@@ -204,7 +204,7 @@ void Cyclic_Task()
 		distance = printUltrasonicMeasResult(0+(i*3));
   
         usleep(commandDelay*100);  // Wait for 100 msecond before sending data again delay(commandDelay);
-    
+		printf(" %d Distance (m): %.2f\n", i + 1, distance);
         if (distance > minDistLim && distance < 11.2)  
         {
             printf("P1 Obj %d Distance (m): %.2f\n", i + 1, distance);
