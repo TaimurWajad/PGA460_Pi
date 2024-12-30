@@ -259,11 +259,11 @@ int main()
 		printf("Sensor 1: \n");
 		SELECT_SENSOR_1();
 		Cyclic_Task();
-		usleep(2000);
+		usleep(20000);
 		printf("Sensor 2: \n");
 		SELECT_SENSOR_2();
 		Cyclic_Task();
-		usleep(25000); // (25 milliseconds)
+		usleep(100000); // (25 milliseconds)
 	}
 		
 	// Disable power to ultrasonic sensors
