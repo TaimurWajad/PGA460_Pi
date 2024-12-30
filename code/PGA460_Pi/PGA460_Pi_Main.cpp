@@ -30,8 +30,8 @@ uint8_t fixedThr = 1;            // set P1 and P2 thresholds to 0=%25, 1=50%, or
 uint8_t xdcr = 1;                // set PGA460 to recommended settings for 0=Murata MA58MF14-7N, 1=Murata MA40H1S-R
 uint8_t agrTVG = 2;              // set TVG's analog front end gain range to 0=32-64dB, 1=46-78dB, 2=52-84dB, or 3=58-90dB
 uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
-uint8_t runDiag = 1;             // run system diagnostics and temp/noise level before looping burst+listen command
-uint8_t edd = 17;                 // echo data dump of preset 1, 2, or neither.
+uint8_t runDiag = false;             // run system diagnostics and temp/noise level before looping burst+listen command
+uint8_t edd = 0;                 // echo data dump of preset 1, 2, or neither.
 uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
 uint8_t numOfObj = 4;            // number of object to detect set to 1-8
@@ -133,7 +133,7 @@ void initPGA460()
   // -+-+-+-+-+-+-+-+-+-+- 4 : bulk TVG write   -+-+-+-+-+-+-+-+-+-+- //
     if (agrTVG != 72 && fixedTVG != 72){initTVG(agrTVG,fixedTVG, Serial_Port);}
   // -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
-    if (1)
+    if (runDiag == true)
     {      
       diagnostics = runDiagnostics(1,0, Serial_Port);       // run and capture system diagnostics, and print freq diag result
       printf("System Diagnostics - Frequency (kHz): %f\n", diagnostics);
@@ -253,17 +253,35 @@ void Cyclic_Task()
 
 int main()
 {
+	int i = 1;
 	initPGA460();
 	while(1)
 	{
 		printf("Sensor 1: \n");
 		SELECT_SENSOR_1();
-		Cyclic_Task();
-		usleep(20000);
+		//Cyclic_Task();
+		printf("Retrieving echo data dump profile. Wait...\n");
+		runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
+		bool echoDataDump = pullEchoDataDumpBulk(Serial_Port);
+		usleep(200000);
 		printf("Sensor 2: \n");
 		SELECT_SENSOR_2();
-		Cyclic_Task();
-		usleep(100000); // (25 milliseconds)
+		//Cyclic_Task();
+		printf("Retrieving echo data dump profile. Wait...\n");
+		runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
+		bool echoDataDump = pullEchoDataDumpBulk(Serial_Port);
+		usleep(500000); // (25 milliseconds)
+		if(i<5)
+		{
+			i++;
+		}
+		else
+		{
+			i = 0;
+			break;
+		}
+		
+		
 	}
 		
 	// Disable power to ultrasonic sensors
