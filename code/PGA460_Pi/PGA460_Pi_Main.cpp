@@ -42,7 +42,7 @@ bool objectDetected = false;  		 // object detected flag to break burst+listen c
 bool demoMode = false;        		 // only true when running UART/OWU multi device demo mode
 bool alwaysLong = true;      		 // always run preset 2, regardless of preset 1 result (hard-coded only)
 double minDistLim = 0.1;      		 // minimum distance as limited by ringing decay of single transducer and threshold masking
-uint16_t commandDelay = 0;    		 // Delay between each P1 and Preset 2 command
+uint16_t commandDelay = 10;    		 // Delay between each P1 and Preset 2 command
 
 
 // Result variables
@@ -201,19 +201,13 @@ void Cyclic_Task()
       for (uint8_t i=0; i<numOfObj; i++)
       { 
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
-		  distance = printUltrasonicMeasResult(0+(i*3));
-
-          //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
-          //peak = ussc.printUltrasonicMeasResult(2+(i*3));   // only available for UART, OWU, and SPI
+		distance = printUltrasonicMeasResult(0+(i*3));
   
-        usleep(commandDelay*10);  // Wait for 100 msecond before sending data again delay(commandDelay);
+        usleep(commandDelay*100);  // Wait for 100 msecond before sending data again delay(commandDelay);
     
-        if (distance > minDistLim && distance < 11.2)  // turn on DS1_LED if object is above minDistLim
+        if (distance > minDistLim && distance < 11.2)  
         {
             printf("P1 Obj %d Distance (m): %.2f\n", i + 1, distance);
-
-            //Serial.print("P1 Obj"); Serial.print(i+1); Serial.print(" Width (us): "); Serial.println(width);
-            //Serial.print("P1 Obj"); Serial.print(i+1); Serial.print(" Amplitude (dec): "); Serial.println(peak);
             objectDetected = true;
         }
       }
@@ -221,41 +215,32 @@ void Cyclic_Task()
       if(objectDetected == false || alwaysLong == true)                       // If no preset 1 (short distance) measurement result, switch to Preset 2 B+L command
       {   
         ultrasonicCmd(1, numOfObj, Serial_Port);                // run preset 2 (long distance) burst+listen for 1 object
-        pullUltrasonicMeasResult(demoMode, Serial_Port);                // Get Ultrasonic Measurement Result
+        pullUltrasonicMeasResult(demoMode, Serial_Port);               
         for (uint8_t i=0; i<numOfObj; i++)
         {  
-          distance = printUltrasonicMeasResult(0+(i*3));   // Print Ultrasonic Measurement Result i.e. Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude;
-          //width = ussc.printUltrasonicMeasResult(1+(i*3));    // only available for UART, OWU, and SPI
-          //peak = ussc.printUltrasonicMeasResult(2+(i*3));     // only available for UART, OWU, and SPI
-  
-          usleep(commandDelay*10);  //delay(commandDelay);
+          distance = printUltrasonicMeasResult(0+(i*3));   
+          usleep(commandDelay*100); 
     
-          if (distance < 1 && distance > minDistLim)    // turn on DS1_LED and F_DIAG_LED if object is within 1m
+          if (distance < 1 && distance > minDistLim)    
           {
-              //printf("P2 Obj"); printf(i+1); printf(" Distance (m): "); printf(distance);printf("\n");
 			  printf("P2 Obj %d Distance (m): %.2f\n", i + 1, distance);
-
-              //Serial.print("P2 Obj"); Serial.print(i+1); Serial.print(" Width (us): "); Serial.println(width);
-              //Serial.print("P2 Obj"); Serial.print(i+1); Serial.print(" Amplitude (dec): "); Serial.println(peak);
               objectDetected = true;
           } 
-          else if (distance < 3 && distance >= 1)      // turn on DS1_LED and F_DIAG_LED if object is within 3m
+          else if (distance < 3 && distance >= 1) 
           {
-              //printf("P2 Obj"); printf(i+1); printf(" Distance (m): "); printf(distance);printf("\n");
 			  printf("P2 Obj %d Distance (m): %.2f\n", i + 1, distance);
               objectDetected = true;
           }    
-          else if (distance >= 3 && distance < 11.2)     // turn on DS1_LED, F_DIAG_LED, and V_DIAG_LED if object is greater than 3m
+          else if (distance >= 3 && distance < 11.2)     
           {
 			  printf("P2 Obj %d Distance (m): %.2f\n", i + 1, distance);
-              //printf("P2 Obj"); printf(i+1); printf(" Distance (m): "); printf(distance);printf("\n");
               objectDetected = true;
           }    
-          else if (distance == 0 && commMode!=1)                         // turn off all LEDs if no object detected
+          else if (distance == 0 && commMode!=1)                         
           {
-              //Serial.print("Error reading measurement results..."); 
+			  printf("Error reading measurement results...\n");
           }
-          else //(distance > 11.2 && distance < minDistLim)         // turn off all LEDs if no object detected or below minimum distance limit
+          else //(distance > 11.2 && distance < minDistLim)         
           {
               if (i == numOfObj-1 && objectDetected == false)
               {         
