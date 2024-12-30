@@ -1678,7 +1678,7 @@ bool pullEchoDataDumpBulk(int serial_port)
         printf("Rxd Data:\n");
         for (int i = 0; i < 130; i++) 
         {
-            printf("0x%02X ", eddBulk[i]);
+            printf("%d ", eddBulk[i]);
         }
         printf("\n");
 		
