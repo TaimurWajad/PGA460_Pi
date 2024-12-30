@@ -49,7 +49,7 @@ uint16_t commandDelay = 10;    		 // Delay between each P1 and Preset 2 command
 double distance = 0;          // one-way object distance in meters
 double width = 0;             // object width in microseconds
 double peak = 0;              // object peak in 8-bit
-double diagnostics = 0;       // diagnostic selector
+double diagnostics = 1;       // diagnostic selector
 int Serial_Port;
 
 
