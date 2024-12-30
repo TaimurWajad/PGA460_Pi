@@ -403,38 +403,39 @@ void initThresholds(uint8_t thr, int serial_port)
 		break;
 		
 		case 3: //Custom
-		   P1_THR_0 = 0x41;
-		   P1_THR_1 = 0x44;
-		   P1_THR_2 = 0x10;
-		   P1_THR_3 = 0x06;
-		   P1_THR_4 = 0x69;
-		   P1_THR_5 = 0x99;
-		   P1_THR_6 = 0xDD;
-		   P1_THR_7 = 0x4C;
-		   P1_THR_8 = 0x31;
-		   P1_THR_9 = 0x08;
-		   P1_THR_10 = 0x42;
-		   P1_THR_11 = 0x18;
-		   P1_THR_12 = 0x20;
-		   P1_THR_13 = 0x24;
-		   P1_THR_14 = 0x2A;
-		   P1_THR_15 = 0x00;
-		   P2_THR_0 = 0x41;
-		   P2_THR_1 = 0x44;
-		   P2_THR_2 = 0x10;
-		   P2_THR_3 = 0x06;
-		   P2_THR_4 = 0x09;
-		   P2_THR_5 = 0x99;
-		   P2_THR_6 = 0xDD;
-		   P2_THR_7 = 0x4C;
-		   P2_THR_8 = 0x31;
-		   P2_THR_9 = 0x08;
-		   P2_THR_10 = 0x42;
-		   P2_THR_11 = 0x24;
-		   P2_THR_12 = 0x30;
-		   P2_THR_13 = 0x36;
-		   P2_THR_14 = 0x3C;
-		   P2_THR_15 = 0x00;
+			P1_THR_0 = 0xFF; // Ignore initial ringing noise
+			P1_THR_1 = 0xFF; // Ignore ringing (close to transmit pulse)
+			P1_THR_2 = 0xC8; // Reduce sensitivity (ringing ends)
+			P1_THR_3 = 0x88; // Start detecting echoes
+			P1_THR_4 = 0x68; // Lower threshold for mid-range targets
+			P1_THR_5 = 0x58; // Continue lowering threshold
+			P1_THR_6 = 0x48; // Sensitive to distant echoes
+			P1_THR_7 = 0x38;
+			P1_THR_8 = 0x28;
+			P1_THR_9 = 0x20;
+			P1_THR_10 = 0x18; // Detect weak echoes
+			P1_THR_11 = 0x10;
+			P1_THR_12 = 0x10;
+			P1_THR_13 = 0x10;
+			P1_THR_14 = 0x08;
+			P1_THR_15 = 0x00; // End of detection window
+
+			P2_THR_0 = 0xFF; // Ignore initial ringing noise
+			P2_THR_1 = 0xFF; // Ignore ringing (close to transmit pulse)
+			P2_THR_2 = 0xC8; // Reduce sensitivity (ringing ends)
+			P2_THR_3 = 0x88; // Start detecting echoes
+			P2_THR_4 = 0x68; // Lower threshold for mid-range targets
+			P2_THR_5 = 0x58; // Continue lowering threshold
+			P2_THR_6 = 0x48; // Sensitive to distant echoes
+			P2_THR_7 = 0x38;
+			P2_THR_8 = 0x28;
+			P2_THR_9 = 0x20;
+			P2_THR_10 = 0x18; // Detect weak echoes
+			P2_THR_11 = 0x10;
+			P2_THR_12 = 0x10;
+			P2_THR_13 = 0x10;
+			P2_THR_14 = 0x08;
+			P2_THR_15 = 0x00; // End of detection window
 		break;
 		
 		default: break;
@@ -574,56 +575,49 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
 			break;
 		case 2: // user custom //DEBUG
 		{
-		   USER_DATA1 = 0x00;
-		   USER_DATA2 = 0x00;
-		   USER_DATA3 = 0x00;
-		   USER_DATA4 = 0x00;
-		   USER_DATA5 = 0x00;
-		   USER_DATA6 = 0x00;
-		   USER_DATA7 = 0x00;
-		   USER_DATA8 = 0x00;
-		   USER_DATA9 = 0x00;
-		   USER_DATA10 = 0x00;
-		   USER_DATA11 = 0x00;
-		   USER_DATA12 = 0x00;
-		   USER_DATA13 = 0x00;
-		   USER_DATA14 = 0x00;
-		   USER_DATA15 = 0x00;
-		   USER_DATA16 = 0x00;
-		   USER_DATA17 = 0x00;
-		   USER_DATA18 = 0x00;
-		   USER_DATA19 = 0x00;
-		   USER_DATA20 = 0x00;
-		   TVGAIN0 = 0xAA;
-		   TVGAIN1 = 0xAA;
-		   TVGAIN2 = 0xAA;
-		   TVGAIN3 = 0x82;
-		   TVGAIN4 = 0x08;
-		   TVGAIN5 = 0x20;
-		   TVGAIN6 = 0x80;
-		   INIT_GAIN = 0x60;
-		   FREQUENCY  = 0x8F;
-		   DEADTIME = 0xA0;
-		   if (comm == 2)
-		   {
-				PULSE_P1 = 0x80 | 0x04;
-		   }
-		   else
-		   {
-				PULSE_P1 = 0x04;
-		   }
-		   PULSE_P2 = 0x50; //UART_ADDR=2
-		   CURR_LIM_P1 = 0x55;
-		   CURR_LIM_P2 = 0x55;
-		   REC_LENGTH = 0x19;
-		   FREQ_DIAG = 0x33;
-		   SAT_FDIAG_TH = 0xEE;
-		   FVOLT_DEC = 0x7C;
-		   DECPL_TEMP = 0x4F;
-		   DSP_SCALE = 0x00;
-		   TEMP_TRIM = 0x00;
-		   P1_GAIN_CTRL = 0x09;
-		   P2_GAIN_CTRL = 0x09;
+			USER_DATA1 = 0x00;
+			USER_DATA2 = 0x00;
+			USER_DATA3 = 0x00;
+			USER_DATA4 = 0x00;
+			USER_DATA5 = 0x00;
+			USER_DATA6 = 0x00;
+			USER_DATA7 = 0x00;
+			USER_DATA8 = 0x00;
+			USER_DATA9 = 0x00;
+			USER_DATA10 = 0x00;
+			USER_DATA11 = 0x00;
+			USER_DATA12 = 0x00;
+			USER_DATA13 = 0x00;
+			USER_DATA14 = 0x00;
+			USER_DATA15 = 0x00;
+			USER_DATA16 = 0x00;
+			USER_DATA17 = 0x00;
+			USER_DATA18 = 0x00;
+			USER_DATA19 = 0x00;
+			USER_DATA20 = 0x00;
+			TVGAIN0 = 0x88; // Lower initial gain
+			TVGAIN1 = 0x88;
+			TVGAIN2 = 0x88;
+			TVGAIN3 = 0x72;
+			TVGAIN4 = 0x50;
+			TVGAIN5 = 0x30;
+			TVGAIN6 = 0x20;
+			INIT_GAIN = 0x60; // Initial gain (unchanged)
+			FREQUENCY  = 0xAA; // Set to ~40 kHz
+			DEADTIME = 0xA0;
+			PULSE_P1 = 0x03; // Shorter pulse train
+			PULSE_P2 = 0x10;
+			CURR_LIM_P1 = 0x55; // Current limit (unchanged)
+			CURR_LIM_P2 = 0x55;
+			REC_LENGTH = 0x25; // Extend receive window
+			FREQ_DIAG = 0x33; // Diagnostic frequency
+			SAT_FDIAG_TH = 0xEE; // Diagnostic threshold
+			FVOLT_DEC = 0x7C; // Voltage decay
+			DECPL_TEMP = 0x4F; // Decoupling cap and temp trim
+			DSP_SCALE = 0x00; // No scaling
+			TEMP_TRIM = 0x00; // Temp trim (unchanged)
+			P1_GAIN_CTRL = 0x09; // P1 gain control
+			P2_GAIN_CTRL = 0x09; // P2 gain control
 		   break;
 		}	
 		case 3: // user custom //DEBUG
