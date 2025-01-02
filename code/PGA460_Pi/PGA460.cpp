@@ -1097,8 +1097,6 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
 bool burnEEPROM(int serial_port)
 {
     uint8_t burnStat = 0;
-    uint8_t temp = 0;
-
     bool burnSuccess = false;
 
     // Step 1: Write unlock pattern (0x68) to EE_CNTRL register
@@ -1109,57 +1107,79 @@ bool burnEEPROM(int serial_port)
 
     usleep(2000); // Wait for 2ms to allow device to process unlock command
 
-    // Step 2: Write program bit (0x69) to EE_CNTRL register
-    regAddr = 0x40; // EE_CNTRL
-    regData = 0x69; // Set program bit
-    buf10[2] = regAddr;
-    buf10[3] = regData;
-    buf10[4] = calcChecksum(SRW);
-    sendBytes(serial_port, buf10, sizeof(buf10));
-
-    usleep(100000); // Wait for 100ms to allow EEPROM write operation
-
-    // Step 3: Read back EEPROM program status
+    // Step 2: Read back EE_CNTRL register to verify unlock operation
     tcflush(serial_port, TCIOFLUSH); // Flush UART buffers
-    regAddr = 0x40; // EE_CNTRL
     uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)};
     sendBytes(serial_port, buf9, sizeof(buf9));
-    printf("EEPROM Sent Data:\n");
-    for (int i = 0; i < 4; i++) 
-    {
-        printf("0x%02X ", buf9[i]);
-    }
-
-    usleep(2000); // Wait for 2ms to read response
-
+    
+    printf("Reading back EE_CNTRL after unlock pattern...\n");
     if (receiveBytesFromSerial(serial_port, tmpRst, 3)) 
     {
-        printf("EEPROM ReadBack Data:\n");
+        printf("ReadBack Data (Unlock Check):\n");
         for (int i = 0; i < 3; i++) 
         {
             printf("0x%02X ", tmpRst[i]);
         }
         printf("\n");
+
+        if ((tmpRst[1] & 0x08) == 0x08) 
+        {
+            printf("Unlock successful.\n");
+        } 
+        else 
+        {
+            printf("Unlock failed, aborting.\n");
+            return false;
+        }
     } 
     else 
     {
-        printf("Failed to read data\n");
+        printf("Failed to read data after unlock.\n");
+        return false;
     }
 
-    burnStat = tmpRst[1];
+    usleep(2000); // Short delay before next operation
 
-    // Check if EE_PGRM_OK bit is set
-    if ((burnStat & 0x04) == 0x04) 
+    // Step 3: Write program bit (0x69) to EE_CNTRL register
+    regData = 0x69; // Set program bit
+    buf10[3] = regData;
+    buf10[4] = calcChecksum(SRW);
+    sendBytes(serial_port, buf10, sizeof(buf10));
+
+    usleep(2000); // Wait for 2ms to allow the command to take effect
+
+    // Step 4: Read back EE_CNTRL register to verify programming status
+    sendBytes(serial_port, buf9, sizeof(buf9));
+    printf("Reading back EE_CNTRL after programming...\n");
+    if (receiveBytesFromSerial(serial_port, tmpRst, 3)) 
     {
-        burnSuccess = true;
+        printf("ReadBack Data (Programming Check):\n");
+        for (int i = 0; i < 3; i++) 
+        {
+            printf("0x%02X ", tmpRst[i]);
+        }
+        printf("\n");
+
+        // Check if EE_PGRM_OK bit (bit 2) is set
+        burnStat = tmpRst[1];
+        if ((burnStat & 0x04) == 0x04) 
+        {
+            burnSuccess = true;
+            printf("EEPROM programming successful.\n");
+        } 
+        else 
+        {
+            printf("EEPROM programming failed. Status: 0x%02X\n", burnStat);
+        }
     } 
     else 
     {
-        printf("EEPROM programming failed. Status: 0x%02X\n", burnStat);
+        printf("Failed to read data after programming.\n");
     }
 
     return burnSuccess;
 }
+
 
 
 
