@@ -1105,7 +1105,7 @@ bool burnEEPROM(int serial_port)
     uint8_t buf10[5] = {syncByte, SRW, regAddr, regData, calcChecksum(SRW)};
     sendBytes(serial_port, buf10, sizeof(buf10));
 
-    usleep(2000); // Wait for 2ms to allow device to process unlock command
+    usleep(20000); // Wait for 2ms to allow device to process unlock command
 
     // Step 2: Read back EE_CNTRL register to verify unlock operation
     tcflush(serial_port, TCIOFLUSH); // Flush UART buffers
@@ -1138,7 +1138,7 @@ bool burnEEPROM(int serial_port)
         return false;
     }
 
-    usleep(2000); // Short delay before next operation
+    usleep(20000); // Short delay before next operation
 
     // Step 3: Write program bit (0x69) to EE_CNTRL register
     regData = 0x69; // Set program bit
@@ -1146,7 +1146,7 @@ bool burnEEPROM(int serial_port)
     buf10[4] = calcChecksum(SRW);
     sendBytes(serial_port, buf10, sizeof(buf10));
 
-    usleep(2000); // Wait for 2ms to allow the command to take effect
+    usleep(20000); // Wait for 2ms to allow the command to take effect
 
     // Step 4: Read back EE_CNTRL register to verify programming status
     sendBytes(serial_port, buf9, sizeof(buf9));
