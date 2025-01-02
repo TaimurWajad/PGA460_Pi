@@ -100,7 +100,7 @@ void initPGA460()
     usleep(100);
     
     digitalWrite(ULTRASONIC_PWR_EN, HIGH);	// Enable power to ultrasonic sensors
-    SELECT_SENSOR_1();
+    SELECT_SENSOR_2();
 
     if ((Serial_Port = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
 	{
@@ -145,34 +145,13 @@ void initPGA460()
 	  printf("System Diagnostics - Noise Level: %f\n", diagnostics);
     }
   // -+-+-+-+-+-+-+-+-+-+- 6 : burn EEPROM   -+-+-+-+-+-+-+-+-+-+- //
-	int BurnCnt=0;
+	
     if(burn == 1)
     {
 		printf("EEPROM Burn....\n");
       unsigned char burnStat = burnEEPROM(Serial_Port); // TODO
-      if(burnStat == true)
-	  {
-		printf("EEPROM programmed successfully.\n");
-	  }
-      else
-	  {
-		printf("EEPROM program failed.\n");
-		BurnCnt++;
-	  }
-	  if(BurnCnt != 0)
-	  {
-		  burnStat = burnEEPROM(Serial_Port);
-		  if(burnStat == true)
-		  {
-			  printf("EEPROM programmed successfully.\n");
-		  }
-		  else
-		  {
-			  printf("EEPROM program failed.\n");
-			  BurnCnt++;
-		  }
-		  
-	  }
+      if(burnStat == true){printf("EEPROM programmed successfully.\n");}
+      else{printf("EEPROM program failed.\n");}
     }
   // -+-+-+-+-+-+-+-+-+-+- 7 : capture echo data dump   -+-+-+-+-+-+-+-+-+-+- //
     if (edd != 0)                                   // run or skip echo data dump
