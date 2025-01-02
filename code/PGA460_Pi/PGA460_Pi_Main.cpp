@@ -145,12 +145,34 @@ void initPGA460()
 	  printf("System Diagnostics - Noise Level: %f\n", diagnostics);
     }
   // -+-+-+-+-+-+-+-+-+-+- 6 : burn EEPROM   -+-+-+-+-+-+-+-+-+-+- //
+	int BurnCnt=0;
     if(burn == 1)
     {
 		printf("EEPROM Burn....\n");
       unsigned char burnStat = burnEEPROM(Serial_Port); // TODO
-      if(burnStat == true){printf("EEPROM programmed successfully.\n");}
-      else{printf("EEPROM program failed.\n");}
+      if(burnStat == true)
+	  {
+		printf("EEPROM programmed successfully.\n");
+	  }
+      else
+	  {
+		printf("EEPROM program failed.\n");
+		BurnCnt++;
+	  }
+	  if(BurnCnt != 0)
+	  {
+		  burnStat = burnEEPROM(Serial_Port);
+		  if(burnStat == true)
+		  {
+			  printf("EEPROM programmed successfully.\n");
+		  }
+		  else
+		  {
+			  printf("EEPROM program failed.\n");
+			  BurnCnt++;
+		  }
+		  
+	  }
     }
   // -+-+-+-+-+-+-+-+-+-+- 7 : capture echo data dump   -+-+-+-+-+-+-+-+-+-+- //
     if (edd != 0)                                   // run or skip echo data dump
