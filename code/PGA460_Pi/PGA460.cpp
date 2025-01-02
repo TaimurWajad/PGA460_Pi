@@ -1098,30 +1098,39 @@ bool burnEEPROM(int serial_port)
 {
     uint8_t burnStat = 0;
     uint8_t temp = 0;
+
     bool burnSuccess = false;
 
-    // Write "0xD" to EE_UNLCK (Unlock Pattern)
+    // Step 1: Write unlock pattern (0x68) to EE_CNTRL register
     regAddr = 0x40; // EE_CNTRL
-    regData = 0x68;
+    regData = 0x68; // Unlock pattern
     uint8_t buf10[5] = {syncByte, SRW, regAddr, regData, calcChecksum(SRW)};
     sendBytes(serial_port, buf10, sizeof(buf10));
-    usleep(10000); // Increase delay to 10ms
 
-    // Write "0xD" to EE_UNLCK and '1' to EEPRGM bit
+    usleep(2000); // Wait for 2ms to allow device to process unlock command
+
+    // Step 2: Write program bit (0x69) to EE_CNTRL register
     regAddr = 0x40; // EE_CNTRL
-    regData = 0x69;
+    regData = 0x69; // Set program bit
     buf10[2] = regAddr;
     buf10[3] = regData;
     buf10[4] = calcChecksum(SRW);
     sendBytes(serial_port, buf10, sizeof(buf10));
-    usleep(150000); // Keep 100ms or slightly increase
 
-    // Read back EEPROM program status
+    usleep(100000); // Wait for 100ms to allow EEPROM write operation
+
+    // Step 3: Read back EEPROM program status
     tcflush(serial_port, TCIOFLUSH); // Flush UART buffers
     regAddr = 0x40; // EE_CNTRL
     uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)};
     sendBytes(serial_port, buf9, sizeof(buf9));
-    usleep(5000); // Small delay for response
+    printf("EEPROM Sent Data:\n");
+    for (int i = 0; i < 4; i++) 
+    {
+        printf("0x%02X ", buf9[i]);
+    }
+
+    usleep(2000); // Wait for 2ms to read response
 
     if (receiveBytesFromSerial(serial_port, tmpRst, 3)) 
     {
@@ -1137,14 +1146,21 @@ bool burnEEPROM(int serial_port)
         printf("Failed to read data\n");
     }
 
-    // Check EEPRGM_OK bit
     burnStat = tmpRst[1];
-    if ((burnStat & 0x04) == 0x04) {
-        burnSuccess = true; // EEPROM programming succeeded
+
+    // Check if EE_PGRM_OK bit is set
+    if ((burnStat & 0x04) == 0x04) 
+    {
+        burnSuccess = true;
+    } 
+    else 
+    {
+        printf("EEPROM programming failed. Status: 0x%02X\n", burnStat);
     }
 
     return burnSuccess;
 }
+
 
 
 #if 0
