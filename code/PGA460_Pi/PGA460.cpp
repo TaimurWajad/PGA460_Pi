@@ -1096,6 +1096,60 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
  *-------------------------------------------------------------------*/
 bool burnEEPROM(int serial_port)
 {
+    uint8_t burnStat = 0;
+    uint8_t temp = 0;
+    bool burnSuccess = false;
+
+    // Write "0xD" to EE_UNLCK (Unlock Pattern)
+    regAddr = 0x40; // EE_CNTRL
+    regData = 0x68;
+    uint8_t buf10[5] = {syncByte, SRW, regAddr, regData, calcChecksum(SRW)};
+    sendBytes(serial_port, buf10, sizeof(buf10));
+    usleep(10000); // Increase delay to 10ms
+
+    // Write "0xD" to EE_UNLCK and '1' to EEPRGM bit
+    regAddr = 0x40; // EE_CNTRL
+    regData = 0x69;
+    buf10[2] = regAddr;
+    buf10[3] = regData;
+    buf10[4] = calcChecksum(SRW);
+    sendBytes(serial_port, buf10, sizeof(buf10));
+    usleep(150000); // Keep 100ms or slightly increase
+
+    // Read back EEPROM program status
+    tcflush(serial_port, TCIOFLUSH); // Flush UART buffers
+    regAddr = 0x40; // EE_CNTRL
+    uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)};
+    sendBytes(serial_port, buf9, sizeof(buf9));
+    usleep(5000); // Small delay for response
+
+    if (receiveBytesFromSerial(serial_port, tmpRst, 3)) 
+    {
+        printf("EEPROM ReadBack Data:\n");
+        for (int i = 0; i < 3; i++) 
+        {
+            printf("0x%02X ", tmpRst[i]);
+        }
+        printf("\n");
+    } 
+    else 
+    {
+        printf("Failed to read data\n");
+    }
+
+    // Check EEPRGM_OK bit
+    burnStat = tmpRst[1];
+    if ((burnStat & 0x04) == 0x04) {
+        burnSuccess = true; // EEPROM programming succeeded
+    }
+
+    return burnSuccess;
+}
+
+
+#if 0
+bool burnEEPROM(int serial_port)
+{
 	uint8_t burnStat = 0;
 	uint8_t temp = 0;
 	
@@ -1149,7 +1203,7 @@ bool burnEEPROM(int serial_port)
     {
         printf("Failed to read data\n");
     }
-	
+#if 0	
 	//Test
 	usleep(100000); //delay(10);
 	uint8_t buf29[4] = {syncByte, EEBR, regAddr, calcChecksum(EEBR)};
@@ -1169,7 +1223,7 @@ bool burnEEPROM(int serial_port)
     {
         printf("Failed to read data\n");
     }
-	
+#endif	
 	
 	burnStat = tmpRst[1];
 	
@@ -1177,6 +1231,7 @@ bool burnEEPROM(int serial_port)
 	
 	return burnSuccess;
 }
+#endif
 /*------------------------------------------------- ultrasonicCmd -----
  |  Function ultrasonicCmd
  |
