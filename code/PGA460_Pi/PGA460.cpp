@@ -643,35 +643,28 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
 		   USER_DATA19 = 0x00;
 		   USER_DATA20 = 0x00;
 		   TVGAIN0 = 0xAA;
-		   TVGAIN1 = 0xAA;
-		   TVGAIN2 = 0xAA;
-		   TVGAIN3 = 0x82;
-		   TVGAIN4 = 0x08;
-		   TVGAIN5 = 0x20;
-		   TVGAIN6 = 0x80;
-		   INIT_GAIN = 0x60;
-		   FREQUENCY  = 0x8F;
-		   DEADTIME = 0xA0;
-		   if (comm == 2)
-		   {
-				PULSE_P1 = 0x80 | 0x04;
-		   }
-		   else
-		   {
-				PULSE_P1 = 0x04;
-		   }
-		   PULSE_P2 = 0x70; //UART_ADDR=3
-		   CURR_LIM_P1 = 0x55;
-		   CURR_LIM_P2 = 0x55;
-		   REC_LENGTH = 0x19;
-		   FREQ_DIAG = 0x33;
-		   SAT_FDIAG_TH = 0xEE;
-		   FVOLT_DEC = 0x7C;
-		   DECPL_TEMP = 0x4F;
-		   DSP_SCALE = 0x00;
-		   TEMP_TRIM = 0x00;
-		   P1_GAIN_CTRL = 0x09;
-		   P2_GAIN_CTRL = 0x09;
+		   TVGAIN1 = 0xAC;
+		   TVGAIN2 = 0xAD;
+		   TVGAIN3 = 0x85;
+		   TVGAIN4 = 0x12;
+		   TVGAIN5 = 0x32;
+		   TVGAIN6 = 0x92;
+		   INIT_GAIN = 0x72;
+		   FREQUENCY  = 0x93;
+		   DEADTIME = 0xC0; // Optimized for transducer decay period (4080 µs)
+		   PULSE_P1 = 0x04;		   
+		   PULSE_P2 = 0x74; //UART_ADDR=3
+		   CURR_LIM_P1 = 0x68;
+		   CURR_LIM_P2 = 0x68;
+		   REC_LENGTH = 0x1A;
+		   FREQ_DIAG = 0x35;
+		   SAT_FDIAG_TH = 0xF2;
+		   FVOLT_DEC = 0x7E;
+		   DECPL_TEMP = 0x50;
+		   DSP_SCALE = 0x01;
+		   TEMP_TRIM = 0x01;
+		   P1_GAIN_CTRL = 0x0B;
+		   P2_GAIN_CTRL = 0x0B;
 		   break;
 		}	
 		case 4: // user custom //DEBUG
