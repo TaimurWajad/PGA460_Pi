@@ -200,7 +200,7 @@ void initPGA460()
   // -+-+-+-+-+-+-+-+-+-+- 1 : interface setup   -+-+-+-+-+-+-+-+-+-+- //
     initBoostXLPGA460(commMode, BAUD_RATE, uartAddrUpdate);
 	
-	configSensor_2();
+	configSensor_1();
 	
 	SELECT_SENSOR_2();
 	
