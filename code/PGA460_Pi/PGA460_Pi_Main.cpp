@@ -30,9 +30,9 @@ uint8_t fixedThr = 3;            // set P1 and P2 thresholds to 0=%25, 1=50%, or
 uint8_t xdcr = 2;                // set PGA460 to recommended settings for 0=Murata MA58MF14-7N, 1=Murata MA40H1S-R
 uint8_t agrTVG = 2;              // set TVG's analog front end gain range to 0=32-64dB, 1=46-78dB, 2=52-84dB, or 3=58-90dB
 uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
-uint8_t runDiag = true;             // run system diagnostics and temp/noise level before looping burst+listen command
+uint8_t runDiag = false;             // run system diagnostics and temp/noise level before looping burst+listen command
 uint8_t edd = 0;                 // echo data dump of preset 1, 2, or neither.
-uint8_t burn = 1;                // trigger EE_CNTRL to burn and program user EEPROM memory
+uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
 uint8_t numOfObj = 4;            // number of object to detect set to 1-8
 
@@ -56,9 +56,9 @@ int Serial_Port;
 void configSensor_1()
 {
 	// -+-+-+-+-+-+-+-+-+-+- 2 : bulk threshold write   -+-+-+-+-+-+-+-+-+-+- //
-    if (fixedThr != 72){initThresholds(0, Serial_Port);} 
+    if (fixedThr != 72){initThresholds(1, Serial_Port);} 
 	// -+-+-+-+-+-+-+-+-+-+- 3 : bulk user EEPROM write   -+-+-+-+-+-+-+-+-+-+- //
-    if (xdcr != 72){defaultPGA460(0, Serial_Port);}
+    if (xdcr != 72){defaultPGA460(2, Serial_Port);}
 	// -+-+-+-+-+-+-+-+-+-+- 4 : bulk TVG write   -+-+-+-+-+-+-+-+-+-+- //
     if (agrTVG != 72 && fixedTVG != 72){initTVG(1,fixedTVG, Serial_Port);}
 	// -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
