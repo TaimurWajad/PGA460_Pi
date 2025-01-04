@@ -200,7 +200,7 @@ void initPGA460()
   // -+-+-+-+-+-+-+-+-+-+- 1 : interface setup   -+-+-+-+-+-+-+-+-+-+- //
     initBoostXLPGA460(commMode, BAUD_RATE, uartAddrUpdate);
 	
-	configSensor_1();
+	configSensor_2();
 	
 	SELECT_SENSOR_2();
 	
@@ -307,14 +307,14 @@ int main()
 	initPGA460();
 	while(1)
 	{
-		//printf("Sensor 1: \n");
-		//SELECT_SENSOR_1();
-		////Cyclic_Task();
-		//printf("Retrieving echo data dump profile. Wait...\n");
-		//runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
-		//pullEchoDataDumpBulk(Serial_Port);
-		//usleep(200000);
-		//printf("Sensor 2: \n");
+		printf("Sensor 1: \n");
+		SELECT_SENSOR_1();
+		//Cyclic_Task();
+		printf("Retrieving echo data dump profile. Wait...\n");
+		runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
+		pullEchoDataDumpBulk(Serial_Port);
+		usleep(200000);
+		printf("Sensor 2: \n");
 		SELECT_SENSOR_2();
 		//Cyclic_Task();
 		printf("Retrieving echo data dump profile. Wait...\n");
