@@ -53,7 +53,81 @@ double diagnostics = 0;       // diagnostic selector
 int Serial_Port;
 
 
+void configSensor_1()
+{
+	// -+-+-+-+-+-+-+-+-+-+- 2 : bulk threshold write   -+-+-+-+-+-+-+-+-+-+- //
+    if (fixedThr != 72){initThresholds(0, Serial_Port);} 
+	// -+-+-+-+-+-+-+-+-+-+- 3 : bulk user EEPROM write   -+-+-+-+-+-+-+-+-+-+- //
+    if (xdcr != 72){defaultPGA460(0, Serial_Port);}
+	// -+-+-+-+-+-+-+-+-+-+- 4 : bulk TVG write   -+-+-+-+-+-+-+-+-+-+- //
+    if (agrTVG != 72 && fixedTVG != 72){initTVG(1,fixedTVG, Serial_Port);}
+	// -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
+    if (runDiag == true)
+    {      
+		diagnostics = runDiagnostics(1,0, Serial_Port);       // run and capture system diagnostics, and print freq diag result
+		printf("System Diagnostics - Frequency (kHz): %f\n", diagnostics);
+		diagnostics = runDiagnostics(0,1, Serial_Port);       // do not re-run system diagnostic, but print decay diag result
+		printf("System Diagnostics - Decay Period (us): %f\n", diagnostics);
+		diagnostics = runDiagnostics(0,2, Serial_Port);       // do not re-run system diagnostic, but print temperature measurement
+		printf("System Diagnostics - Die Temperature (C): %f\n", diagnostics);
+		diagnostics = runDiagnostics(0,3, Serial_Port);       // do not re-run system diagnostic, but print noise level measurement
+		printf("System Diagnostics - Noise Level: %f\n", diagnostics);
+    }
+	// -+-+-+-+-+-+-+-+-+-+- 6 : burn EEPROM   -+-+-+-+-+-+-+-+-+-+- //
+	
+    if(burn == 1)
+    {
+		printf("EEPROM Burn....\n");
+		unsigned char burnStat = burnEEPROM(Serial_Port); // TODO
+		if(burnStat == true){printf("EEPROM programmed successfully.\n");}
+		else{printf("EEPROM program failed.\n");}
+    }
+	// -+-+-+-+-+-+-+-+-+-+- 7 : capture echo data dump   -+-+-+-+-+-+-+-+-+-+- //
+    if (edd != 0)                                   // run or skip echo data dump
+    {
+		printf("Retrieving echo data dump profile. Wait...\n");
+		runEchoDataDump(edd-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
+		bool echoDataDump = pullEchoDataDumpBulk(Serial_Port);
+    }	
+}
 
+void configSensor_2()
+{
+	// -+-+-+-+-+-+-+-+-+-+- 2 : bulk threshold write   -+-+-+-+-+-+-+-+-+-+- //
+    if (fixedThr != 72){initThresholds(0, Serial_Port);} 
+	// -+-+-+-+-+-+-+-+-+-+- 3 : bulk user EEPROM write   -+-+-+-+-+-+-+-+-+-+- //
+    if (xdcr != 72){defaultPGA460(0, Serial_Port);}
+	// -+-+-+-+-+-+-+-+-+-+- 4 : bulk TVG write   -+-+-+-+-+-+-+-+-+-+- //
+    if (agrTVG != 72 && fixedTVG != 72){initTVG(1,fixedTVG, Serial_Port);}
+	// -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
+    if (runDiag == true)
+    {      
+		diagnostics = runDiagnostics(1,0, Serial_Port);       // run and capture system diagnostics, and print freq diag result
+		printf("System Diagnostics - Frequency (kHz): %f\n", diagnostics);
+		diagnostics = runDiagnostics(0,1, Serial_Port);       // do not re-run system diagnostic, but print decay diag result
+		printf("System Diagnostics - Decay Period (us): %f\n", diagnostics);
+		diagnostics = runDiagnostics(0,2, Serial_Port);       // do not re-run system diagnostic, but print temperature measurement
+		printf("System Diagnostics - Die Temperature (C): %f\n", diagnostics);
+		diagnostics = runDiagnostics(0,3, Serial_Port);       // do not re-run system diagnostic, but print noise level measurement
+		printf("System Diagnostics - Noise Level: %f\n", diagnostics);
+    }
+	// -+-+-+-+-+-+-+-+-+-+- 6 : burn EEPROM   -+-+-+-+-+-+-+-+-+-+- //
+	
+    if(burn == 1)
+    {
+		printf("EEPROM Burn....\n");
+		unsigned char burnStat = burnEEPROM(Serial_Port); // TODO
+		if(burnStat == true){printf("EEPROM programmed successfully.\n");}
+		else{printf("EEPROM program failed.\n");}
+    }
+	// -+-+-+-+-+-+-+-+-+-+- 7 : capture echo data dump   -+-+-+-+-+-+-+-+-+-+- //
+    if (edd != 0)                                   // run or skip echo data dump
+    {
+		printf("Retrieving echo data dump profile. Wait...\n");
+		runEchoDataDump(edd-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
+		bool echoDataDump = pullEchoDataDumpBulk(Serial_Port);
+    }	
+}
   
   
   /*------------------------------------------------- initPGA460 -----
@@ -139,81 +213,7 @@ void initPGA460()
 
 }
 
-void configSensor_1()
-{
-	// -+-+-+-+-+-+-+-+-+-+- 2 : bulk threshold write   -+-+-+-+-+-+-+-+-+-+- //
-    if (fixedThr != 72){initThresholds(0, Serial_Port);} 
-	// -+-+-+-+-+-+-+-+-+-+- 3 : bulk user EEPROM write   -+-+-+-+-+-+-+-+-+-+- //
-    if (xdcr != 72){defaultPGA460(0, Serial_Port);}
-	// -+-+-+-+-+-+-+-+-+-+- 4 : bulk TVG write   -+-+-+-+-+-+-+-+-+-+- //
-    if (agrTVG != 72 && fixedTVG != 72){initTVG(1,fixedTVG, Serial_Port);}
-	// -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
-    if (runDiag == true)
-    {      
-		diagnostics = runDiagnostics(1,0, Serial_Port);       // run and capture system diagnostics, and print freq diag result
-		printf("System Diagnostics - Frequency (kHz): %f\n", diagnostics);
-		diagnostics = runDiagnostics(0,1, Serial_Port);       // do not re-run system diagnostic, but print decay diag result
-		printf("System Diagnostics - Decay Period (us): %f\n", diagnostics);
-		diagnostics = runDiagnostics(0,2, Serial_Port);       // do not re-run system diagnostic, but print temperature measurement
-		printf("System Diagnostics - Die Temperature (C): %f\n", diagnostics);
-		diagnostics = runDiagnostics(0,3, Serial_Port);       // do not re-run system diagnostic, but print noise level measurement
-		printf("System Diagnostics - Noise Level: %f\n", diagnostics);
-    }
-	// -+-+-+-+-+-+-+-+-+-+- 6 : burn EEPROM   -+-+-+-+-+-+-+-+-+-+- //
-	
-    if(burn == 1)
-    {
-		printf("EEPROM Burn....\n");
-		unsigned char burnStat = burnEEPROM(Serial_Port); // TODO
-		if(burnStat == true){printf("EEPROM programmed successfully.\n");}
-		else{printf("EEPROM program failed.\n");}
-    }
-	// -+-+-+-+-+-+-+-+-+-+- 7 : capture echo data dump   -+-+-+-+-+-+-+-+-+-+- //
-    if (edd != 0)                                   // run or skip echo data dump
-    {
-		printf("Retrieving echo data dump profile. Wait...\n");
-		runEchoDataDump(edd-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
-		bool echoDataDump = pullEchoDataDumpBulk(Serial_Port);
-    }	
-}
 
-void configSensor_2()
-{
-	// -+-+-+-+-+-+-+-+-+-+- 2 : bulk threshold write   -+-+-+-+-+-+-+-+-+-+- //
-    if (fixedThr != 72){initThresholds(0, Serial_Port);} 
-	// -+-+-+-+-+-+-+-+-+-+- 3 : bulk user EEPROM write   -+-+-+-+-+-+-+-+-+-+- //
-    if (xdcr != 72){defaultPGA460(0, Serial_Port);}
-	// -+-+-+-+-+-+-+-+-+-+- 4 : bulk TVG write   -+-+-+-+-+-+-+-+-+-+- //
-    if (agrTVG != 72 && fixedTVG != 72){initTVG(1,fixedTVG, Serial_Port);}
-	// -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
-    if (runDiag == true)
-    {      
-		diagnostics = runDiagnostics(1,0, Serial_Port);       // run and capture system diagnostics, and print freq diag result
-		printf("System Diagnostics - Frequency (kHz): %f\n", diagnostics);
-		diagnostics = runDiagnostics(0,1, Serial_Port);       // do not re-run system diagnostic, but print decay diag result
-		printf("System Diagnostics - Decay Period (us): %f\n", diagnostics);
-		diagnostics = runDiagnostics(0,2, Serial_Port);       // do not re-run system diagnostic, but print temperature measurement
-		printf("System Diagnostics - Die Temperature (C): %f\n", diagnostics);
-		diagnostics = runDiagnostics(0,3, Serial_Port);       // do not re-run system diagnostic, but print noise level measurement
-		printf("System Diagnostics - Noise Level: %f\n", diagnostics);
-    }
-	// -+-+-+-+-+-+-+-+-+-+- 6 : burn EEPROM   -+-+-+-+-+-+-+-+-+-+- //
-	
-    if(burn == 1)
-    {
-		printf("EEPROM Burn....\n");
-		unsigned char burnStat = burnEEPROM(Serial_Port); // TODO
-		if(burnStat == true){printf("EEPROM programmed successfully.\n");}
-		else{printf("EEPROM program failed.\n");}
-    }
-	// -+-+-+-+-+-+-+-+-+-+- 7 : capture echo data dump   -+-+-+-+-+-+-+-+-+-+- //
-    if (edd != 0)                                   // run or skip echo data dump
-    {
-		printf("Retrieving echo data dump profile. Wait...\n");
-		runEchoDataDump(edd-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
-		bool echoDataDump = pullEchoDataDumpBulk(Serial_Port);
-    }	
-}
 
 /*------------------------------------------------- main loop -----
 |  main loop  GetDistance
