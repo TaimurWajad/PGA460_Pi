@@ -603,12 +603,12 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
 			TVGAIN5 = 0x30;
 			TVGAIN6 = 0x20;
 			INIT_GAIN = 0x60; // Initial gain (unchanged)
-			FREQUENCY  = 0xAA; // Set to ~40 kHz
+			FREQUENCY  = 0x94; // Set to ~40 kHz
 			DEADTIME = 0xA0;
-			PULSE_P1 = 0x03; // Shorter pulse train
+			PULSE_P1 = 0x08; // Shorter pulse train
 			PULSE_P2 = 0x10;
-			CURR_LIM_P1 = 0x55; // Current limit (unchanged)
-			CURR_LIM_P2 = 0x55;
+			CURR_LIM_P1 = 0x88; // Current limit (unchanged)
+			CURR_LIM_P2 = 0x88;
 			REC_LENGTH = 0x25; // Extend receive window
 			FREQ_DIAG = 0x33; // Diagnostic frequency
 			SAT_FDIAG_TH = 0xEE; // Diagnostic threshold
