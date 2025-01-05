@@ -689,36 +689,34 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
 		   USER_DATA18 = 0x00;
 		   USER_DATA19 = 0x00;
 		   USER_DATA20 = 0x00;
-		   TVGAIN0 = 0xAA;
-		   TVGAIN1 = 0xAA;
-		   TVGAIN2 = 0xAA;
-		   TVGAIN3 = 0x82;
-		   TVGAIN4 = 0x08;
-		   TVGAIN5 = 0x20;
-		   TVGAIN6 = 0x80;
-		   INIT_GAIN = 0x60;
-		   FREQUENCY  = 0x8F;
-		   DEADTIME = 0xA0;
-		   if (comm == 2)
-		   {
-				PULSE_P1 = 0x80 | 0x04;
-		   }
-		   else
-		   {
-				PULSE_P1 = 0x04;
-		   }
-		   PULSE_P2 = 0x90; //UART_ADDR=4
-		   CURR_LIM_P1 = 0x55;
-		   CURR_LIM_P2 = 0x55;
-		   REC_LENGTH = 0x19;
-		   FREQ_DIAG = 0x33;
-		   SAT_FDIAG_TH = 0xEE;
-		   FVOLT_DEC = 0x7C;
-		   DECPL_TEMP = 0x4F;
-		   DSP_SCALE = 0x00;
-		   TEMP_TRIM = 0x00;
-		   P1_GAIN_CTRL = 0x09;
-		   P2_GAIN_CTRL = 0x09;
+		   TVGAIN0 = 0x88;  // TVG at 0–1ms
+		   TVGAIN1 = 0xAA;  // TVG at 1–2ms
+		   TVGAIN2 = 0xCC;  // TVG at 2–3ms (decay ends ~2.7ms)
+		   TVGAIN3 = 0xDD;  // TVG at 3–4ms
+		   TVGAIN4 = 0xEE;  // TVG at 4–5ms
+		   TVGAIN5 = 0xFF;  // TVG at 5–6ms
+		   TVGAIN6 = 0xFF;  // TVG at 6–7ms (max gain)
+
+		   INIT_GAIN = 0x60;  // Initial gain: Medium-high gain for better echo detection
+		   FREQUENCY = 0x8F;  // 40.7 kHz center frequency (adjusted for transducer specs)
+		   DEADTIME = 0xA0;   // Adjust dead time for signal transition and ringing suppression
+
+		   PULSE_P1 = 0x04;    // 4 pulses for P1 (ensure enough power for long range)
+		   PULSE_P2 = 0x04;    // 4 pulses for P2
+		   CURR_LIM_P1 = 0x55; // Medium drive current for P1
+		   CURR_LIM_P2 = 0x55; // Medium drive current for P2
+
+		   REC_LENGTH = 0x19;  // 25 ms record length for mid-range detection
+		   FREQ_DIAG = 0x33;   // Enable frequency diagnostics for monitoring
+
+		   SAT_FDIAG_TH = 0xEE; // Saturation threshold for diagnostics
+		   FVOLT_DEC = 0x7C;    // Maximum drive voltage for transducer
+		   DECPL_TEMP = 0x4F;   // Decoupling capacitor and temperature diagnostics
+
+		   DSP_SCALE = 0x00;    // Default DSP scale
+		   TEMP_TRIM = 0x00;    // Default temperature trim
+		   P1_GAIN_CTRL = 0x09; // Enable gain control for P1
+		   P2_GAIN_CTRL = 0x09; // Enable gain control for P2
 		   break;
 		}			
 		default: break;
