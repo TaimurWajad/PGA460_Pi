@@ -698,7 +698,7 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
 		   TVGAIN6 = 0xFF;  // TVG at 6–7ms (max gain)
 
 		   INIT_GAIN = 0x60;  // Initial gain: Medium-high gain for better echo detection
-		   FREQUENCY = 0x8F;  // 40.7 kHz center frequency (adjusted for transducer specs)
+		   FREQUENCY = 0x94;  // 40.7 kHz center frequency (adjusted for transducer specs)
 		   DEADTIME = 0xA0;   // Adjust dead time for signal transition and ringing suppression
 
 		   PULSE_P1 = 0x04;    // 4 pulses for P1 (ensure enough power for long range)
