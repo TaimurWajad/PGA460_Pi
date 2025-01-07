@@ -1096,14 +1096,14 @@ bool burnEEPROM(int serial_port)
     uint8_t buf10[5] = {syncByte, SRW, regAddr, regData, calcChecksum(SRW)};
     sendBytes(serial_port, buf10, sizeof(buf10));
 
-    usleep(20000); // Wait for 2ms to allow device to process unlock command
+    usleep(20); // Wait for 20us to allow device to process unlock command
 
     // Step 2: Read back EE_CNTRL register to verify unlock operation
     tcflush(serial_port, TCIOFLUSH); // Flush UART buffers
     //uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)};
 	uint8_t buf9[4] = {0x55, 0x0A, 0x01, 0xB4};
     sendBytes(serial_port, buf9, sizeof(buf9));
-    
+    usleep(50);
     printf("Reading back EE_CNTRL after unlock pattern...\n");
     if (receiveBytesFromSerial(serial_port, tmpRst, 3)) 
     {
