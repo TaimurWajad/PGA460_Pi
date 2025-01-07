@@ -1208,7 +1208,7 @@ bool burnEEPROM(int serial_port)
 	//pga460SerialFlush(serial_port);
 	// Flush UART buffers
 	tcflush(serial_port, TCIOFLUSH);
-	regAddr = 0x40; //EE_CNTRL
+	regAddr = 0x1C; // FREQ //0x40; //EE_CNTRL
 	uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)};
 
 	sendBytes(serial_port, buf9, sizeof(buf9));
@@ -1223,22 +1223,6 @@ bool burnEEPROM(int serial_port)
 	if (receiveBytesFromSerial(serial_port, tmpRst, 3)) 
     {
         printf("EEPROM ReadBack Data:\n");
-        for (int i = 0; i < 3; i++) 
-        {
-            printf("0x%02X ", tmpRst[i]);
-        }
-        printf("\n");
-    } 
-    else 
-    {
-        printf("Failed to read data\n");
-    }
-	uint8_t buf15[4] = {syncByte, SRR, 0x1C, calcChecksum(SRR)}; // FREQ Reg
-	sendBytes(serial_port, buf15, sizeof(buf15));
-	
-	if (receiveBytesFromSerial(serial_port, tmpRst, 3)) 
-    {
-        printf("EEPROM ReadBack Data Freq Register:\n");
         for (int i = 0; i < 3; i++) 
         {
             printf("0x%02X ", tmpRst[i]);
