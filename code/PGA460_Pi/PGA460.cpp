@@ -132,6 +132,7 @@
 	uint8_t tempNoiseMeasResult[4+3] = {0}; 	// data byte array for cmd6 and index0&1 return
 	uint8_t echoDataDump[130+3] = {0}; 		// data byte array for cmd7 and index12 return
 	uint8_t tmpRst[3] = {0};
+	uint8_t regRead[3] = {0};
 	uint8_t tempOrNoise = 0; 			// data byte to determine if temp or noise measurement is to be performed
 	uint8_t comm = 0; 					// indicates UART (0), TCI (1), OWU (2) communication mode	
 	unsigned long starttime; 		// used for function time out
@@ -651,7 +652,7 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
 		   TVGAIN6 = 0x92;
 		   INIT_GAIN = 0x72;
 		   FREQUENCY  = 0x93;
-		   DEADTIME = 0xC0; // Optimized for transducer decay period (4080 µs)
+		   DEADTIME = 0xC0; // Optimized for transducer decay period (4080 ï¿½s)
 		   PULSE_P1 = 0x04;		   
 		   PULSE_P2 = 0x74; //UART_ADDR=3
 		   CURR_LIM_P1 = 0x68;
@@ -689,13 +690,13 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
 		   USER_DATA18 = 0x00;
 		   USER_DATA19 = 0x00;
 		   USER_DATA20 = 0x00;
-		   TVGAIN0 = 0x88;  // TVG at 0–1ms
-		   TVGAIN1 = 0xAA;  // TVG at 1–2ms
-		   TVGAIN2 = 0xCC;  // TVG at 2–3ms (decay ends ~2.7ms)
-		   TVGAIN3 = 0xDD;  // TVG at 3–4ms
-		   TVGAIN4 = 0xEE;  // TVG at 4–5ms
-		   TVGAIN5 = 0xFF;  // TVG at 5–6ms
-		   TVGAIN6 = 0xFF;  // TVG at 6–7ms (max gain)
+		   TVGAIN0 = 0x88;  // TVG at 0ï¿½1ms
+		   TVGAIN1 = 0xAA;  // TVG at 1ï¿½2ms
+		   TVGAIN2 = 0xCC;  // TVG at 2ï¿½3ms (decay ends ~2.7ms)
+		   TVGAIN3 = 0xDD;  // TVG at 3ï¿½4ms
+		   TVGAIN4 = 0xEE;  // TVG at 4ï¿½5ms
+		   TVGAIN5 = 0xFF;  // TVG at 5ï¿½6ms
+		   TVGAIN6 = 0xFF;  // TVG at 6ï¿½7ms (max gain)
 
 		   INIT_GAIN = 0x60;  // Initial gain: Medium-high gain for better echo detection
 		   FREQUENCY = 0x94;  // 40.7 kHz center frequency (adjusted for transducer specs)
@@ -1263,6 +1264,36 @@ bool burnEEPROM(int serial_port)
 	return burnSuccess;
 }
 #endif
+void readReg(int serial_port, int REG_ADDRR)
+{
+	regAddr = REG_ADDRR; 
+	
+	uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)};
+	
+	sendBytes(serial_port, buf9, sizeof(buf9));
+	printf("Sent Data:\n");
+	for (int i = 0; i < 4; i++) 
+	{
+		printf("0x%02X ", buf9[i]);
+	}
+
+	usleep(1000); //delay(10);
+	
+	if (receiveBytesFromSerial(serial_port, regRead, 3)) 
+    {
+        printf("Reg ReadBack Data:\n");
+        for (int i = 0; i < 3; i++) 
+        {
+            printf("0x%02X ", regRead[i]);
+        }
+        printf("\n");
+    } 
+    else 
+    {
+        printf("Failed to read data\n");
+    }
+	
+}
 /*------------------------------------------------- ultrasonicCmd -----
  |  Function ultrasonicCmd
  |

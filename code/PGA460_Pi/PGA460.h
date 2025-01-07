@@ -18,6 +18,7 @@ void defaultPGA460(uint8_t xdcr, int serial_port);
 void initTVG(uint8_t agr, uint8_t tvg, int serial_port);
 double runDiagnostics(uint8_t run, uint8_t diag, int serial_port);
 bool burnEEPROM(int serial_port);
+void readReg(int serial_port, int REG_ADDRR);
 void ultrasonicCmd(uint8_t cmd, uint8_t numObjUpdate, int serial_port);
 uint8_t pullUltrasonicMeasResult(bool busDemo, int serial_port);
 double printUltrasonicMeasResult(uint8_t umr);
