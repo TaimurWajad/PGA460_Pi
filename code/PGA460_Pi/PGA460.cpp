@@ -1194,13 +1194,13 @@ bool burnEEPROM(int serial_port)
 	
 	// Write "0xD" to EE_UNLCK to unlock EEPROM, and '1' to EEPRGM bit at EE_CNTRL register
 	regAddr = 0x40; //EE_CNTRL
-	regData = 0x69;
+	regData = 0x01;
 	buf10[2] = regAddr;
 	buf10[3] = regData;
 	buf10[4] = calcChecksum(SRW);
 	
-	uint8_t buf11[5] = {syncByte, SRW, regAddr, 0x01, calcChecksum(SRW)}; // This
-	sendBytes(serial_port, buf11, sizeof(buf11));
+	//uint8_t buf11[5] = {syncByte, SRW, regAddr, 0x01, calcChecksum(SRW)}; // This
+	sendBytes(serial_port, buf10, sizeof(buf10));
 	
 	usleep(50); //delay(1000);
 		
