@@ -1276,6 +1276,7 @@ void readReg(int serial_port, int REG_ADDRR)
 	{
 		printf("0x%02X ", buf9[i]);
 	}
+	printf("\n");
 
 	usleep(1000); //delay(10);
 	

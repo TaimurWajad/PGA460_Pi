@@ -127,7 +127,8 @@ void configSensor_2()
 		printf("Retrieving echo data dump profile. Wait...\n");
 		runEchoDataDump(edd-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
 		bool echoDataDump = pullEchoDataDumpBulk(Serial_Port);
-    }	
+    }
+	readReg(Serial_Port, 0x1C);
 }
   
   
