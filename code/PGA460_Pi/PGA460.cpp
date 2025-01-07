@@ -1085,6 +1085,7 @@ double runDiagnostics(uint8_t run, uint8_t diag, int serial_port)
  |
  |  Returns:  bool representation of EEPROM program success
  *-------------------------------------------------------------------*/
+#if 0
 bool burnEEPROM(int serial_port)
 {
     uint8_t burnStat = 0;
@@ -1100,10 +1101,9 @@ bool burnEEPROM(int serial_port)
 
     // Step 2: Read back EE_CNTRL register to verify unlock operation
     tcflush(serial_port, TCIOFLUSH); // Flush UART buffers
-    //uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)};
-	uint8_t buf9[4] = {0x55, 0x0A, 0x01, 0xB4};
+    uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)};
     sendBytes(serial_port, buf9, sizeof(buf9));
-    usleep(50);
+    usleep(5);
     printf("Reading back EE_CNTRL after unlock pattern...\n");
     if (receiveBytesFromSerial(serial_port, tmpRst, 3)) 
     {
@@ -1171,11 +1171,11 @@ bool burnEEPROM(int serial_port)
 
     return burnSuccess;
 }
+#endif
 
 
 
-
-#if 0
+#if 1
 bool burnEEPROM(int serial_port)
 {
 	uint8_t burnStat = 0;
@@ -1198,9 +1198,11 @@ bool burnEEPROM(int serial_port)
 	buf10[2] = regAddr;
 	buf10[3] = regData;
 	buf10[4] = calcChecksum(SRW);
+	
+	buf10[5] = {syncByte, SRW, regAddr, 0x01, calcChecksum(SRW)}; // This
 	sendBytes(serial_port, buf10, sizeof(buf10));
 	
-	usleep(100000); //delay(1000);
+	usleep(50); //delay(1000);
 		
 	// Read back EEPROM program status	
 	//pga460SerialFlush(serial_port);
