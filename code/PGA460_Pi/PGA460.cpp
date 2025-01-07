@@ -1233,6 +1233,23 @@ bool burnEEPROM(int serial_port)
     {
         printf("Failed to read data\n");
     }
+	uint8_t buf15[4] = {syncByte, SRR, 0x1C, calcChecksum(SRR)}; // FREQ Reg
+	sendBytes(serial_port, buf15, sizeof(buf15))
+	
+	if (receiveBytesFromSerial(serial_port, tmpRst, 3)) 
+    {
+        printf("EEPROM ReadBack Data Freq Register:\n");
+        for (int i = 0; i < 3; i++) 
+        {
+            printf("0x%02X ", tmpRst[i]);
+        }
+        printf("\n");
+    } 
+    else 
+    {
+        printf("Failed to read data\n");
+    }
+	
 #if 0	
 	//Test
 	usleep(100000); //delay(10);
