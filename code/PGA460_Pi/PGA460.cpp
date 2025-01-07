@@ -1234,7 +1234,7 @@ bool burnEEPROM(int serial_port)
         printf("Failed to read data\n");
     }
 	uint8_t buf15[4] = {syncByte, SRR, 0x1C, calcChecksum(SRR)}; // FREQ Reg
-	sendBytes(serial_port, buf15, sizeof(buf15))
+	sendBytes(serial_port, buf15, sizeof(buf15));
 	
 	if (receiveBytesFromSerial(serial_port, tmpRst, 3)) 
     {
