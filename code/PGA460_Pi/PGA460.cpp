@@ -1199,8 +1199,8 @@ bool burnEEPROM(int serial_port)
 	buf10[3] = regData;
 	buf10[4] = calcChecksum(SRW);
 	
-	buf10[5] = {syncByte, SRW, regAddr, 0x01, calcChecksum(SRW)}; // This
-	sendBytes(serial_port, buf10, sizeof(buf10));
+	uint8_t buf11[5] = {syncByte, SRW, regAddr, 0x01, calcChecksum(SRW)}; // This
+	sendBytes(serial_port, buf11, sizeof(buf11));
 	
 	usleep(50); //delay(1000);
 		
