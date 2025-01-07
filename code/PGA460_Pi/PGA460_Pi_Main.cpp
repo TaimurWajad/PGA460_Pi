@@ -89,7 +89,7 @@ void configSensor_1()
 		runEchoDataDump(edd-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
 		bool echoDataDump = pullEchoDataDumpBulk(Serial_Port);
     }
-	readReg(Serial_Port, 0x1C);
+	readReg(Serial_Port, 0x1B);
 }
 
 void configSensor_2()
@@ -128,7 +128,7 @@ void configSensor_2()
 		runEchoDataDump(edd-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
 		bool echoDataDump = pullEchoDataDumpBulk(Serial_Port);
     }
-	readReg(Serial_Port, 0x1C);
+	readReg(Serial_Port, 0x1B);
 }
   
   
