@@ -1100,8 +1100,8 @@ bool burnEEPROM(int serial_port)
 
     // Step 2: Read back EE_CNTRL register to verify unlock operation
     tcflush(serial_port, TCIOFLUSH); // Flush UART buffers
-    //uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)};
-	uint8_t buf9[4] = {0x55, 0x0A, 0x01, 0xB4};
+    uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)};
+	//uint8_t buf9[4] = {0x55, 0x0A, 0x01, 0xB4};
     sendBytes(serial_port, buf9, sizeof(buf9));
     
     printf("Reading back EE_CNTRL after unlock pattern...\n");
