@@ -129,6 +129,18 @@ void configSensor_2()
 		bool echoDataDump = pullEchoDataDumpBulk(Serial_Port);
     }
 	readReg(Serial_Port, 0x41);
+	readReg(Serial_Port, 0x42);
+	readReg(Serial_Port, 0x43);
+	readReg(Serial_Port, 0x44);
+	readReg(Serial_Port, 0x45);
+	readReg(Serial_Port, 0x46);
+	readReg(Serial_Port, 0x47);
+	readReg(Serial_Port, 0x48);
+	readReg(Serial_Port, 0x49);
+	readReg(Serial_Port, 0x4A);
+	readReg(Serial_Port, 0x4B);
+	readReg(Serial_Port, 0x4C);
+	readReg(Serial_Port, 0x4D);
 }
   
   

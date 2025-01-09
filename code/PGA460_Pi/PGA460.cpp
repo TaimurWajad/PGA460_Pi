@@ -1316,12 +1316,12 @@ void readReg(int serial_port, int REG_ADDRR)
 	uint8_t buf9[4] = {syncByte, SRR, regAddr, calcChecksum(SRR)};
 	
 	sendBytes(serial_port, buf9, sizeof(buf9));
-	printf("Sent Data:\n");
-	for (int i = 0; i < 4; i++) 
-	{
-		printf("0x%02X ", buf9[i]);
-	}
-	printf("\n");
+	//printf("Sent Data:\n");
+	//for (int i = 0; i < 4; i++) 
+	//{
+	//	printf("0x%02X ", buf9[i]);
+	//}
+	//printf("\n");
 
 	usleep(1000); //delay(10);
 	
