@@ -403,40 +403,75 @@ void initThresholds(uint8_t thr, int serial_port)
 		   P2_THR_15 = 0x00;
 		break;
 		
-		case 3: //Custom
-			P1_THR_0 = 0xFF; // Ignore initial ringing noise
-			P1_THR_1 = 0xFF; // Ignore ringing (close to transmit pulse)
-			P1_THR_2 = 0xC8; // Reduce sensitivity (ringing ends)
-			P1_THR_3 = 0x88; // Start detecting echoes
-			P1_THR_4 = 0x68; // Lower threshold for mid-range targets
-			P1_THR_5 = 0x58; // Continue lowering threshold
-			P1_THR_6 = 0x48; // Sensitive to distant echoes
-			P1_THR_7 = 0x38;
-			P1_THR_8 = 0x28;
-			P1_THR_9 = 0x20;
-			P1_THR_10 = 0x18; // Detect weak echoes
-			P1_THR_11 = 0x10;
-			P1_THR_12 = 0x10;
-			P1_THR_13 = 0x10;
-			P1_THR_14 = 0x08;
+	case 3: //Custom: TI
+			P1_THR_0 = 0x77; // Ignore initial ringing noise
+			P1_THR_1 = 0x77; // Ignore ringing (close to transmit pulse)
+			P1_THR_2 = 0x77; // Reduce sensitivity (ringing ends)
+			P1_THR_3 = 0x77; // Start detecting echoes
+			P1_THR_4 = 0x78; // Lower threshold for mid-range targets
+			P1_THR_5 = 0x88; // Continue lowering threshold
+			P1_THR_6 = 0x9C; // Sensitive to distant echoes
+			P1_THR_7 = 0xD0;
+			P1_THR_8 = 0x72;
+			P1_THR_9 = 0x10;
+			P1_THR_10 = 0x63; // Detect weak echoes
+			P1_THR_11 = 0x28;
+			P1_THR_12 = 0x30;
+			P1_THR_13 = 0x34;
+			P1_THR_14 = 0x3C;
 			P1_THR_15 = 0x00; // End of detection window
 
-			P2_THR_0 = 0xFF; // Ignore initial ringing noise
-			P2_THR_1 = 0xFF; // Ignore ringing (close to transmit pulse)
-			P2_THR_2 = 0xC8; // Reduce sensitivity (ringing ends)
-			P2_THR_3 = 0x88; // Start detecting echoes
-			P2_THR_4 = 0x68; // Lower threshold for mid-range targets
-			P2_THR_5 = 0x58; // Continue lowering threshold
-			P2_THR_6 = 0x48; // Sensitive to distant echoes
-			P2_THR_7 = 0x38;
-			P2_THR_8 = 0x28;
-			P2_THR_9 = 0x20;
-			P2_THR_10 = 0x18; // Detect weak echoes
-			P2_THR_11 = 0x10;
-			P2_THR_12 = 0x10;
-			P2_THR_13 = 0x10;
-			P2_THR_14 = 0x08;
+			P2_THR_0 = 0x77; // Ignore initial ringing noise
+			P2_THR_1 = 0x77; // Ignore ringing (close to transmit pulse)
+			P2_THR_2 = 0x77; // Reduce sensitivity (ringing ends)
+			P2_THR_3 = 0x77; // Start detecting echoes
+			P2_THR_4 = 0x78; // Lower threshold for mid-range targets
+			P2_THR_5 = 0x88; // Continue lowering threshold
+			P2_THR_6 = 0x9C; // Sensitive to distant echoes
+			P2_THR_7 = 0xD0;
+			P2_THR_8 = 0x72;
+			P2_THR_9 = 0x10;
+			P2_THR_10 = 0x63; // Detect weak echoes
+			P2_THR_11 = 0x28;
+			P2_THR_12 = 0x30;
+			P2_THR_13 = 0x34;
+			P2_THR_14 = 0x3C;
 			P2_THR_15 = 0x00; // End of detection window
+		break;
+	case 4: //Custom
+		P1_THR_0 = 0xFF; // Ignore initial ringing noise
+		P1_THR_1 = 0xFF; // Ignore ringing (close to transmit pulse)
+		P1_THR_2 = 0xC8; // Reduce sensitivity (ringing ends)
+		P1_THR_3 = 0x88; // Start detecting echoes
+		P1_THR_4 = 0x68; // Lower threshold for mid-range targets
+		P1_THR_5 = 0x58; // Continue lowering threshold
+		P1_THR_6 = 0x48; // Sensitive to distant echoes
+		P1_THR_7 = 0x38;
+		P1_THR_8 = 0x28;
+		P1_THR_9 = 0x20;
+		P1_THR_10 = 0x18; // Detect weak echoes
+		P1_THR_11 = 0x10;
+		P1_THR_12 = 0x10;
+		P1_THR_13 = 0x10;
+		P1_THR_14 = 0x08;
+		P1_THR_15 = 0x00; // End of detection window
+
+		P2_THR_0 = 0xFF; // Ignore initial ringing noise
+		P2_THR_1 = 0xFF; // Ignore ringing (close to transmit pulse)
+		P2_THR_2 = 0xC8; // Reduce sensitivity (ringing ends)
+		P2_THR_3 = 0x88; // Start detecting echoes
+		P2_THR_4 = 0x68; // Lower threshold for mid-range targets
+		P2_THR_5 = 0x58; // Continue lowering threshold
+		P2_THR_6 = 0x48; // Sensitive to distant echoes
+		P2_THR_7 = 0x38;
+		P2_THR_8 = 0x28;
+		P2_THR_9 = 0x20;
+		P2_THR_10 = 0x18; // Detect weak echoes
+		P2_THR_11 = 0x10;
+		P2_THR_12 = 0x10;
+		P2_THR_13 = 0x10;
+		P2_THR_14 = 0x08;
+		P2_THR_15 = 0x00; // End of detection window
 		break;
 		
 		default: break;
@@ -622,7 +657,7 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
 		   break;
 		}	
 		case 3: // user custom //DEBUG
-		{
+		{// TI
 			USER_DATA1 = 0x00;
 		   USER_DATA2 = 0x00;
 		   USER_DATA3 = 0x00;
@@ -644,28 +679,28 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
 		   USER_DATA19 = 0x00;
 		   USER_DATA20 = 0x00;
 		   TVGAIN0 = 0xAA;
-		   TVGAIN1 = 0xAC;
-		   TVGAIN2 = 0xAD;
-		   TVGAIN3 = 0x85;
-		   TVGAIN4 = 0x12;
-		   TVGAIN5 = 0x32;
-		   TVGAIN6 = 0x92;
-		   INIT_GAIN = 0x72;
-		   FREQUENCY  = 0x93;
-		   DEADTIME = 0xC0; // Optimized for transducer decay period (4080 �s)
-		   PULSE_P1 = 0x04;		   
-		   PULSE_P2 = 0x74; //UART_ADDR=3
-		   CURR_LIM_P1 = 0x68;
-		   CURR_LIM_P2 = 0x68;
-		   REC_LENGTH = 0x1A;
-		   FREQ_DIAG = 0x35;
-		   SAT_FDIAG_TH = 0xF2;
-		   FVOLT_DEC = 0x7E;
-		   DECPL_TEMP = 0x50;
-		   DSP_SCALE = 0x01;
-		   TEMP_TRIM = 0x01;
-		   P1_GAIN_CTRL = 0x0B;
-		   P2_GAIN_CTRL = 0x0B;
+		   TVGAIN1 = 0xAA;
+		   TVGAIN2 = 0xAA;
+		   TVGAIN3 = 0x00;
+		   TVGAIN4 = 0x00;
+		   TVGAIN5 = 0x00;
+		   TVGAIN6 = 0x00;
+		   INIT_GAIN = 0x40;
+		   FREQUENCY  = 0x32;
+		   DEADTIME = 0x80; // Optimized for transducer decay period (4080 �s)
+		   PULSE_P1 = 0x0A;		   
+		   PULSE_P2 = 0x10; //UART_ADDR=3
+		   CURR_LIM_P1 = 0x40;
+		   CURR_LIM_P2 = 0x40;
+		   REC_LENGTH = 0x89;
+		   FREQ_DIAG = 0x00;
+		   SAT_FDIAG_TH = 0xEE;
+		   FVOLT_DEC = 0x7C;
+		   DECPL_TEMP = 0x4F;
+		   DSP_SCALE = 0x00;
+		   TEMP_TRIM = 0x00;
+		   P1_GAIN_CTRL = 0x08;
+		   P2_GAIN_CTRL = 0x18;
 		   break;
 		}	
 		case 4: // user custom //DEBUG
@@ -850,6 +885,16 @@ void initTVG(uint8_t agr, uint8_t tvg, int serial_port)
 		   TVGAIN4 = 0x0C;
 		   TVGAIN5 = 0x30;
 		   TVGAIN6 = 0xC0;	
+		break;
+		
+	case 3: //TI Levels
+		TVGAIN0 = 0xAA;
+		TVGAIN1 = 0xAA;
+		TVGAIN2 = 0xAA;
+		TVGAIN3 = 0x00;
+		TVGAIN4 = 0x00;
+		TVGAIN5 = 0x00;
+		TVGAIN6 = 0x00;	
 		break;
 		
 		default: break;
