@@ -56,11 +56,11 @@ int Serial_Port;
 void configSensor_1()
 {
 	// -+-+-+-+-+-+-+-+-+-+- 2 : bulk threshold write   -+-+-+-+-+-+-+-+-+-+- //
-    if (fixedThr != 72){initThresholds(1, Serial_Port);} 
+    if (fixedThr != 72){initThresholds(2, Serial_Port);} 
 	// -+-+-+-+-+-+-+-+-+-+- 3 : bulk user EEPROM write   -+-+-+-+-+-+-+-+-+-+- //
     if (xdcr != 72){defaultPGA460(3, Serial_Port);}
 	// -+-+-+-+-+-+-+-+-+-+- 4 : bulk TVG write   -+-+-+-+-+-+-+-+-+-+- //
-    if (agrTVG != 72 && fixedTVG != 72){initTVG(2,3, Serial_Port);}
+    if (agrTVG != 72 && fixedTVG != 72){initTVG(2,2, Serial_Port);}
 	// -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
     if (runDiag == true)
     {      
