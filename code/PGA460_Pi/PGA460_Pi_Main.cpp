@@ -30,7 +30,7 @@ uint8_t fixedThr = 3;            // set P1 and P2 thresholds to 0=%25, 1=50%, or
 uint8_t xdcr = 3;                // set PGA460 to recommended settings for 0=Murata MA58MF14-7N, 1=Murata MA40H1S-R
 uint8_t agrTVG = 2;              // set TVG's analog front end gain range to 0=32-64dB, 1=46-78dB, 2=52-84dB, or 3=58-90dB
 uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
-uint8_t runDiag = false;             // run system diagnostics and temp/noise level before looping burst+listen command
+uint8_t runDiag = true;             // run system diagnostics and temp/noise level before looping burst+listen command
 uint8_t edd = 0;                 // echo data dump of preset 1, 2, or neither.
 uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
@@ -218,9 +218,9 @@ void initPGA460()
 	
 	configSensor_1();
 	
-	//SELECT_SENSOR_2();
+	SELECT_SENSOR_2();
 	
-	//configSensor_2();
+	configSensor_2();
 
 
   // -+-+-+-+-+-+-+-+-+-+-  others   -+-+-+-+-+-+-+-+-+-+- //
