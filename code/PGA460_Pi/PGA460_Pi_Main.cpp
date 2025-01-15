@@ -60,7 +60,7 @@ void configSensor_1()
 	// -+-+-+-+-+-+-+-+-+-+- 3 : bulk user EEPROM write   -+-+-+-+-+-+-+-+-+-+- //
     if (xdcr != 72){defaultPGA460(3, Serial_Port);}
 	// -+-+-+-+-+-+-+-+-+-+- 4 : bulk TVG write   -+-+-+-+-+-+-+-+-+-+- //
-    if (agrTVG != 72 && fixedTVG != 72){initTVG(2,3, Serial_Port);}
+    if (agrTVG != 72 && fixedTVG != 72){initTVG(1,3, Serial_Port);}
 	// -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
     if (runDiag == true)
     {      
@@ -128,6 +128,7 @@ void configSensor_2()
 		runEchoDataDump(edd-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
 		bool echoDataDump = pullEchoDataDumpBulk(Serial_Port);
     }
+#if 0
 	readReg(Serial_Port, 0x41);
 	readReg(Serial_Port, 0x42);
 	readReg(Serial_Port, 0x43);
@@ -141,6 +142,7 @@ void configSensor_2()
 	readReg(Serial_Port, 0x4B);
 	readReg(Serial_Port, 0x4C);
 	readReg(Serial_Port, 0x4D);
+#endif
 }
   
   
