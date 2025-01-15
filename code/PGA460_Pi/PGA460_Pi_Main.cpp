@@ -58,7 +58,7 @@ void configSensor_1()
 	// -+-+-+-+-+-+-+-+-+-+- 2 : bulk threshold write   -+-+-+-+-+-+-+-+-+-+- //
     if (fixedThr != 72){initThresholds(3, Serial_Port);} 
 	// -+-+-+-+-+-+-+-+-+-+- 3 : bulk user EEPROM write   -+-+-+-+-+-+-+-+-+-+- //
-    if (xdcr != 72){defaultPGA460(1, Serial_Port);}
+    if (xdcr != 72){defaultPGA460(3, Serial_Port);}
 	// -+-+-+-+-+-+-+-+-+-+- 4 : bulk TVG write   -+-+-+-+-+-+-+-+-+-+- //
     if (agrTVG != 72 && fixedTVG != 72){initTVG(1,3, Serial_Port);}
 	// -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
@@ -216,9 +216,9 @@ void initPGA460()
 	
 	configSensor_1();
 	
-	SELECT_SENSOR_2();
+	//SELECT_SENSOR_2();
 	
-	configSensor_2();
+	//configSensor_2();
 
 
   // -+-+-+-+-+-+-+-+-+-+-  others   -+-+-+-+-+-+-+-+-+-+- //
@@ -329,11 +329,11 @@ int main()
 		pullEchoDataDumpBulk(Serial_Port);
 		usleep(200000);
 		printf("Sensor 2: \n");
-		SELECT_SENSOR_2();
+		//SELECT_SENSOR_2();
 		//Cyclic_Task();
-		printf("Retrieving echo data dump profile. Wait...\n");
-		runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
-		pullEchoDataDumpBulk(Serial_Port);
+		//printf("Retrieving echo data dump profile. Wait...\n");
+		//runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
+		//pullEchoDataDumpBulk(Serial_Port);
 		usleep(500000); // (25 milliseconds)
 		if(i<5)
 		{
