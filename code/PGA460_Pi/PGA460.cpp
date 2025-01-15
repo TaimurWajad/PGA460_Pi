@@ -686,7 +686,7 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
 		   TVGAIN5 = 0x00;
 		   TVGAIN6 = 0x00;
 		   INIT_GAIN = 0x40;
-		   FREQUENCY  = 0x32;
+		   FREQUENCY  = 0x3A;//0x32; 40KHz
 		   DEADTIME = 0x80; // Optimized for transducer decay period (4080 �s)
 		   PULSE_P1 = 0x0A;		   
 		   PULSE_P2 = 0x10; //UART_ADDR=3
