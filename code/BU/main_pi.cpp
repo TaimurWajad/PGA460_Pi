@@ -58,8 +58,8 @@ int main() {
     unsigned char rxData[6] = {0x00};  // Buffer to store received data
     unsigned char receivedLength;
 	// Initialize WiringPi and GPIO
-	wiringPiSetup();  // Use WiringPi's own pin numbering
-	//wiringPiSetupGpio();  // Use BCM GPIO numbering
+	//wiringPiSetup();  // Use WiringPi's own pin numbering
+	wiringPiSetupGpio();  // Use BCM GPIO numbering
 	//wiringPiSetupPhys();  // Use the physical pin numbers on the P1 connector
 
     wiringPiSetupGpio();
