@@ -89,7 +89,7 @@
 	uint8_t TEMP_TRIM = 0x00;
 	uint8_t P1_GAIN_CTRL = 0x00;
 	uint8_t P2_GAIN_CTRL = 0x00;
-	uint8_t EE_CRC = 0xFF;
+	uint8_t EE_CRC = 0x82;//0xFF;
 	uint8_t EE_CNTRL = 0x00;
 	uint8_t P1_THR_0 = 0x88;
 	uint8_t P1_THR_1 = 0x88;
@@ -686,7 +686,7 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
 		   TVGAIN5 = 0x00;
 		   TVGAIN6 = 0x00;
 		   INIT_GAIN = 0x40;
-		   FREQUENCY  = 0x3A;//0x32; 40KHz
+		   FREQUENCY  = 0x32; //40KHz
 		   DEADTIME = 0x80; // Optimized for transducer decay period (4080 �s)
 		   PULSE_P1 = 0x0A;		   
 		   PULSE_P2 = 0x10; //UART_ADDR=3
