@@ -218,9 +218,9 @@ void initPGA460()
 	
 	configSensor_1();
 	
-	SELECT_SENSOR_2();
+	//SELECT_SENSOR_2();
 	
-	configSensor_2();
+	//configSensor_2();
 
 
   // -+-+-+-+-+-+-+-+-+-+-  others   -+-+-+-+-+-+-+-+-+-+- //
@@ -330,13 +330,13 @@ int main()
 		runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
 		pullEchoDataDumpBulk(Serial_Port);
 		usleep(200000);
-		printf("Sensor 2: \n");
-		SELECT_SENSOR_2();
+		//printf("Sensor 2: \n");
+		//SELECT_SENSOR_2();
 		//Cyclic_Task();
-		printf("Retrieving echo data dump profile. Wait...\n");
-		runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
-		pullEchoDataDumpBulk(Serial_Port);
-		usleep(500000); // (25 milliseconds)
+		//printf("Retrieving echo data dump profile. Wait...\n");
+		//runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
+		//pullEchoDataDumpBulk(Serial_Port);
+		//usleep(500000); // (25 milliseconds)
 		if(i<10)
 		{
 			i++;
