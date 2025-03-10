@@ -325,7 +325,7 @@ int main()
 	{
 		printf("Sensor 1: \n");
 		SELECT_SENSOR_1();
-		//Cyclic_Task();
+		Cyclic_Task();
 		printf("Retrieving echo data dump profile. Wait...\n");
 		runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
 		pullEchoDataDumpBulk(Serial_Port);
