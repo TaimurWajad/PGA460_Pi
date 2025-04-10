@@ -190,7 +190,7 @@ void initPGA460()
     usleep(100);
     
     digitalWrite(ULTRASONIC_PWR_EN, HIGH);	// Enable power to ultrasonic sensors
-    SELECT_SENSOR_2();
+    SELECT_SENSOR_1();
 
     if ((Serial_Port = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
 	{
@@ -216,11 +216,11 @@ void initPGA460()
   // -+-+-+-+-+-+-+-+-+-+- 1 : interface setup   -+-+-+-+-+-+-+-+-+-+- //
     initBoostXLPGA460(commMode, BAUD_RATE, uartAddrUpdate);
 	
-	//configSensor_1();
+	configSensor_1();
 	
 	//SELECT_SENSOR_2();
 	
-	configSensor_2();
+	//configSensor_2();
 
 
   // -+-+-+-+-+-+-+-+-+-+-  others   -+-+-+-+-+-+-+-+-+-+- //
@@ -323,20 +323,20 @@ int main()
 	initPGA460();
 	while(1)
 	{
-		//printf("Sensor 1: \n");
-		//SELECT_SENSOR_1();
-		//Cyclic_Task();
-		//printf("Retrieving echo data dump profile. Wait...\n");
-		//runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
-		//pullEchoDataDumpBulk(Serial_Port);
-		//usleep(200000);
-		printf("Sensor 2: \n");
-		SELECT_SENSOR_2();
+		printf("Sensor 1: \n");
+		SELECT_SENSOR_1();
 		Cyclic_Task();
 		printf("Retrieving echo data dump profile. Wait...\n");
 		runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
 		pullEchoDataDumpBulk(Serial_Port);
-		usleep(500000); // (25 milliseconds)
+		usleep(200000);
+		//printf("Sensor 2: \n");
+		//SELECT_SENSOR_2();
+		//Cyclic_Task();
+		//printf("Retrieving echo data dump profile. Wait...\n");
+		//runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
+		//pullEchoDataDumpBulk(Serial_Port);
+		//usleep(500000); // (25 milliseconds)
 		if(i<10)
 		{
 			i++;
