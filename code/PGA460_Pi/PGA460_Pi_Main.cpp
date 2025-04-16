@@ -329,7 +329,7 @@ int main()
 		//printf("Retrieving echo data dump profile. Wait...\n");
 		//runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
 		//pullEchoDataDumpBulk(Serial_Port);
-		usleep(200000);
+		usleep(400000);
 		//printf("Sensor 2: \n");
 		//SELECT_SENSOR_2();
 		//Cyclic_Task();
