@@ -586,7 +586,7 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
 		   TVGAIN5 = 0x14;
 		   TVGAIN6 = 0x50;
 		   INIT_GAIN = 0x54;
-		   FREQUENCY  = 0x32;
+		   FREQUENCY  = 0x40;//0x32;
 		   DEADTIME = 0xA0;
 		   if (comm == 2)
 		   {
