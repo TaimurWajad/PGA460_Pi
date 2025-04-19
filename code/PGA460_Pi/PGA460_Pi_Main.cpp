@@ -99,7 +99,7 @@ void configSensor_2()
 	// -+-+-+-+-+-+-+-+-+-+- 3 : bulk user EEPROM write   -+-+-+-+-+-+-+-+-+-+- //
     if (xdcr != 72){defaultPGA460(1, Serial_Port);}
 	// -+-+-+-+-+-+-+-+-+-+- 4 : bulk TVG write   -+-+-+-+-+-+-+-+-+-+- //
-    if (agrTVG != 72 && fixedTVG != 72){initTVG(3,3, Serial_Port);}
+    if (agrTVG != 72 && fixedTVG != 72){initTVG(1,0, Serial_Port);}
 	// -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
     if (runDiag == true)
     {      
@@ -325,28 +325,28 @@ int main()
 	{
 		printf("Sensor 1: \n");
 		SELECT_SENSOR_1();
-		Cyclic_Task();
-		//printf("Retrieving echo data dump profile. Wait...\n");
-		//runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
-		//pullEchoDataDumpBulk(Serial_Port);
+		//Cyclic_Task();
+		printf("Retrieving echo data dump profile. Wait...\n");
+		runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
+		pullEchoDataDumpBulk(Serial_Port);
 		usleep(300000);
 		printf("Sensor 2: \n");
 		SELECT_SENSOR_2();
-		Cyclic_Task();
-		//printf("Retrieving echo data dump profile. Wait...\n");
-		//runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
-		//pullEchoDataDumpBulk(Serial_Port);
+		//Cyclic_Task();
+		printf("Retrieving echo data dump profile. Wait...\n");
+		runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
+		pullEchoDataDumpBulk(Serial_Port);
 		usleep(300000); // (25 milliseconds)
 		
-		//if(i<10)
-		//{
-		//	i++;
-		//}
-		//else
-		//{
-		//	i = 0;
-		//	break;
-		//}	
+		if(i<10)
+		{
+			i++;
+		}
+		else
+		{
+			i = 0;
+			break;
+		}	
 	}
 		
 	// Disable power to ultrasonic sensors
