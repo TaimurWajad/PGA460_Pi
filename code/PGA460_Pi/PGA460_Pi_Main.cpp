@@ -346,7 +346,7 @@ int main()
 	}
 		
 	// Disable power to ultrasonic sensors
-	digitalWrite(ULTRASONIC_PWR_EN, LOW);
+	//digitalWrite(ULTRASONIC_PWR_EN, LOW);
 	// Close the serial port
 	serialClose(Serial_Port);
 
