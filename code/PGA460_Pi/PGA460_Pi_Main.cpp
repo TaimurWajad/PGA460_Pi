@@ -181,16 +181,17 @@ void initPGA460()
 	{
         fprintf(stderr, "Failed to initialize WiringPi\n");
     }
-	
+
+#if 0
 	//pinMode(UART_RX_PIN, INPUT);
 	pullUpDnControl(UART_RX_PIN, PUD_UP);
     pinMode(ULTRASONIC_PWR_EN, OUTPUT);
     pinMode(UART_SEL0, OUTPUT);
     pinMode(UART_SEL1, OUTPUT);
     usleep(100);
-    
     digitalWrite(ULTRASONIC_PWR_EN, HIGH);	// Enable power to ultrasonic sensors
     SELECT_SENSOR_1();
+#endif
 
     if ((Serial_Port = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
 	{
@@ -217,11 +218,11 @@ void initPGA460()
     initBoostXLPGA460(commMode, BAUD_RATE, uartAddrUpdate);
 	
 	configSensor_1();
-	
+#if 0	
 	SELECT_SENSOR_2();
 	
 	configSensor_2();
-
+#endif
 
   // -+-+-+-+-+-+-+-+-+-+-  others   -+-+-+-+-+-+-+-+-+-+- //
   commandDelay = 100 * cdMultiplier;                   // command cycle delay result in ms
@@ -324,19 +325,14 @@ int main()
 	while(1)
 	{
 		printf("Sensor 1: \n");
+	#if 0
 		SELECT_SENSOR_1();
-		//Cyclic_Task();
+	#endif
+		Cyclic_Task();
 		printf("Retrieving echo data dump profile. Wait...\n");
 		runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
 		pullEchoDataDumpBulk(Serial_Port);
 		usleep(300000);
-		printf("Sensor 2: \n");
-		SELECT_SENSOR_2();
-		//Cyclic_Task();
-		printf("Retrieving echo data dump profile. Wait...\n");
-		runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
-		pullEchoDataDumpBulk(Serial_Port);
-		usleep(300000); // (25 milliseconds)
 		
 		if(i<10)
 		{
