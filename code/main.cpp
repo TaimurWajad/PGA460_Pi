@@ -77,7 +77,7 @@ void initPGA460()
     // Initialize WiringPi and UART
     if (wiringPiSetup() == -1) 
 	{
-        fprintf(stderr, "Failed to initialize WiringPi\n");
+        fprintf(stderr, "Failed to initialize WiringPi Lib\n");
     }
 
     if ((Serial_Port = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
