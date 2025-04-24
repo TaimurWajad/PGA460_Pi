@@ -8,7 +8,6 @@
 #define UART_RX_PIN 15              	 	// GPIO15 corresponds to UART RX
 
 
-;
 void sendBytes(int fd, unsigned char *data, int length);
 int receiveBytes(int fd, unsigned char *buffer, int maxLength);
 void initBoostXLPGA460(uint8_t mode, uint32_t baud, uint8_t uartAddrUpdate);
