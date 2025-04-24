@@ -196,6 +196,7 @@ void initPGA460()
     if ((Serial_Port = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
 	{
         fprintf(stderr, "Unable to open any serial device: %s\n", strerror(errno));
+		while(1){fprintf(stderr, "Err\n", strerror(errno));};
     }
 	
 	usleep(100000);  // Wait for 100 ms before sending data
