@@ -66,7 +66,7 @@ void initPGA460()
 {
 	
 	// Initialize WiringPi and GPIO
-	//wiringPiSetup();  // Use WiringPi's own pin numbering
+	wiringPiSetup();  // Use WiringPi's own pin numbering
 	//wiringPiSetupGpio();  // Use BCM GPIO numbering
 	//wiringPiSetupPhys();  // Use the physical pin numbers on the P1 connector
 
