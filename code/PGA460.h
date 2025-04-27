@@ -5,7 +5,7 @@
 #define MAX_MILLIS_TO_WAIT 250 				// Maximum time to wait in milliseconds
 #define UART_DEVICE "/dev/ttyAMA2"  		 	// Default UART device on Raspberry Pi 4
 #define BAUD_RATE 115200              	 	// UART baud rate: 9600, 19200, 38400, 57600, 74800, 115200 
-#define UART_RX_PIN 15              	 	// GPIO15 corresponds to UART RX
+#define UART_RX_PIN 28              	 	// GPIO15 corresponds to UART RX
 
 
 void sendBytes(int fd, unsigned char *data, int length);
