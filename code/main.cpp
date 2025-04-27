@@ -10,7 +10,7 @@
 #include "PGA460.h"
 
 uint8_t commMode = 0;            // Communication mode: 0=UART, 1=TCI, 2=OneWireUART
-uint8_t fixedThr = 0;            // set P1 and P2 thresholds to 0=%25, 1=50%, or 2=75% of max; initial minDistLim (i.e. 20cm) ignored
+uint8_t fixedThr = 1;            // set P1 and P2 thresholds to 0=%25, 1=50%, or 2=75% of max; initial minDistLim (i.e. 20cm) ignored
 uint8_t xdcr = 1;                // set PGA460 to recommended settings for 0=Murata MA58MF14-7N, 1=Murata MA40H1S-R
 uint8_t agrTVG = 2;              // set TVG's analog front end gain range to 0=32-64dB, 1=46-78dB, 2=52-84dB, or 3=58-90dB
 uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
@@ -18,7 +18,7 @@ uint8_t runDiag = 1;             // run system diagnostics and temp/noise level 
 uint8_t edd = 1;                 // echo data dump of preset 1, 2, or neither TODO: Import this Fn.
 uint8_t burn = 1;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
-uint8_t numOfObj = 4;            // number of object to detect set to 1-8
+uint8_t numOfObj = 8;            // number of object to detect set to 1-8
 
 
 uint8_t uartAddrUpdate = 0;      // PGA460 UART address to interface to; default is 0, possible address 0-7
@@ -73,11 +73,11 @@ void initPGA460()
     wiringPiSetupGpio();
 	//pinMode(UART_RX_PIN, INPUT);
 	pullUpDnControl(UART_RX_PIN, PUD_UP);
- 
+
     // Initialize WiringPi and UART
     if (wiringPiSetup() == -1) 
 	{
-        fprintf(stderr, "Failed to initialize WiringPi Lib\n");
+        fprintf(stderr, "Failed to initialize WiringPi\n");
     }
 
     if ((Serial_Port = serialOpen(UART_DEVICE, BAUD_RATE)) < 0) 
@@ -231,11 +231,11 @@ void Cyclic_Task()
               //printf("P2 Obj"); printf(i+1); printf(" Distance (m): "); printf(distance);printf("\n");
               objectDetected = true;
           }    
-          else if (distance == 0 && commMode!=1)                       
+          else if (distance == 0 && commMode!=1)                         // turn off all LEDs if no object detected
           {
               //Serial.print("Error reading measurement results..."); //Serial.println(distance);
           }
-          else //(distance > 11.2 && distance < minDistLim)         
+          else //(distance > 11.2 && distance < minDistLim)         // turn off all LEDs if no object detected or below minimum distance limit
           {
               if (i == numOfObj-1 && objectDetected == false)
               {         
@@ -244,6 +244,24 @@ void Cyclic_Task()
           }
         }  
       }
+}
+
+int main()
+{
+	initPGA460();
+	
+	while(1)
+	{         
+		Cyclic_Task();
+		usleep(250000); // Sleep for 250,000 microseconds (250 milliseconds)
+	}
+		
+	
+	// Close the serial port
+	serialClose(Serial_Port);
+
+	return 0;
+	
 }
 
 // Function to handle serial events
@@ -281,23 +299,3 @@ void serialEvent(int serial_port) {
         }
     }
 }
-
-int main()
-{
-	initPGA460();
-	
-	while(1)
-	{         
-		Cyclic_Task();
-		//usleep(250000); // Sleep for 250 milliseconds)
-		usleep(100000); // Sleep for 100 milliseconds)
-		//serialEvent(Serial_Port);
-	}	
-	// Close the serial port
-	serialClose(Serial_Port);
-
-	return 0;
-	
-}
-
-

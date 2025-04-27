@@ -72,10 +72,10 @@ uint8_t TVGAIN4 = 0x68;
 uint8_t TVGAIN5 = 0x36;
 uint8_t TVGAIN6 = 0xFC;
 uint8_t INIT_GAIN = 0xC0;
-uint8_t FREQUENCY  = 0xBE;//0x8C; BE==190
+uint8_t FREQUENCY  = 0x8C;
 uint8_t DEADTIME = 0x00;
-uint8_t PULSE_P1 = 0x1F;//0x01;
-uint8_t PULSE_P2 = 0x1F;//0x12;
+uint8_t PULSE_P1 = 0x01;
+uint8_t PULSE_P2 = 0x12;
 uint8_t CURR_LIM_P1 = 0x47;
 uint8_t CURR_LIM_P2 = 0xFF;
 uint8_t REC_LENGTH = 0x1C;
@@ -511,7 +511,7 @@ void defaultPGA460(uint8_t xdcr, int serial_port)
 				PULSE_P1 = 0x04;
 			}
 			PULSE_P2 = 0x10;
-			CURR_LIM_P1 = 0xD5;//0x55;//0xD5== Current Limit Disabled
+			CURR_LIM_P1 = 0x55;
 			CURR_LIM_P2 = 0x55;
 			REC_LENGTH = 0x19;
 			FREQ_DIAG = 0x33;
@@ -1761,4 +1761,3 @@ char* pullEchoDataDumpBulk(int serial_port)
 
     return bulkString;
 }
-
