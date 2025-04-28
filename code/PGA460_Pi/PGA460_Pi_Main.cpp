@@ -331,20 +331,20 @@ int main()
 		SELECT_SENSOR_1();
 	#endif
 		Cyclic_Task();
-		printf("Retrieving echo data dump profile. Wait...\n");
-		runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
-		pullEchoDataDumpBulk(Serial_Port);
-		usleep(300000);
+//		printf("Retrieving echo data dump profile. Wait...\n");
+//		runEchoDataDump(i-1, Serial_Port);                  // run preset 1 or 2 burst and/or listen command
+//		pullEchoDataDumpBulk(Serial_Port);
+		usleep(20000);
 		
-		if(i<10)
-		{
-			i++;
-		}
-		else
-		{
-			i = 0;
-			break;
-		}	
+		//if(i<10)
+		//{
+		//	i++;
+		//}
+		//else
+		//{
+		//	i = 0;
+		//	break;
+		//}	
 	}
 		
 	// Disable power to ultrasonic sensors
