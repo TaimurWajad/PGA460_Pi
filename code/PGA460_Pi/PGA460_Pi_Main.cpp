@@ -34,7 +34,7 @@ uint8_t runDiag = false;             // run system diagnostics and temp/noise le
 uint8_t edd = 0;                 // echo data dump of preset 1, 2, or neither.
 uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
-uint8_t numOfObj = 4;            // number of object to detect set to 1-8
+uint8_t numOfObj = 1;            // number of object to detect set to 1-8
 
 
 uint8_t uartAddrUpdate = 0;      // PGA460 UART address to interface to; default is 0, possible address 0-7
@@ -262,14 +262,18 @@ void initPGA460()
 void Cyclic_Task() 
 {// put your main code here, to run repeatedly
 	double tmp;
+	printf(stderr, "Test 1_1\n");
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       objectDetected = false;                       // Initialize object detected flag to false
       ultrasonicCmd(0, numOfObj, Serial_Port);
+	  printf(stderr, "Test 1_2\n");
       // run preset 1 (short distance) burst+listen for 1 object
       pullUltrasonicMeasResult(demoMode, Serial_Port);      // Pull Ultrasonic Measurement Result
-      for (uint8_t i=0; i<numOfObj; i++)
+      printf(stderr, "Test 1_3\n");
+	  for (uint8_t i=0; i<numOfObj; i++)
       { 
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
+		  printf(stderr, "Test 1_4\n");
 		distance = printUltrasonicMeasResult(0+(i*3));
   
         usleep(commandDelay*100);  // Wait for 100 msecond before sending data again delay(commandDelay);
