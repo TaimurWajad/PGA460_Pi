@@ -1439,20 +1439,15 @@ void ultrasonicCmd(uint8_t cmd, uint8_t numObjUpdate, int serial_port)
  *-------------------------------------------------------------------*/
 uint8_t pullUltrasonicMeasResult(bool busDemo, int serial_port)
 {
-	printf("Test 1\n");
-
 	//pga460SerialFlush(serial_port);
 	// Flush UART buffers
     tcflush(serial_port, TCIOFLUSH);
 	//memset(ultraMeasResult, 0, sizeof(ultraMeasResult));
-	printf("Test 2\n");
 		
 	uint8_t buf5[3] = {syncByte, UMR, calcChecksum(UMR)};
 
 	sendBytes(serial_port, buf5, sizeof(buf5)); //serial transmit master data to read ultrasonic measurement results
-	printf("Test 3\n");
 	receiveBytesFromSerial(serial_port, ultraMeasResult, (2+(numObj*4)));
-	printf("Test 4\n");
 #if 0		
 	starttime = millis();
 	while ( (Serial1.available()<(5)) && ((millis() - starttime) < MAX_MILLIS_TO_WAIT) )

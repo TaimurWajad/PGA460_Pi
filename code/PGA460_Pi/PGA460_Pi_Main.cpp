@@ -30,7 +30,7 @@ uint8_t fixedThr = 3;            // set P1 and P2 thresholds to 0=%25, 1=50%, or
 uint8_t xdcr = 3;                // set PGA460 to recommended settings for 0=Murata MA58MF14-7N, 1=Murata MA40H1S-R
 uint8_t agrTVG = 2;              // set TVG's analog front end gain range to 0=32-64dB, 1=46-78dB, 2=52-84dB, or 3=58-90dB
 uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
-uint8_t runDiag = false;             // run system diagnostics and temp/noise level before looping burst+listen command
+uint8_t runDiag = true;             // run system diagnostics and temp/noise level before looping burst+listen command
 uint8_t edd = 0;                 // echo data dump of preset 1, 2, or neither.
 uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
@@ -262,18 +262,17 @@ void initPGA460()
 void Cyclic_Task() 
 {// put your main code here, to run repeatedly
 	double tmp;
-	printf("Test 1_1\n");
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       objectDetected = false;                       // Initialize object detected flag to false
       ultrasonicCmd(0, numOfObj, Serial_Port);
-	  printf("Test 1_2\n");
+
       // run preset 1 (short distance) burst+listen for 1 object
       pullUltrasonicMeasResult(demoMode, Serial_Port);      // Pull Ultrasonic Measurement Result
-      printf("Test 1_3\n");
+
 	  for (uint8_t i=0; i<numOfObj; i++)
       { 
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
-		  printf("Test 1_4\n");
+
 		distance = printUltrasonicMeasResult(0+(i*3));
   
         usleep(commandDelay*100);  // Wait for 100 msecond before sending data again delay(commandDelay);
