@@ -15,10 +15,10 @@ uint8_t xdcr = 1;                // set PGA460 to recommended settings for 0=Mur
 uint8_t agrTVG = 2;              // set TVG's analog front end gain range to 0=32-64dB, 1=46-78dB, 2=52-84dB, or 3=58-90dB
 uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
 uint8_t runDiag = 1;             // run system diagnostics and temp/noise level before looping burst+listen command
-uint8_t edd = 0;                 // echo data dump of preset 1, 2, or neither TODO: Import this Fn.
+uint8_t edd = 2;                 // echo data dump of preset 1, 2, or neither TODO: Import this Fn.
 uint8_t burn = 1;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
-uint8_t numOfObj = 8;            // number of object to detect set to 1-8
+uint8_t numOfObj = 1;            // number of object to detect set to 1-8
 
 
 uint8_t uartAddrUpdate = 0;      // PGA460 UART address to interface to; default is 0, possible address 0-7
@@ -176,15 +176,18 @@ void Cyclic_Task()
 	
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       objectDetected = false;                       // Initialize object detected flag to false
+      printf("Test 1\n");
       ultrasonicCmd(0, numOfObj, Serial_Port);               // run preset 1 (short distance) burst+listen for 1 object
+      printf("Test 2\n");
       pullUltrasonicMeasResult(demoMode, Serial_Port);      // Pull Ultrasonic Measurement Result
+      printf("Test 3\n");
       for (uint8_t i=0; i<numOfObj; i++)
       { 
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
           distance = printUltrasonicMeasResult(0+(i*3));      
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
           //peak = ussc.printUltrasonicMeasResult(2+(i*3));   // only available for UART, OWU, and SPI
-  
+          printf("Test 4\n");
         usleep(commandDelay*10);  // Wait for 100 msecond before sending data again delay(commandDelay);
     
         if (distance > minDistLim && distance < 11.2)  // turn on DS1_LED if object is above minDistLim
