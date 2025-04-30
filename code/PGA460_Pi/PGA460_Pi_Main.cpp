@@ -42,7 +42,7 @@ bool objectDetected = false;  		 // object detected flag to break burst+listen c
 bool demoMode = false;        		 // only true when running UART/OWU multi device demo mode
 bool alwaysLong = true;      		 // always run preset 2, regardless of preset 1 result (hard-coded only)
 double minDistLim = 0.2;      		 // minimum distance as limited by ringing decay of single transducer and threshold masking
-uint16_t commandDelay = 10;    		 // Delay between each P1 and Preset 2 command
+uint16_t commandDelay = 0;    		 // Delay between each P1 and Preset 2 command
 
 
 // Result variables
@@ -63,7 +63,8 @@ void configSensor_1()
     if (agrTVG != 72 && fixedTVG != 72){initTVG(2,1, Serial_Port);}
 	// -+-+-+-+-+-+-+-+-+-+- 5 : run system diagnostics   -+-+-+-+-+-+-+-+-+-+- //
     if (runDiag == true)
-    {      
+    {
+      printf("Test 5 \n");       
 		diagnostics = runDiagnostics(1,0, Serial_Port);       // run and capture system diagnostics, and print freq diag result
 		printf("System Diagnostics - Frequency (kHz): %f\n", diagnostics);
 		diagnostics = runDiagnostics(0,1, Serial_Port);       // do not re-run system diagnostic, but print decay diag result
@@ -200,7 +201,7 @@ void initPGA460()
         fprintf(stderr, "Unable to open a serial device: %s\n", strerror(errno));
 		while(1){fprintf(stderr, "Error\n");usleep(250000);}
     }
-	
+    printf("Test 1 \n"); 
 	usleep(100000);  // Wait for 100 ms before sending data
 	
 	initVariables();
@@ -219,13 +220,9 @@ void initPGA460()
 *-------------------------------------------------------------------*/
   // -+-+-+-+-+-+-+-+-+-+- 1 : interface setup   -+-+-+-+-+-+-+-+-+-+- //
     initBoostXLPGA460(commMode, BAUD_RATE, uartAddrUpdate);
-	
+    printf("Test 2 \n"); 
 	configSensor_1();
-#if 0	
-	SELECT_SENSOR_2();
-	
-	configSensor_2();
-#endif
+  printf("Test 3 \n"); 
 
   // -+-+-+-+-+-+-+-+-+-+-  others   -+-+-+-+-+-+-+-+-+-+- //
   commandDelay = 100 * cdMultiplier;                   // command cycle delay result in ms
