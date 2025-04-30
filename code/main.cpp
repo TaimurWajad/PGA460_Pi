@@ -176,18 +176,14 @@ void Cyclic_Task()
 	
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       objectDetected = false;                       // Initialize object detected flag to false
-      printf("Test 1\n");
       ultrasonicCmd(0, numOfObj, Serial_Port);               // run preset 1 (short distance) burst+listen for 1 object
-      printf("Test 2\n");
       pullUltrasonicMeasResult(demoMode, Serial_Port);      // Pull Ultrasonic Measurement Result
-      printf("Test 3\n");
       for (uint8_t i=0; i<numOfObj; i++)
       { 
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
           distance = printUltrasonicMeasResult(0+(i*3));      
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
           //peak = ussc.printUltrasonicMeasResult(2+(i*3));   // only available for UART, OWU, and SPI
-          printf("Test 4\n");
         usleep(commandDelay*10);  // Wait for 100 msecond before sending data again delay(commandDelay);
     
         if (distance > minDistLim && distance < 11.2)  // turn on DS1_LED if object is above minDistLim
