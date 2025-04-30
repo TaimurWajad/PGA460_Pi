@@ -16,7 +16,7 @@ uint8_t agrTVG = 2;              // set TVG's analog front end gain range to 0=3
 uint8_t fixedTVG = 1;            // set fixed TVG level at 0=%25, 1=50%, or 1=75% of max
 uint8_t runDiag = 1;             // run system diagnostics and temp/noise level before looping burst+listen command
 uint8_t edd = 0;                 // echo data dump of preset 1, 2, or neither TODO: Import this Fn.
-uint8_t burn = 1;                // trigger EE_CNTRL to burn and program user EEPROM memory
+uint8_t burn = 0;                // trigger EE_CNTRL to burn and program user EEPROM memory
 uint8_t cdMultiplier = 1;        // multiplier for command cycle delay
 uint8_t numOfObj = 1;            // number of object to detect set to 1-8
 
@@ -212,7 +212,7 @@ void Cyclic_Task()
           if (distance < 1 && distance > minDistLim)    // turn on DS1_LED and F_DIAG_LED if object is within 1m
           {
               //printf("P2 Obj"); printf(i+1); printf(" Distance (m): "); printf(distance);printf("\n");
-			  printf("P2 Obj %d Distance (m): %.2f\n", i + 1, distance);
+			        printf("P2 Obj %d Distance (m): %.2f\n", i + 1, distance);
 
               //Serial.print("P2 Obj"); Serial.print(i+1); Serial.print(" Width (us): "); Serial.println(width);
               //Serial.print("P2 Obj"); Serial.print(i+1); Serial.print(" Amplitude (dec): "); Serial.println(peak);
@@ -221,12 +221,12 @@ void Cyclic_Task()
           else if (distance < 3 && distance >= 1)      // turn on DS1_LED and F_DIAG_LED if object is within 3m
           {
               //printf("P2 Obj"); printf(i+1); printf(" Distance (m): "); printf(distance);printf("\n");
-			  printf("P2 Obj %d Distance (m): %.2f\n", i + 1, distance);
+			        printf("P2 Obj %d Distance (m): %.2f\n", i + 1, distance);
               objectDetected = true;
           }    
           else if (distance >= 3 && distance < 11.2)     // turn on DS1_LED, F_DIAG_LED, and V_DIAG_LED if object is greater than 3m
           {
-			  printf("P2 Obj %d Distance (m): %.2f\n", i + 1, distance);
+			        printf("P2 Obj %d Distance (m): %.2f\n", i + 1, distance);
               //printf("P2 Obj"); printf(i+1); printf(" Distance (m): "); printf(distance);printf("\n");
               objectDetected = true;
           }    
@@ -252,7 +252,8 @@ int main()
 	while(1)
 	{         
 		Cyclic_Task();
-		usleep(250000); // Sleep for 250,000 microseconds (250 milliseconds)
+    serialEvent(Serial_Port); 
+		usleep(25000); // Sleep for 250,000 microseconds (250 milliseconds)
 	}
 		
 	
