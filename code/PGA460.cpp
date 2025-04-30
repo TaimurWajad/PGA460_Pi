@@ -1242,7 +1242,12 @@ uint8_t pullUltrasonicMeasResult(bool busDemo, int serial_port)
 double printUltrasonicMeasResult(uint8_t umr)
 {
 	int speedSound = 343; // speed of sound in air at room temperature
-	printUltrasonicMeasResultExt(umr, speedSound);
+	double objReturn = 0;
+	uint16_t objDist = 0;
+	//printUltrasonicMeasResultExt(umr, speedSound);
+	objDist = (ultraMeasResult[1]<<8) + ultraMeasResult[2];
+	objReturn = (objDist/2*0.000001*speedSound) - 0;
+	return objReturn;
 }
 uint8_t printUltrasonicMeasResultRaw(uint8_t umr)
 {
