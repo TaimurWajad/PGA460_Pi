@@ -176,17 +176,17 @@ void Cyclic_Task()
 	
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 1 (SHORT RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       objectDetected = false;                       // Initialize object detected flag to false
-      printf("Test 1, ");
+      //printf("Test 1, ");
       ultrasonicCmd(0, numOfObj, Serial_Port);               // run preset 1 (short distance) burst+listen for 1 object
-      printf("Test 2, ");
+      //("Test 2, ");
       pullUltrasonicMeasResult(demoMode, Serial_Port);      // Pull Ultrasonic Measurement Result
-      printf("Test 3, ");
+      //printf("Test 3, ");
       for (uint8_t i=0; i<numOfObj; i++)
       { 
 
         // Log uUltrasonic Measurement Result: Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude; etc.;
           distance = printUltrasonicMeasResult(0+(i*3));
-          printf("Test 4.\n");      
+          //printf("Test 4.\n");      
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
           //peak = ussc.printUltrasonicMeasResult(2+(i*3));   // only available for UART, OWU, and SPI
     
@@ -203,15 +203,15 @@ void Cyclic_Task()
     // -+-+-+-+-+-+-+-+-+-+-  PRESET 2 (LONG RANGE) MEASUREMENT   -+-+-+-+-+-+-+-+-+-+- //
       if(objectDetected == false || alwaysLong == true)                       // If no preset 1 (short distance) measurement result, switch to Preset 2 B+L command
       { 
-        printf("Test 5, ");  
+        //printf("Test 5, ");  
         ultrasonicCmd(1, numOfObj, Serial_Port);                // run preset 2 (long distance) burst+listen for 1 object
-        printf("Test 6, "); 
+        //printf("Test 6, "); 
         pullUltrasonicMeasResult(demoMode, Serial_Port);                // Get Ultrasonic Measurement Result
-        printf("Test 7, "); 
+        //printf("Test 7, "); 
         for (uint8_t i=0; i<numOfObj; i++)
         {  
           distance = printUltrasonicMeasResult(0+(i*3));   // Print Ultrasonic Measurement Result i.e. Obj1: 0=Distance(m), 1=Width, 2=Amplitude; Obj2: 3=Distance(m), 4=Width, 5=Amplitude;
-          printf("Test 8.\n"); 
+          //printf("Test 8.\n"); 
           //width = ussc.printUltrasonicMeasResult(1+(i*3));    // only available for UART, OWU, and SPI
           //peak = ussc.printUltrasonicMeasResult(2+(i*3));     // only available for UART, OWU, and SPI
     
@@ -294,7 +294,7 @@ int main()
 	{         
 		Cyclic_Task();
    
-		usleep(25000); // Sleep for (25 milliseconds)
+		usleep(10000); // Sleep for (25 milliseconds)
 	}
 		
 	
