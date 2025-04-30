@@ -244,6 +244,41 @@ void Cyclic_Task()
         }  
       }
 }
+// Function to handle serial events
+// TODO: Check if this function is required!!! Call in loop
+void serialEvent(int serial_port) {
+  while (serialDataAvail(serial_port)) {
+      char inChar = serialGetchar(serial_port); // Get the new byte
+
+      // If the incoming character is a 'q', set a flag, stop the main loop, and re-run initialization
+      if (inChar == 'q') {
+          stringComplete = true;
+          initPGA460();
+      }
+      // If the incoming character is a 'p', set a flag, pause the loop, and resume loop upon receiving another 'p' character
+      else if (inChar == 'p') {
+          printf("PAUSE\n");
+          stringComplete = false;
+
+          while (!stringComplete) {
+              while (serialDataAvail(serial_port)) {
+                  inChar = serialGetchar(serial_port); // Get the new byte
+
+                  if (inChar == 'p') {
+                      stringComplete = true;
+                  } else if (inChar == 'q') {
+                      stringComplete = true;
+                      initPGA460();
+                  }
+              }
+              usleep(100000); // Short delay to prevent CPU overload (100 ms)
+          }
+
+          stringComplete = false;
+          printf("\n");
+      }
+  }
+}
 
 int main()
 {
@@ -264,38 +299,3 @@ int main()
 	
 }
 
-// Function to handle serial events
-// TODO: Check if this function is required!!! Call in loop
-void serialEvent(int serial_port) {
-    while (serialDataAvail(serial_port)) {
-        char inChar = serialGetchar(serial_port); // Get the new byte
-
-        // If the incoming character is a 'q', set a flag, stop the main loop, and re-run initialization
-        if (inChar == 'q') {
-            stringComplete = true;
-            initPGA460();
-        }
-        // If the incoming character is a 'p', set a flag, pause the loop, and resume loop upon receiving another 'p' character
-        else if (inChar == 'p') {
-            printf("PAUSE\n");
-            stringComplete = false;
-
-            while (!stringComplete) {
-                while (serialDataAvail(serial_port)) {
-                    inChar = serialGetchar(serial_port); // Get the new byte
-
-                    if (inChar == 'p') {
-                        stringComplete = true;
-                    } else if (inChar == 'q') {
-                        stringComplete = true;
-                        initPGA460();
-                    }
-                }
-                usleep(100000); // Short delay to prevent CPU overload (100 ms)
-            }
-
-            stringComplete = false;
-            printf("\n");
-        }
-    }
-}
