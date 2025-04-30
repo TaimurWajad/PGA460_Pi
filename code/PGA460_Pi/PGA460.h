@@ -7,7 +7,7 @@
 #define UART_DEVICE "/dev/ttyAMA2"  		 // Default UART device on Raspberry Pi 4
 #define BAUD_RATE 115200              	 // // UART baud rate: 9600, 19200, 38400, 57600, 74800, 115200 
 #define UART_RX_PIN 5              	 		// GPIO15 corresponds to UART RX
-
+#define UART_RX_PIN2 1 
 
 
 void sendBytes(int fd, unsigned char *data, int length);
