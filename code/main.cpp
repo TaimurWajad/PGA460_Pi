@@ -189,7 +189,6 @@ void Cyclic_Task()
           printf("Test 4.\n");      
           //width = ussc.printUltrasonicMeasResult(1+(i*3));  // only available for UART, OWU, and SPI
           //peak = ussc.printUltrasonicMeasResult(2+(i*3));   // only available for UART, OWU, and SPI
-        usleep(commandDelay*10);  // Wait for 100 msecond before sending data again delay(commandDelay);
     
         if (distance > minDistLim && distance < 11.2)  // turn on DS1_LED if object is above minDistLim
         {
@@ -215,8 +214,6 @@ void Cyclic_Task()
           printf("Test 8.\n"); 
           //width = ussc.printUltrasonicMeasResult(1+(i*3));    // only available for UART, OWU, and SPI
           //peak = ussc.printUltrasonicMeasResult(2+(i*3));     // only available for UART, OWU, and SPI
-  
-          usleep(commandDelay*10);  //delay(commandDelay);
     
           if (distance < 1 && distance > minDistLim)    // turn on DS1_LED and F_DIAG_LED if object is within 1m
           {
