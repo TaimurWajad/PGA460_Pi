@@ -182,7 +182,7 @@ void initPGA460()
         fprintf(stderr, "Failed to initialize WiringPi\n");
     }
 	//pinMode(UART_RX_PIN, INPUT);
-	pullUpDnControl(UART_RX_PIN, PUD_UP);
+	//pullUpDnControl(UART_RX_PIN, PUD_UP);
 
 #if 0
 
